@@ -1,0 +1,276 @@
+<div *ngIf="data.getAgentName; else confirm">
+  <div class="row d-flex justify-content-end my-2">
+    <i (click)="dialogRef.close()" class="fa fa-times" aria-hidden="true"></i>
+  </div>
+  <div class="row ml-1 mt-3 mb-2">
+    <h5>
+      Agent Details
+    </h5>
+  </div>
+  <mat-card>
+    <!-- <mat-select [(ngModel)]="selectedAgent">
+      <mat-option *ngFor="let agent of agents" [value]="agent">
+        {{ agent.agentName }} ( {{ agent.agentNumber }} )
+      </mat-option>
+    </mat-select> -->
+    <!-- <div class="row my-3  align-items-center  d-flex justify-content-center">
+      <div class="col-6 d-flex align-items-center justify-content-end ">
+        <span> Enter the pickup agent name : </span>
+      </div>
+      <div class="col-6">
+
+        <input class="mx-2" mat-input type="text" [(ngModel)]="agentName" required>
+      </div>
+    </div> -->
+    <div class="row my-3  align-items-center  d-flex justify-content-center">
+      <div class="col-4 d-flex align-items-center justify-content-end ">
+        <span> Select the Pickup Agent : </span>
+      </div>
+      <div class="col-3">
+        <mat-select [(ngModel)]="selectedAgent">
+          <mat-option *ngFor="let agent of agents" [value]="agent">
+            {{ agent.agentName }} ( {{ agent.agentNumber }} )
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="col-3">
+        <button mat-stroked-button color="primary" class="mx-2" [disabled]="!selectedAgent" (click)="sendWhatsApp()"> Send
+          to WhatsAPP
+        </button>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center my-2">
+      <button mat-raised-button color="primary" class="m-2" [disabled]="!selectedAgent" (click)="submit()">
+        submit
+      </button>
+    </div>
+  </mat-card>
+
+  <div class="row ml-1 mt-4 mb-2">
+    <h5>Past Transactions Details</h5>
+  </div>
+  <div *ngIf="pastTransaction.length; else noTransactions">
+    <div class="example-container mat-elevation-z8">
+      <table class="mat-elevation-z8" mat-table id="donationTable" [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>
+            <span class="d-flex mx-2 justify-content-center"> Name </span>
+          </th>
+          <td mat-cell *matCellDef="let pastTransaction">
+            <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.donar?.fullName }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="number">
+          <th mat-header-cell *matHeaderCellDef>
+            <span class="d-flex mx-2 justify-content-center"> Number </span>
+          </th>
+          <td mat-cell *matCellDef="let pastTransaction">
+            <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.donar?.username }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef>
+            <span class="d-flex mx-2 justify-content-center"> Pickup Address </span>
+          </th>
+          <td mat-cell *matCellDef="let pastTransaction">
+            <span class="label d-flex mx-2 justify-content-center">{{getAddressForPickUp(pastTransaction)}}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="pickupDate">
+          <th mat-header-cell *matHeaderCellDef>
+            <span class="d-flex mx-2 justify-content-center"> Pickup Date </span>
+          </th>
+          <td mat-cell *matCellDef="let pastTransaction">
+            <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.donated_date }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="pickupTime">
+          <th mat-header-cell *matHeaderCellDef>
+            <span class="d-flex mx-2 justify-content-center"> Pickup Time </span>
+          </th>
+          <td mat-cell *matCellDef="let pastTransaction">
+            <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.pickup_time }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="remarks">
+          <th mat-header-cell *matHeaderCellDef>
+            <span class="d-flex mx-2 justify-content-center"> Remarks </span>
+          </th>
+          <td mat-cell *matCellDef="let pastTransaction">
+            <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.remarks }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="agentName">
+          <th mat-header-cell *matHeaderCellDef>
+            <span class="d-flex mx-2 justify-content-center"> Agent Name </span>
+          </th>
+          <td mat-cell *matCellDef="let pastTransaction">
+            <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.agentName }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="telecallerId">
+          <th mat-header-cell *matHeaderCellDef>
+            <span class="d-flex mx-2 justify-content-center"> Telecaller ID </span>
+          </th>
+          <td mat-cell *matCellDef="let pastTransaction">
+            <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.telecaller?.atcId }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="telecallerName">
+          <th mat-header-cell *matHeaderCellDef>
+            <span class="d-flex mx-2 justify-content-center"> Telecaller ID </span>
+          </th>
+          <td mat-cell *matCellDef="let pastTransaction">
+            <span
+              class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.telecaller?.atcProfile?.voiceCallingName }}
+            </span>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+      </table>
+    </div>
+  </div>
+  <ng-template #noTransactions>
+    <mat-card>
+      <h6 class="d-flex justify-content-center align-items-center">There is No Past Transaction</h6>
+    </mat-card>
+  </ng-template>
+
+  <div class="row ml-1 mt-3 mb-2">
+    <h5>
+      Current Transaction Details
+    </h5>
+  </div>
+  <mat-card>
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-2">
+        <b>Name</b>
+      </div>
+      <div class="col-3 border-right">{{currentTransaction?.donar?.fullName}}</div>
+      <div class="col-1"></div>
+      <div class="col-2">
+        <b>Pickup Date</b>
+      </div>
+      <div class="col-3">{{currentTransaction?.donated_date}}</div>
+    </div>
+    <div class="row">
+      <div class=col-1></div>
+      <div class="col-2">
+        <b>Phone</b>
+      </div>
+      <div class="col-3 border-right">{{currentTransaction?.donar?.username}}</div>
+      <div class="col-1"></div>
+      <div class="col-2">
+        <b>Pickup Time</b>
+      </div>
+      <div class="col-3">{{currentTransaction?.pickup_time}}</div>
+    </div>
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-2">
+        <b>Telecaller ID</b>
+      </div>
+      <div class="col-3 border-right">{{currentTransaction?.telecaller?.atcId}}</div>
+      <div class="col-1"></div>
+      <div class="col-2">
+        <b>Remarks</b>
+      </div>
+      <div class="col-3 border-right">{{getAddressForPickUp(currentTransaction)}}</div>
+    </div>
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-2">
+        <b>Telecaller Name</b>
+      </div>
+      <div class="col-3 border-right">{{currentTransaction?.telecaller?.fullName}}</div>
+      <div class="col-1"></div>
+      <div class="col-2">
+        <b>Pickup Address</b>
+      </div>
+      <div class="col-3 border-right">{{getAddressForPickUp(currentTransaction)}}</div>
+    </div>
+  </mat-card>
+</div>
+<ng-template #confirm>
+  <div *ngIf="!selectedMode; else modeSelected" class="row d-flex align-items-center justify-content-center">
+    <h5 class="m-2">Select pick up type : </h5>
+    <button mat-raised-button color="primary" class="m-2" (click)="pickupProvisionMode(15)"> Cash </button>
+    <button mat-raised-button color="primary" class="m-2" (click)="provisionMode()"> Provision </button>
+    <button mat-raised-button color="primary" class="m-2" (click)="pickupProvisionMode(18)"> Cheque </button>
+    <button mat-raised-button color="primary" class="m-2" (click)="pickupProvisionMode(17)"> DD </button>
+  </div>
+  <ng-template #modeSelected>
+    <div style="background-color:#dcdcdc" class="row  align-items-center  d-flex justify-content-center">
+      <h5 class="m-2">{{isProvisionMode ? 'Provision' : 'Cash / Cheque / DD'}} Pickup </h5>
+      <button mat-button color="primary" class="m-2" (click)="selectedMode = null">
+        Change pickup type
+      </button>
+    </div>
+    <div *ngIf="!isProvisionMode">
+      <div class="row my-3  align-items-center  d-flex justify-content-center">
+        <div class="col-6 d-flex justify-content-end">
+          Enter the amount collected
+        </div>
+        <div class="col-6">
+          <input class="mx-2" mat-input type="number" [(ngModel)]="amount" required>
+        </div>
+      </div>
+      <div class="row my-3  align-items-center  d-flex justify-content-center">
+        <div class="col-6 d-flex justify-content-end">
+          Enter the Transaction id
+        </div>
+        <div class="col-6">
+          <input class="mx-2" mat-input type="text" [(ngModel)]="transactionId" required>
+        </div>
+      </div>
+    </div>
+    <div class="row my-3  align-items-center  d-flex justify-content-center">
+      <input type="file" accept=".jpeg, .jpg, .png" (change)="uploadScreenshot($event)" style="display: none;"
+        #screenshotRef />
+
+      <button mat-stroked-button type="button" (click)="screenshotRef.click()" class="m-2">
+        <i class="fa fa-user-o mr-2 fa-1x" aria-hidden="true"></i>
+        Add Picture
+      </button>
+
+      <div class="screen-shot" *ngIf="screenshotPic; else formatWarning">
+        <span class="margin">{{ screenshotPic?.name }}</span>
+        <button mat-button *ngIf="preview" class="mx-2" type="button" (click)="previewScreenshot()">
+          preview
+        </button>
+        <button *ngIf="!preview" class="mx-2" type="button" (click)="preview = true">
+          close
+        </button>
+        <i (click)="removeScreenshot()" class="fa fa-trash delete margin" aria-hidden="true"></i>
+      </div>
+      <ng-template #formatWarning>
+        <span class="padding">*.jpeg, jpg, png format only allowed</span>
+      </ng-template>
+    </div>
+
+    <mat-error *ngIf="fileSize >= 500">*file size should be below 500kb</mat-error>
+
+    <div class="image-preview mb-3" *ngIf="previewUrl && !preview">
+      <img [src]="previewUrl" height="300" />
+    </div>
+    <div class="row d-flex justify-content-center my-2">
+      <button mat-raised-button color="primary" class="m-2" [disabled]="!amount && !(screenshotPic || transactionId)"
+        (click)="submit()">
+        submit
+      </button>
+      <button mat-stroked-button class="m-2" (click)="dialogRef.close()">
+        cancel
+      </button>
+    </div>
+  </ng-template>
+</ng-template>

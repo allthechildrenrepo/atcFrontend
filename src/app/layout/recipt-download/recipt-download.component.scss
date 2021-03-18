@@ -1,0 +1,86 @@
+.container {
+    font-family: 'Times New Roman';
+}
+#receipt{
+    width: 198mm;
+    height: 208mm;
+}
+.border-line {
+    border: .5px solid black;
+}
+.align-right {
+    text-align: right;
+}
+.align-center {
+    vertical-align: middle;
+    justify-content: center;
+    display: flex;
+}
+.padding-left {
+    padding-left: 15px;
+}
+.padding-top-bottom {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.padding {
+    padding: 4rem;
+}
+.font-bold {
+    font-size: 30px;
+    color: #030354;
+    font-family: serif;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.image{
+    width: 200px;
+}
+.sign{
+    width: 90%;
+}
+.container-block {
+    margin-top: 13px;
+    margin-left: 5px;
+    margin-right: 27px;
+    margin-bottom: 20px;
+}
+
+.download {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+span {
+    font-size: 16px;
+    font-family: sans-serif;
+}
+.image-logo {
+    width: 50%;
+    padding-left: 15px;
+}
+
+.registered { 
+    span {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+}
+
+.submit {
+    text-align: end;
+    display: block;
+    margin-right: 1rem;
+
+    button {
+        background-color: green;
+        color: white;
+        border: none;
+    }
+}
+
+.actions-fecting {
+    color: gray;
+}

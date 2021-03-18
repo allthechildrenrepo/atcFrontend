@@ -1,0 +1,42 @@
+<div class="fixed-header">
+  <app-page-header class="doNotPrint" [heading]="'Base Upload Dashboard'" [icon]="'fa-bar-chart-o'"></app-page-header>
+  <div>
+    <div class="container justify-content-center">
+      <div class="row  d-flex justify-content-center align-items-center">
+        <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+        </ngb-alert>
+      </div>
+      <div class="row  d-flex justify-content-center align-items-center">
+        <mat-card class="card m-2">
+          <mat-card-header>
+            <mat-card-title class="title">
+              UPLOAD BASE SHEET
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="para-text">1. Only XSLS file allowed to upload less than 15 MB</p>
+            <p class="para-text">2. Sheet must have only number in one single column</p>
+            <input type="file" #file style="display: none" (change)="onFilesAdded()" />
+            <div *ngIf="fileToUpload">
+              <h5>{{ fileToUpload?.name }} file ready to upload</h5>
+              <mat-progress-bar *ngIf="fileUploading" mode="indeterminate"></mat-progress-bar>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button *ngIf="!fileToUpload; else upload" [disabled]="uploading || uploadSuccessful" mat-raised-button color="primary" class="add-files-btn"
+              (click)="addFiles()">
+              Add XSLS File
+            </button>
+            <ng-template #upload>
+              <button mat-raised-button color="primary" class="add-files-btn" (click)="removeFile()">
+                Remove XSLS File
+              </button>
+            </ng-template>
+            <button mat-raised-button color="primary" [disabled]="!fileToUpload" (click)="uploadFileToServer()">
+              Upload
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,16 @@
+<h5 *ngIf="data;else noData">{{data}}</h5>
+<ng-template #noData>
+  <h5>Reason for Canceling</h5>
+</ng-template>
+
+<div class="row d-flex justify-content-center">
+  <textarea class="w-100"  mat-input type="text" [(ngModel)]="remarks" required></textarea>
+</div>
+<div class="row d-flex justify-content-center">
+<button mat-raised-button color="primary" class="m-2" [disabled]="!remarks" (click)="submit()">
+  Submit
+</button>
+<button mat-stroked-button class="m-2" (click)="dialogRef.close()">
+  cancel
+</button>
+</div>

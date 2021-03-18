@@ -1,0 +1,44 @@
+mat-card {
+  padding: 10px;
+
+  mat-card-title {
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #efefef;
+  }
+
+  mat-card-content {
+    margin-bottom: 5px;
+
+    .row {
+      font-size: 12px;
+      font-family: Arial, serif;
+      padding: 5px;
+
+      .field {
+        color: #4a4a4a;
+      }
+
+      .value {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.submit {
+  text-align: start;
+  display: block;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+
+  i {
+    padding-right: 5px;
+  }
+
+  button {
+      background-color: red;
+      color: white;
+      border: none;
+  }
+}

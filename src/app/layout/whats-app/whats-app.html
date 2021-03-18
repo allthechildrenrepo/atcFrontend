@@ -1,0 +1,95 @@
+<app-page-header [heading]="'Pickup WhatsApp Admin'" [icon]="'fa-bar-chart-o'"></app-page-header>
+
+<div class="container">
+    <div class="row  d-flex justify-content-center align-items-center">
+        <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+        </ngb-alert>
+    </div>
+    <div class="row  d-flex justify-content-center align-items-center">
+        <mat-card class="w-80">
+            <mat-card-header>
+                <mat-card-title>
+                    Pickup WhatsApp Status -
+                    <span *ngIf="checkingStatus; else statusDone" class="grey">
+                        Checking Status ....
+                    </span>
+                    <ng-template #statusDone>
+                        <span *ngIf="whatsappConnected; else getQR" class="green">
+                            Active
+                            <i class="fa fa-whatsapp mx-2 green" aria-hidden="true"></i>
+                            <button *ngIf="!logoutRequested" mat-stroked-button class="mx-2" (click)="logoutWhatsApp()"> LOGOUT WhatsApp </button>
+                        </span>
+                        <ng-template #getQR>
+                            <span class="red">
+                                InActive
+                                <i class="fa fa-whatsapp mx-2 red" aria-hidden="true"></i>
+                            </span>
+                        </ng-template>
+                    </ng-template>
+                    <button mat-button (click)="checkWhatsappStatus()">
+                        <i class="fa fa-refresh mx-2" aria-hidden="true"></i>
+                    </button>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content *ngIf="checkingStatus; else statusLoaded">
+                <p>Checking whatsapp connectivity ....</p>
+                <mat-progress-bar color="secondary" mode="indeterminate"></mat-progress-bar>
+            </mat-card-content>
+            <ng-template #statusLoaded>
+                <mat-card-content *ngIf="paymentFailed; else paymentDone">
+                    <div class="col-8">
+                        <h5>Pending payment.</h5>
+                        <p>
+                            Please do payment at
+                            <a href="https://app.chat-api.com/docs#getChats" target="_blank">chat-api.com</a>
+                            to continue whatsapp services.
+                        </p>
+                        <p>
+                            Note: Once the payment is done, refersh this after 15 mins.
+                        </p>
+                    </div>
+                </mat-card-content>
+                <ng-template #paymentDone>
+                    <mat-card-content class="m-2" *ngIf="whatsappConnected; else QRScreen">
+                        <div *ngIf="!logoutRequested; else logoutRequest" class="row">
+                            <div class="col-8">
+                                <h5>Keep you phone Connected</h5>
+                                <p>
+                                    WhatsApp connects to your phone to sync messages. To reduce data usage, connect your phone to Wi-Fi.
+                                </p>
+                            </div>
+                            <div class="col-4">
+                                <img class="phoneconnecting" src="../../../assets/wapconnect.jpg" />
+                            </div>
+                        </div>
+                        <ng-template #logoutRequest>
+                            <div class="col-8">
+                                <h5>Logout request sent to whatsapp</h5>
+                                <p>
+                                    It nearly takes 2 to 4 mins to logout in all devices. please click on refresh after few minutes
+                                </p>
+                            </div>
+                            <div class="col-4">
+                                <button mat-stroked-button>Refresh</button>
+                            </div>
+                        </ng-template>
+                    </mat-card-content>
+                    <ng-template #QRScreen>
+                        <mat-card-content class="m-2">
+                            <p>
+                                To connect to pickup whatsapp, you need to scan the QR code from the device on which WhatsApp is registered.
+                            </p>
+                            <p>
+                                Note: If QR is not working refresh QR Code and try again
+                            </p>
+                            <button mat-stroked-button (click)="checkWhatsappStatus()">
+                                <i class="fa fa-refresh mx-2" aria-hidden="true"></i>Refresh QR Code
+                            </button>
+                            <img *ngIf="whatsappQRCodeImage" [src]="whatsappQRCodeImage" />
+                        </mat-card-content>
+                    </ng-template>
+                </ng-template>
+            </ng-template>
+        </mat-card>
+    </div>
+</div>

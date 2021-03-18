@@ -1,0 +1,22 @@
+table {
+    width: 100%;
+}
+
+th, td {
+    width: 17%;
+    text-align: center;
+}
+
+button {
+    background-color: red;
+    color: white;
+}
+
+// i {
+//     padding-left: 5px;
+// }
+
+th.mat-header-cell {
+    text-align: center;
+    font-weight: bold;
+}

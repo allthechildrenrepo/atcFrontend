@@ -1,0 +1,57 @@
+<div
+class="row d-flex justify-content-center align-items-center my-3 px-3"
+>
+<mat-form-field class="col-4">
+  <mat-label>From ( mm / dd / yyyy )</mat-label>
+  <input
+    class="ml-2"
+    matInput
+    readonly
+    placeholder=" mm/ dd / yyyy "
+    (click)="fromPicker.open()"
+    [matDatepicker]="fromPicker"
+    (dateChange)="setFromDate($event)"
+  />
+  <mat-datepicker-toggle
+    matSuffix
+    [for]="fromPicker"
+  ></mat-datepicker-toggle>
+  <mat-datepicker #fromPicker></mat-datepicker>
+</mat-form-field>
+<mat-form-field class="col-4">
+  <mat-label>To ( mm / dd / yyyy )</mat-label>
+  <input
+    class="ml-2"
+    matInput
+    readonly
+    placeholder="mm / dd / yyyy"
+    [min]="minDate"
+    (click)="toPicker.open()"
+    [matDatepicker]="toPicker"
+    (dateChange)="setToDate($event)"
+  />
+
+  <mat-datepicker-toggle
+    matSuffix
+    [for]="toPicker"
+  ></mat-datepicker-toggle>
+  <mat-datepicker #toPicker></mat-datepicker>
+</mat-form-field>
+<button
+  class="col-4 w-50"
+  mat-raised-button
+  color="primary"
+  [disabled]="!fromDate || !toDate"
+  (click)="emitDate()"
+>
+  Search
+</button>
+</div>
+
+<div class="row d-flex justify-content-center align-items-center my-3 px-3">
+    <button *ngIf="lastSearched" mat-stroked-button class="mx-3 px-3" (click)="filterRecentSearch()"> 
+        {{ lastSearched?.fromDate | date:'shortDate' }}  - {{ lastSearched?.toDate | date:'shortDate'}}</button>
+    <button mat-stroked-button class="mx-3 px-3" (click)="filterToday()"> Today </button>
+    <button mat-stroked-button class="mx-3 px-3" (click)="filterThisWeek()"> last 7 days </button>
+    <button mat-stroked-button class="mx-3 px-3" (click)="filterThisMonth()"> last 30 days </button>
+</div>

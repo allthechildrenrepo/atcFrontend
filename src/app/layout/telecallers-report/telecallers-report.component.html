@@ -1,0 +1,136 @@
+<app-page-header [heading]="'Telecalers Report'" [icon]="'fa-bar-tick-o'"></app-page-header>
+<div *ngIf="!selectedBranch; else showReport">
+  <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+<ng-template #showReport>
+  <div class="row mb-2">
+    <div class="col-5"></div>
+    <div class="col-4 d-flex justify-content-end align-items-center">
+      <strong>{{ selectedBranchName }} &nbsp; BRANCH </strong>
+    </div>
+    <div *ngIf="user.branch.length !== 1" class="col-3 select-branch d-flex justify-content-start align-items-center"
+      (click)="removeBranch()">
+      <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another
+      branch
+    </div>
+  </div>
+  <mat-card>
+    <div class="row" *ngIf="telecallers.length > 0">
+      <div class="col-4 d-flex justify-content-end align-items-center">
+        <h5>Select Telecaller</h5>
+      </div>
+      <div class="col-8">
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="TeleCaller" aria-label="Number" matInput [formControl]="myControl"
+            [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <!-- Use on change to set the tele caller object in global variable -->
+            <mat-option *ngFor="let option of filteredOptions | async" (onSelectionChange)="telecallerSelected(option)" (click)="telecallerSelected(option)"
+              [value]="option?.atcId+' '+option?.atcProfile?.voiceCallingName +'-'+option?.fullName">
+              ({{option.atcId}})&nbsp;{{option.atcProfile?.voiceCallingName}}-{{option.fullName}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card>
+  <div *ngIf="selectedTelecaller">
+    <div class="row mt-3 mb-2 mx-1">
+      <h5>Select Year and Month</h5>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        <select [(ngModel)]="selectedYear" (ngModelChange)="onYearSelection()">
+          <option *ngFor="let year of years" [value]="year">{{year}}</option>
+        </select>
+      </div>
+      <div class="col-11 d-flex justify-content-center align-items-center">
+        <mat-radio-group class="d-flex justify-content-center align-items-center" [(ngModel)]="selectedMonth">
+          <mat-radio-button class="pl-1 pr-3" (change)="updateMonth(month)" *ngFor="let month of months"
+            [value]="month">
+            {{month}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="verifiedTransactionDetails.length || progressTransactionDetails.length" class="row mt-2">
+    <div class="col-6 pr-2">
+      <mat-card>
+        <div class="row d-flex justify-content-center align-items-center"><b>Verified Transaction</b></div>
+        <div class="row mt-2">
+          <div class="col-6 border-right">
+            <div class="row d-flex justify-content-center align-items-center">
+              Total Count
+            </div>
+            <div class="row d-flex justify-content-center align-items-center">
+              <h3 class="count">{{verifiedTransactionCount}}</h3>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row d-flex justify-content-center align-items-center">
+              Total Amount
+            </div>
+            <div class="row d-flex justify-content-center align-items-center">
+              <h3 class="amount">{{verifiedTransactionTotal}}</h3>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <div class="col-6 pl-2">
+      <mat-card>
+        <div class="row d-flex justify-content-center align-items-center"><b>InProgress Transaction</b></div>
+        <div class="row mt-2">
+          <div class="col-6 border-right">
+            <div class="row d-flex justify-content-center align-items-center">
+              Total Count
+            </div>
+            <div class="row d-flex justify-content-center align-items-center">
+              <h3 class="count">{{progressTransactionCount}}</h3>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row d-flex justify-content-center align-items-center">
+              Total Amount
+            </div>
+            <div class="row d-flex justify-content-center align-items-center">
+              <h3 class="amount">{{progressTransactionTotal}}</h3>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <div *ngIf="verifiedTransactionDetails.length">
+    <div class="row mt-3 ml-1">
+      <h5>Modewise Transaction Details</h5>
+    </div>
+    <div class="row pl-1 pr-1 mt-2">
+      <div *ngFor="let mode of objectKeys(modeWiseTransactions)" class="col-2 pl-1 pr-1 mb-2">
+        <mat-card>
+          <div class="row d-flex justify-content-center align-items-center"><b>{{modeWiseTransactions[mode].name}}</b>
+          </div>
+          <div class="row mt-1">
+            <div class="col-6">Count</div>
+            <div class="col-6 d-flex justify-content-center align-items-end count">
+              <b>{{modeWiseTransactions[mode].count}}</b></div>
+          </div>
+          <div class="row">
+            <div class="col-6">Amount</div>
+            <div class="col-6 d-flex justify-content-center align-items-end amount">
+              <b>{{modeWiseTransactions[mode].total}}</b></div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <mat-card *ngIf="!verifiedTransactionDetails.length && !progressTransactionDetails.length && selectedMonth">
+    There is no Transaction In this Month
+  </mat-card>
+
+  <ngb-alert class="alert-box" [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">
+    {{ alert.message }}
+  </ngb-alert>
+</ng-template>

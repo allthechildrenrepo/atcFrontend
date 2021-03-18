@@ -1,0 +1,98 @@
+<div *ngIf="!reciptDetails; else reciptPage">
+  <app-donation-entry [editTransactionForm]="editDetails" [editDonorDetails]="editDonorDetails"
+    (onSubmitEditForm)="onSubmit($event)"></app-donation-entry>
+</div>
+<ng-template #reciptPage>
+  <i class="fa fa-times close-icon" (click)="closeDialog()" aria-hidden="true"></i>
+  <h3 *ngIf="reciptDetails" class="edit-title">Transaction Details</h3>
+
+  <table>
+    <tr>
+      <th>Name</th>
+      <td>{{transactionDetails.donar.fullName}}</td>
+    </tr>
+    <tr>
+      <th>Amount</th>
+      <td>{{transactionDetails.amount}}</td>
+    </tr>
+    <tr>
+      <th>PAN No</th>
+      <td>{{transactionDetails.donar.userProfile.panCard}}</td>
+    </tr>
+    <tr>
+      <th>Addresss</th>
+      <td>
+        {{transactionDetails.donar.userProfile.addressLine1}},&nbsp;{{transactionDetails.donar.userProfile.addressLine2}}
+      </td>
+    </tr>
+    <tr>
+      <th>Phone No</th>
+      <td>{{transactionDetails.donar.username}}</td>
+    </tr>
+    <tr>
+      <th>E-mail</th>
+      <td>{{transactionDetails.donar.email}}</td>
+    </tr>
+    <tr>
+    <tr>
+      <th>Status</th>
+      <td>{{transactionDetails.status}}</td>
+    </tr>
+    <tr>
+      <th>Transaction ID</th>
+      <td>
+        <input matInput placeholder="Transaction id" value="{{transactionDetails.transaction_id}}" #transactionId
+          [readonly]="!edit" />
+      </td>
+    </tr>
+  </table>
+  <div class="recipt-details">
+    <form [formGroup]="reciptForm">
+      <div class="row">
+        <mat-form-field class="col-5 m-2 form-fields">
+          <input matInput placeholder="Receipt ID" formControlName="reciptId" required />
+          <mat-error *ngIf="reciptId?.errors && (reciptId?.dirty || reciptId?.touched)">
+            <mat-error *ngIf="reciptId.errors.required">Recipt ID is required</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-5 m-2 form-fields">
+          <input matInput placeholder="Amount in words" formControlName="amountInWords" required />
+          <mat-error *ngIf="amountInWords?.errors && (amountInWords?.dirty || amountInWords?.touched)">
+            <mat-error *ngIf="amountInWords.errors.required">Amount in Words Form is required</mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-5 m-2 form-fields">
+          <mat-label>Donated date ( dd / mm / yyyy )</mat-label>
+          <input class="ml-2" formControlName="donatedDate" matInput placeholder=" dd/ mm / yyyy " required />
+            <!-- (click)="fromPicker.open()" [matDatepicker]="fromPicker" />
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker> -->
+          <mat-error *ngIf="donatedDate?.errors && (donatedDate?.dirty || donatedDate?.touched)">
+            <mat-error *ngIf="donatedDate.errors.required">Donated Date is required</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-5 m-2 form-fields">
+          <input matInput placeholder="Bank Name" formControlName="bank" required />
+          <mat-error *ngIf="bank?.errors && (bank?.dirty || bank?.touched)">
+            <mat-error *ngIf="bank.errors.required">Bank Name is required</mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="row">
+      <mat-form-field class="col-5 m-2 form-fields">
+        <input matInput placeholder="Branch Name" formControlName="branch" />
+        <!-- <mat-error *ngIf="branch?.errors && (branch?.dirty || branch?.touched)">
+          <mat-error *ngIf="branch.errors.required">branch Name is required</mat-error>
+        </mat-error> -->
+      </mat-form-field>
+    </div>
+    </form>
+    <button mat-stroked-button [disabled]="reciptForm.invalid" (click)="showRecipt(reciptForm.value)">Show
+      Recipt</button>
+  </div>
+  <ngb-alert class="alert-box" [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">
+    {{ alert.message }}
+  </ngb-alert>
+</ng-template>

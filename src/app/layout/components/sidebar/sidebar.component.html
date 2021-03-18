@@ -1,0 +1,162 @@
+<nav class="sidebar" [ngClass]="{ sidebarPushRight: isActive, collapsed: collapsed }">
+  <div class="list-group">
+    <a routerLink="/user-dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+      <span>{{ "Dashboard" | translate }}</span>
+    </a>
+    <a [routerLink]="['/download-recipt']" *ngIf="isAccessible('Recipt Download')"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-phone-square" aria-hidden="true"></i>
+      <span>{{ "Quick Receipt" | translate }}</span>
+    </a>
+    <a [routerLink]="['/promotion-list']" *ngIf="isAccessible('Promotion')"
+    [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <i class="fa fa-handshake-o" aria-hidden="true"></i>
+    <span>{{ "Promotion" | translate }}</span>
+  </a>
+    <a *ngIf="isAccessible('Base')" [routerLink]="['/base']" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
+      <i class="fa fa-database" aria-hidden="true"></i>
+      <span>{{ "Base" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Base Approval')" [routerLink]="['/base-approval']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-database" aria-hidden="true"></i>
+      <span>{{ "Base Approval" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Base Upload')" [routerLink]="['/base-upload']" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
+      <i class="fa fa-database" aria-hidden="true"></i>
+      <span>{{ "Base Upload" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Base Remarks Entry')" [routerLink]="['/donor-remarks']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-pencil-square" aria-hidden="true"></i>
+      <span>{{ "Base Remarks Entry" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Trust Visit')" [routerLink]="['/trust-visit']" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
+      <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+      <span>{{ "Trust Visit" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Trust Transaction')" [routerLink]="['/trust-transaction']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+      <span>{{ "Trust Transaction" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Online Donation Entry')" [routerLink]="['/donation-entry']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+      <span>{{ "Online Donation Entry" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Generate Batch')" [routerLink]="['/generate-batch']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-server" aria-hidden="true"></i>
+      <span>{{ "Generate Batch" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Batch Details')" [routerLink]="['/batch-details']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-server" aria-hidden="true"></i>
+      <span>{{ "Batch Details" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Not Verified')" [routerLink]="['/not-Verified']" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
+      <i class="fa fa-window-close-o" aria-hidden="true"></i>
+      <span>{{ "Not Verified" | translate }}</span>
+    </a>
+    <!-- <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-address-card-o" aria-hidden="true"></i>
+            <span>{{ 'Donation Transaction' | translate }}</span>
+        </a> -->
+    <!-- <a [routerLink]="['/donation-verification']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <span>{{ 'Trust Donation Verification' | translate }}</span>
+        </a> -->
+    <!-- <a *ngIf="isDonationVerifier" [routerLink]="['/donation-verification']" [routerLinkActive]="['router-link-active']" class="list-group-item"> -->
+    <a *ngIf="isAccessible('Donation Verification')" [routerLink]="['/donation-verification']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-check" aria-hidden="true"></i>
+      <span>{{ "Donation Verification" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Verified List')" [routerLink]="['/verified-list']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-check-square" aria-hidden="true"></i>
+      <span>{{ "Verified List" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Edit Verified Donations')" [routerLink]="['/edit-verified-donations']"
+    [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <i class="fa fa-pencil-square" aria-hidden="true"></i>
+    <span>{{ "Edit Verified Donations" | translate }}</span>
+  </a>
+    <a *ngIf="isAccessible('Donor Details')" [routerLink]="['/donor-list']" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
+      <i class="fa fa-address-card-o" aria-hidden="true"></i>
+      <span>{{ "Donor Details" | translate }}</span>
+    </a>
+
+    <a *ngIf="isAccessible('Overall Report')" [routerLink]="['/overall-report']"
+    [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+    <span>{{ "Overall Report" | translate }}</span>
+  </a>
+
+    <a *ngIf="isAccessible('Branch Report')" [routerLink]="['/branch-report']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+      <span>{{ "Branch Report" | translate }}</span>
+    </a>
+    
+    <a *ngIf="isAccessible('Create Tele-Caller')" [routerLink]="['/create-telecaller']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-address-book" aria-hidden="true"></i>
+      <span>{{ "Create Tele-Caller" | translate }}</span>
+    </a>
+
+    <a *ngIf="isAccessible('Tele-Caller Details')" [routerLink]="['/tc-list']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-phone-square" aria-hidden="true"></i>
+      <span>{{ "Tele-Caller Details" | translate }}</span>
+    </a>
+
+    <a *ngIf="isAccessible('Tele-Callers Report')" [routerLink]="['/telecallers-report']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-phone-square" aria-hidden="true"></i>
+      <span>{{ "Tele-Callers Report" | translate }}</span>
+    </a>
+    <!-- <a *ngIf="isAccessible('Food Donation')" [routerLink]="['/food-donation']" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
+      <i class="fa fa-cutlery" aria-hidden="true"></i>
+      <span>{{ "Food Donation" | translate }}</span>
+    </a> -->
+    <a *ngIf="isAccessible('Pickup Admin')" [routerLink]="['/pick-up-admin']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-archive" aria-hidden="true"></i>
+      <span>{{ "Pickup Admin" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Pickup Transaction')" [routerLink]="['/pick-up-trans']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-archive" aria-hidden="true"></i>
+      <span>{{ "Pickup Transaction" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Pickup Whatsapp')" [routerLink]="['/whats-app-admin']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-whatsapp" aria-hidden="true"></i>
+      <span>{{ "Pickup Whatsapp" | translate }}</span>
+    </a>
+    <a *ngIf="isAccessible('Whatsapp Transactions')" [routerLink]="['/whats-app-trans']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-whatsapp" aria-hidden="true"></i>
+      <span>{{ "Receipt Transactions" | translate }}</span>
+    </a>
+    <div class="header-fields">
+      <a (click)="rltAndLtr()" class="list-group-item">
+        <span>
+          <i class="fa fa-arrows-h"></i>&nbsp; RTL/LTR</span>
+      </a>
+    </div>
+  </div>
+  <div class="toggle-button" [ngClass]="{ collapsed: collapsed }" (click)="toggleCollapsed()">
+    <i class="fa fa-fw fa-angle-double-{{ collapsed ? 'right' : 'left' }}"></i>&nbsp;
+    <span>{{ "Collapse Sidebar" | translate }}</span>
+  </div>
+</nav>

@@ -1,0 +1,172 @@
+<div class="row">
+  <div class=" d-flex justify-content-center align-items-center p-2" *ngIf="enableButton; else loading">
+    <button mat-raised-button class="download" color="priamry" (click)="downloadPdf()"> Download </button>
+    <button mat-raised-button class="download" color="priamry" (click)="openPdfInPrintPage()">Download & Print </button>
+    <button mat-stroked-button disabled *ngIf="notAWhatsappNumber; else showSend">Not a Whatsapp number</button>
+    <ng-template #showSend>
+    <button mat-raised-button *ngIf="!data.foreignNumber" class="download" color="priamry" (click)="sentViaWhatsAPP()"> Send WhatsApp
+    </button>
+  </ng-template>
+    <button mat-raised-button *ngIf="data.email" class="download" color="priamry" (click)="sendEmail()"> Send Email
+    </button>
+    <button mat-stroked-button (click)="closeReceipt()" aria-hidden="true"> close </button>
+  </div>
+  <ng-template #loading>
+    <div class="col-10 p-2 d-flex justify-content-center align-items-center actions-fecting">
+      Fetching available actions...
+    </div>
+    <div class="col-2 d-flex justify-content-end align-items-center">
+      <i class="fa fa-window-close-o" (click)="closeReceipt()" aria-hidden="true"></i>
+    </div>
+  </ng-template>
+ 
+</div>
+
+<div id="receipt">
+  <div class="container-block">
+    <div class="container m-2 pr-2 border border-top-0 border-bottom-0 border-right-0 border-dark">
+      <div class="row ">
+        <div *ngIf="data?.is80G;" class="col-6 p-4 border border-left-0 border-right-0 border-dark">
+          <img class="image-logo" src="../../../assets/allthechildren.png" (load)="logImageLoaded()" alt="All The Children" />
+          <span class="font-bold">All The Children</span>
+          <br />
+          <span>No 536, LIG - II, TNHB Colony, 1st Avenue</span>
+          <br />
+          <span>Velachery, Chennai - 600042</span>
+          <br />
+          <span>Mobile: 9551799919,</span>
+          <br />
+          <span>Landline: 044-26730810,</span>
+          <br />
+          <span>Website: www.allthechildren.in</span>
+          <br />
+        </div>
+        <div *ngIf="!data?.is80G;" class="col-6 p-4 border border-right-0 border-left-0 border-dark">
+          <img class="image-logo" src="../../../assets/allthechildren.png" (load)="logImageLoaded()" alt="All The Children" />
+          <span class="font-bold">All The Children</span>
+          <br />
+          <span>No 39/40, Palla 2nd Street</span>
+          <br />
+          <span>Vyasarpadi, Chennai - 600039</span>
+          <br />
+          <span>Mobile: 9551799919,</span>
+          <br />
+          <span>Landline: 044-26730810,</span>
+          <br />
+          <span>Website: www.allthechildren.in</span>
+          <br />
+        </div>
+        <div class="col-6 p-4 border border-left-0  border-dark align-right">
+          <div class="p-1 registered">
+            <span>Regd.No 255/2015</span>
+            <br />
+            <span>PAN No AAFTA0991F</span>
+            <br />
+            <span>12AA - Reg.No.Income Tax</span>
+            <br />
+            <span>URNo.AAFTA0991F/05/16-17/T-0348</span>
+            <br />
+            <span>JJ Act Reg No:1082/DSD/2017(Dated on 28/11/2017)</span>
+            <br />
+          </div>
+        </div>
+      </div>
+      <div class="row border border-left-0 border-top-0 border-dark  align-center">
+        <div class="col-12 my-1">
+          <div *ngIf="data?.is80G; else normal">
+            <h4 class="font-bold align-center">RECEIPT U/S 80G OF IT-ACT</h4>
+          </div>
+          <ng-template #normal>
+            <h4 class="font-bold align-center">DONATION RECEIPT</h4>
+          </ng-template>
+        </div>
+      </div>
+      <div class="row p-1 border border-left-0 border-top-0 border-dark">
+        <div class="col-6  my-1">
+          <span>Receipt No:
+            <b>{{ data.reciptId }}</b>
+          </span>
+        </div>
+        <div class="col-6 my-1">
+          <span>Date:
+            <b>{{ currentDate | date: 'dd MMM yyyy'}}</b>
+          </span>
+        </div>
+      </div>
+      <div class="row p-1 border border-left-0 border-top-0 border-dark">
+        <div class="col-12 my-1">
+          <span>
+            <b>Received with Thanks from: {{ data.name }}</b>
+          </span>
+        </div>
+      </div>
+      <div class="row p-1 border border-left-0 border-top-0 border-dark">
+        <div class="col-12 my-1">
+          <span>Address: </span>
+          <br />
+          <span>
+            <b>{{ data.address }},</b>
+          </span>
+          <br />
+          <span>
+            <b>{{data.address1}},</b>
+          </span>
+          <br />
+          <span>
+            <b>{{data.pincode}}</b>
+          </span>
+          <br />
+          <span>Mobile No:
+            <b>{{ data.mobile }}
+              <span *ngIf="data?.phone2"> / {{data.phone2}} </span>
+            </b>
+          </span>
+          <br />
+        </div>
+      </div>
+      <div class="row p-1 border border-left-0 border-top-0 border-dark">
+        <div class="col-12 my-1">
+          <span>
+            <b>Sum of Rupees: {{ data.amount }}</b>
+          </span>
+          <span>
+            <b>&nbsp;(Rupees&nbsp;{{ data.amountWords }}&nbsp;only)</b>
+          </span>
+        </div>
+      </div>
+      <div class="row p-1 border border-left-0 border-top-0 border-dark">
+        <div class="col-12 my-1">
+          <span>Cash / Bank Transfer / Cheque No:
+            <b>{{ data.transaction }}</b>
+          </span>
+          <br />
+          <span>Bank / Branch Name:
+            <b>{{ data.bank }}&nbsp;
+              <span *ngIf="data.branch">/</span>&nbsp;{{ data.branch }}</b>
+          </span>
+          <br />
+          <span>Donated Date:
+            <b>{{ data.donatedDate }}</b>
+          </span>
+          <br />
+        </div>
+      </div>
+      <div class="row p-1 border border-left-0 border-top-0 border-dark">
+        <div class="col-7 border border-left-0 border-bottom-0 border-top-0 border-dark">
+          <span>
+            <b>Note:</b>
+          </span>
+          <br />
+          <span>All Donations are exempted u/s 80G of the Income Tax Act. 1961</span>
+        </div>
+        <div class="col-5">
+          <span>For All The Children</span>
+          <br />
+          <img class="sign" src="../../../assets/seall.png"  (load)="signImageLoaded()"alt="" />
+          <br />
+          <span>Authorized Signatory</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

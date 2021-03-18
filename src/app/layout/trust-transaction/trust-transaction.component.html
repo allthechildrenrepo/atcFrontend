@@ -1,0 +1,16 @@
+<mat-card>
+  <div class="row d-flex justify-content-center align-items-center">
+    <h5>Select from date and to date to fetch the verified list</h5>
+  </div>
+  <date-filter [cacheKey]="'donationVerification'" (setDate)="setDateFilter($event)"></date-filter>
+
+  <ngb-alert class="alert-box" [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">
+    {{ alert.message }}
+  </ngb-alert>
+</mat-card>
+
+<div *ngIf="transactionDetails.length > 0;">
+  <app-donar-transaction-details class="transactionDetails" [tableData]="transactionDetails"
+    [columnsToDisplay]="columnsToDisplay">
+  </app-donar-transaction-details>
+</div>

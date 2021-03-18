@@ -1,0 +1,87 @@
+<app-page-header [heading]="'Base Remarks Entry'" [icon]="'fa-bar-tick-o'"></app-page-header>
+<div *ngIf="!selectedBranch; else showReport">
+  <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+<ng-template #showReport>
+  <div class="row mb-2">
+    <div class="col-5"></div>
+    <div class="col-4 d-flex justify-content-end align-items-center">
+      <strong>{{ selectedBranchName }} &nbsp; BRANCH </strong>
+    </div>
+    <div *ngIf="user.branch.length !== 1" class="col-3 select-branch d-flex justify-content-start align-items-center"
+      (click)="removeBranch()">
+      <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another
+      branch
+    </div>
+  </div>
+
+  <mat-card>
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-3"></div>
+      <div class="col-4">
+        <mat-form-field class="select-input">
+          <mat-select placeholder="Select Telecaller" [(ngModel)]="selectedTelecaller">
+            <mat-option *ngFor="let telecaller of telecallers" [value]="telecaller.id">
+              {{ telecaller.fullName }} ( {{ telecaller.atcProfile?.atcId }} )
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-3 submit">
+        <button mat-raised-button color="primary" [disabled]="!selectedTelecaller" (click)="fetchLeads()">
+          Search
+        </button>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </mat-card>
+
+  <mat-card class="my-3" *ngIf="leads?.length">
+
+    <div class="row">
+      <h5 class="col-6 d-flex justify-content-start align-items-center">Lead Remarks List</h5>
+      <mat-form-field class="col-6 d-flex justify-content-end align-items-center">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Enter Phone number">
+      </mat-form-field>
+    </div>
+
+    <div class="example-container mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="lead_phone">
+          <mat-header-cell class="d-flex justify-content-center align-items-center" *matHeaderCellDef><b>Lead Phone
+              number</b></mat-header-cell>
+          <mat-cell class="d-flex justify-content-center align-items-center" *matCellDef="let row">{{row.phone}}
+          </mat-cell>
+        </ng-container>
+        <ng-container width="80" matColumnDef="remarks">
+          <mat-header-cell class="d-flex justify-content-center align-items-center" *matHeaderCellDef><b>Remarks</b>
+          </mat-header-cell>
+          <mat-cell class="d-flex justify-content-center align-items-center" *matCellDef="let row">
+            <mat-radio-group [(ngModel)]="row.remarks">
+              <mat-radio-button (change)="statusUpdate($event, row.id)" class="px-1" value='1'>Rnr</mat-radio-button>
+              <mat-radio-button (change)="statusUpdate($event, row.id)" class="px-1" value="2">Nr</mat-radio-button>
+              <mat-radio-button (change)="statusUpdate($event, row.id)" class="px-1" value="3">Busy</mat-radio-button>
+              <mat-radio-button (change)="statusUpdate($event, row.id)" class="px-1" value="4">Sw</mat-radio-button>
+              <mat-radio-button (change)="statusUpdate($event, row.id)" class="px-1" value="5">Cb</mat-radio-button>
+              <mat-radio-button (change)="statusUpdate($event, row.id)" class="px-1" value="6">Not in use
+              </mat-radio-button>
+              <mat-radio-button (change)="statusUpdate($event, row.id)" class="px-1" value="7">Number does not exist
+              </mat-radio-button>
+            </mat-radio-group>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="convert_to_contact">
+          <mat-header-cell class="d-flex justify-content-center align-items-center" *matHeaderCellDef><b>Convert to
+              Contact</b></mat-header-cell>
+          <mat-cell class="d-flex justify-content-center align-items-center" *matCellDef="let row">
+            <mat-checkbox (change)="convertToContact($event, row.id)"></mat-checkbox>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;">
+        </mat-row>
+      </mat-table>
+    </div>
+  </mat-card>
+</ng-template>

@@ -1,0 +1,89 @@
+<app-page-header
+  [heading]="'Donation Verification List'"
+  [icon]="'fa-bar-tick-o'"
+></app-page-header>
+<div class="container">
+  <ngb-alert
+    class="alert-box"
+    [type]="alert.type"
+    (close)="closeAlert(alert)"
+    *ngFor="let alert of alerts"
+    >{{ alert.message }}
+  </ngb-alert>
+  <ng-template #selectDate>
+    <mat-card>
+      <div class="row d-flex justify-content-center align-items-center">
+        <h5>Select from date and to date to fetch the batches</h5>
+      </div>
+      <date-filter [cacheKey]="'donationVerification'" (setDate)="setDateFilter($event)"></date-filter>
+    </mat-card>
+  </ng-template>
+  <mat-card *ngIf="batches.length > 0; else selectDate">
+    <div *ngIf="approvedDonationList.length == 0; else branchDetails">
+      <div class="row d-flex align-items-center justify-content-center">
+        <h5>
+          Batches between {{ fromDate | date: "dd-MM-yyyy" }} to
+          {{ toDate | date: "dd-MM-yyyy" }}
+        </h5>
+        <button
+          mat-button
+          class="back-button d-flex align-items-center justify-content-center"
+          (click)="resetBatch()"
+        >
+          <i class="fa fa-angle-left p-2" aria-hidden="true"></i> change date
+          filter
+        </button>
+      </div>
+      <h3 class="m-4">Select the batch:</h3>
+      <div class="row d-flex justify-content-center align-items-center">
+        <div
+          *ngFor="let batch of batches"
+          class="col-3 m-2 justify-content-center align-items-center"
+        >
+          <button mat-raised-button class="w-100" (click)="showDonation(batch)" [ngClass]="{'green': checkBatch(batch)}">
+            {{ batch.batchName }}
+          </button>
+        </div>
+      </div>
+
+      <!-- <h3 class="m-4">Select the Branch:</h3>
+  <div class="row d-flex justify-content-center align-items-center">
+    <div
+      *ngFor="let branch of branches"
+      class="col-3 m-2 justify-content-center align-items-center"
+    >
+      <button mat-raised-button class="w-100" (click)="getBranchDetails(branch.branchId)">{{ branch.branchName }}</button>
+    </div> -->
+    </div>
+
+    <ng-template #branchDetails>
+      <!-- <mat-form-field>
+    <mat-select [(ngModel)]="selectedBranch" name="branch" (change)="getVerifiedList()">
+      <mat-option *ngFor="let branch of branches" [value]="branch.branch_id">{{branch.branchName}}</mat-option>
+    </mat-select>
+  </mat-form-field> -->
+      <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-4">Batch Name : <b> {{ selectedBatch?.batchName }}  </b> </div>
+        <div class="col-4">
+          Batch Created At:
+          <b>{{ selectedBatch.created_at | date: "dd-MM-yyy HH:MM:SS" }} </b>
+        </div>
+        <div class="col-4">
+          <button mat-button class="back-button" (click)="resetBranch()">
+            <i class="fa fa-angle-left p-2" aria-hidden="true"></i> change Batch
+          </button>
+        </div>
+      </div>
+      <div *ngIf="approvedDonationList?.length > 0">
+        <app-donar-transaction-details
+          class="transactionDetails"
+          [tableData]="approvedDonationList"
+          [batch]="selectedBatch"
+          [columnsToDisplay]="columnsToDisplay"
+          (refresh)="refreshBatch()"
+        >
+        </app-donar-transaction-details>
+      </div>
+    </ng-template>
+  </mat-card>
+</div>

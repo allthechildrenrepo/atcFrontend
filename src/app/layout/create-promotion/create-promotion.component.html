@@ -1,0 +1,109 @@
+<app-page-header [heading]="'Create New Promotion'" [icon]="'fa-bar-chart-o'"></app-page-header>
+<div class="container">
+  <form [formGroup]="promotionForm" class="example-form">
+    <div class="row d-flex align-items-center">
+      <div class="col-3">
+        Promotion Number
+      </div>
+      <mat-form-field class="m-2 col-8 form-fields">
+        <input type="text" matInput [value]="selectedDevice.phone" disabled />
+      </mat-form-field>
+    </div>
+    <div class="row d-flex align-items-center">
+      <div class="col-3">
+        Promotion Title
+      </div>
+      <mat-form-field class="m-2 col-8 form-fields">
+        <input type="text" matInput placeholder="Title" formcontrolname="name"  [ngModelOptions]="{standalone: true}" [(ngModel)]="name" required />
+      </mat-form-field>
+    </div>
+    <div class="row d-flex align-items-center">
+      <div class="col-3">
+        Send To
+      </div>
+      <input type="file" #file style="display: none" (change)="onFilesAdded()" />
+      <div class="m-2 col-8">
+        <div *ngIf="numberFiles">
+          <span class="mr-2">{{ numberFiles?.name }} </span>
+          <mat-progress-bar *ngIf="fileUploading" mode="indeterminate"></mat-progress-bar>
+        </div>
+        <button *ngIf="!numberFiles; else upload" [disabled]="uploading || uploadSuccessful" mat-raised-button color="primary" class="add-files-btn"
+          (click)="addCSVFiles()">
+          Add numbers File
+        </button>
+        <ng-template #upload>
+          <button mat-raised-button color="primary" class="add-files-btn" (click)="removeFile()">
+            Remove
+          </button>
+        </ng-template>
+      </div>
+    </div>
+    <div class="row  d-flex align-items-center">
+      <div class="col-3">
+        Promotion Message
+      </div>
+      <mat-form-field class="m-2 col-8 form-fields">
+        <textarea matInput placeholder="Text Message"  formcontrolname="textMessage" [(ngModel)]="textMessage"    [ngModelOptions]="{standalone: true}" required></textarea>
+      </mat-form-field>
+    </div>
+    <div class="row d-flex align-items-center">
+      <div class="col-3">
+        Files to be send ( Images / videos )
+      </div>
+      <div class="m-2 d-flex col-8">
+        <mat-form-field>
+          <input type="text" matInput #fileId placeholder="Enter File tag name" />
+        </mat-form-field>
+        <button class="m-2" mat-raised-button color="primary" (click)="AddFile(fileId.value)">
+          Add File
+        </button>
+      </div>
+    </div>
+    <div *ngIf="filesAdded.length" class="row d-flex align-items-center Justify-content-center">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col"> Name</th>
+            <th scope="col"> Type</th>
+            <th scope="col"> Size </th>
+            <th scope="col"> Uploaded At </th>
+            <!-- <th scope="col">View</th> -->
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let file of filesAdded;">
+            <td>{{file.filename}}</td>
+            <td>{{file.kind}}</td>
+            <td>{{file.size/ 1000}} mb </td>
+            <td>{{file.createdAt | date:'d MMM y, h:mm:ss a'}} </td>
+            <!-- <td><button mat-button (click)="viewFile(file)">View</button></td> -->
+            <td>
+              <button mat-button (click)="deleteFile(file)">Remove</button>
+            </td>
+        </tbody>
+      </table>
+    </div>
+    <div class="row  d-flex align-items-center">
+        <div class="col-3">
+          Schedule Time
+        </div>
+        <div class="m-2 col-8 form-fields">
+          <div *ngIf="cronTimeNotSelected; else showtime">
+            <dl-date-time-picker startView="day" maxView="year" minView="minute" minuteStep="5" (change)="selectCronTime()" [(ngModel)]="cronTime"
+              [ngModelOptions]="{standalone: true}">
+            </dl-date-time-picker>
+          </div>
+          <ng-template #showtime>
+            <span class="mr-2">{{cronTime | date:'d MMM y, h:mm:ss a'}}</span>
+            <button mat-button color="primary" (click)="changeCronTime()"> change </button>
+          </ng-template>
+  
+        </div>
+      </div>
+    <div class="row d-flex justify-content-center align-items-center">
+      <button mat-raised-button color="primary" class="m-2 p-2 w-90" (click)="createPromotion()"> Create Promotion</button>
+      <button mat-stroked-button class="m-2 p-2 w-90" (click)="dialogRef.close()"> close </button>
+    </div>
+  </form>
+</div>

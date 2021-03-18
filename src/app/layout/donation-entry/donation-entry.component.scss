@@ -1,0 +1,73 @@
+  
+  .example-full-width {
+    width: 100%;
+  }
+
+  .search {
+    width: 85%;
+  }
+
+  .select-branch {
+    cursor: pointer;
+  }
+
+  .search-icon {
+    padding-top: 1rem;
+    text-align: right;
+  }
+
+  .gray {
+      color: gray;
+  }
+  
+  .new-user {
+    margin-left: 1rem;
+  }
+
+  .form-fields{
+      min-width: 400px;
+  }
+  .card-header {
+      border-bottom: 1.5px solid #dedbdb;
+  }
+  .back-button {
+    position: absolute;
+    right: 0;
+    margin-right: 1.5rem;
+  }
+
+  .delete {
+    color: red;
+  }
+
+  .screen-shot {
+    margin: 5px;
+  }
+   
+  .margin {
+    margin:5px;
+  }
+
+  .time-field {
+    width: 400px;
+  }
+
+  .padding {
+    padding-top: 15px;
+  }
+
+  .time-error {
+    margin: 5px;
+    font-size: 11px;
+  }
+
+  ::ng-deep {
+  .ngx-timepicker {
+    height: auto!important;
+    border-bottom: 1.5px solid #807777 !important;
+  }
+
+  .ngx-timepicker-control__input, .period-control__button {
+    font-size: 14px!important;
+  }
+}

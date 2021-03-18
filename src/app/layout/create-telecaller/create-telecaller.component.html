@@ -1,0 +1,165 @@
+<div>
+  <app-page-header [heading]="'Tele-Caller Creation'" [icon]="'fa-bar-chart-o'"></app-page-header>
+  <div *ngIf="!selectedBranch; else showList">
+    <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+<ng-template #showList>
+    <div class="row mb-2">
+        <div class="col-5"></div>
+        <div class="col-4 branch-name d-flex justify-content-end align-items-center">
+                <strong>{{ selectedBranch.branchName }} BRANCH </strong>
+        </div>
+        <div (click)="removeBranch()" *ngIf="user.branch.length !== 1" class="col-3 select-branch d-flex justify-content-start align-items-center">
+            <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+        </div>
+    </div>
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <form [formGroup]="telecallerForm" class="example-form">
+        <mat-card class="pb-0">
+          <mat-card-header class="card-header">
+            <mat-card-title class="m-0">
+              Tele-Caller Details
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="p-4">
+            <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+            </ngb-alert>
+            <mat-form-field class="m-2 form-fields">
+              <input matInput placeholder="Full Name" formControlName="firstName" value="" required />
+              <mat-error *ngIf="firstName.errors?.required && (firstName.dirty || firstName.touched)">
+                <mat-error *ngIf="firstName.errors.required">First Name is requuird</mat-error>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <input matInput placeholder="Tele-calling Name" formControlName="teleCallingName" value="" />
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <input matInput placeholder="Address line 1" formControlName="flat" value="" required />
+              <mat-error *ngIf="address.errors && (address.dirty || address.touched)">
+                <mat-error *ngIf="address.errors.required">Address is requuird</mat-error>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <input matInput placeholder="Address line 2" formControlName="address" value="" />
+              <mat-error *ngIf="address.errors && (address.dirty || address.touched)">
+                <mat-error *ngIf="address.errors.required">Address is requuird</mat-error>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <input matInput placeholder="Phone Number" formControlName="phone" value="" required />
+              <mat-error *ngIf="phone.errors && (phone.dirty || phone.touched)">
+                <mat-error *ngIf="phone.errors.required">Phone Number is requuird</mat-error>
+                <mat-error *ngIf="phone.errors.minlength">Phone Numberis invalid</mat-error>
+                <mat-error *ngIf="phone.errors.pattern">Letters is not allowed</mat-error>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <input matInput placeholder="Voice Calling Number 1" formControlName="voiceCallingPhone" value="" />
+              <mat-error *ngIf="voiceCallingPhone.errors && (voiceCallingPhone.dirty || voiceCallingPhone.touched)">
+                <mat-error *ngIf="voiceCallingPhone.errors.required">Phone Number is requuird</mat-error>
+                <mat-error *ngIf="voiceCallingPhone.errors.minlength">Phone Numberis invalid</mat-error>
+                <mat-error *ngIf="voiceCallingPhone.errors.pattern">Letters is not allowed</mat-error>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <input matInput placeholder="Voice Calling Number 2" formControlName="voiceCallingPhone2" value=""  />
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <input matInput placeholder="Voice Calling Number 3" formControlName="voiceCallingPhone3" value=""  />
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <input matInput placeholder="Email" formControlName="email" value="" />
+              <mat-error *ngIf="email.errors && (email.dirty || email.touched)">
+                <mat-error *ngIf="email.errors.required">Email is requuird</mat-error>
+                <mat-error *ngIf="email.errors.email">Email is invalid</mat-error>
+
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <mat-label>Gender</mat-label>
+              <select matNativeControl formControlName="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="transgender">Transgender</option>
+
+              </select>
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields">
+              <mat-label>Marital Status</mat-label>
+              <select matNativeControl formControlName="status" required>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+              </select>
+            </mat-form-field>
+
+            <mat-form-field class="m-2 form-fields"  appearance="fill">
+              <mat-label>Date of Joining</mat-label>
+              <input matInput [matDatepicker]="dp" [formControl]="date" (dateChange)="setDateOfJoining($event)">
+              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+              <mat-datepicker #dp></mat-datepicker>
+            </mat-form-field>
+            
+
+            <!-- <mat-form-field class="m-2 form-fields">
+              <mat-label>Branch</mat-label>
+              <select matNativeControl formControlName="status" required>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+              </select>
+            </mat-form-field> -->
+
+            <mat-form-field class="m-2 form-fields">
+              <mat-label>Branch</mat-label>
+              <input matInput placeholder="" readonly [value]="selectedBranch?.branchName" disabled />
+            </mat-form-field>
+
+            <!-- <div class="row">
+              <input type="file" accept=".jpeg, .jpg, .png" (change)="uploadPhoto($event)" style="display: none;"
+                #profilePhotoRef />
+
+              <button mat-stroked-button type="button" (click)="profilePhotoRef.click()" class="m-2">
+                <i class="fa fa-user-o mr-2 fa-1x" aria-hidden="true"></i>Add photo
+              </button>
+
+              <div class="profile-pic" *ngIf="profilePic; else formatWarning">
+                <span class="margin">{{profilePic?.name}}</span>
+                <button *ngIf="preview" class="margin" type="button" (click)="previewProfilePic()">preview</button>
+                <button *ngIf="!preview" class="margin" type="button" (click)="preview=true">close</button>
+                <i (click)="removeProfilePic()" class="fa fa-trash delete margin" aria-hidden="true"></i>
+              </div>
+              <ng-template #formatWarning>
+                <span class="padding">*.jpeg, jpg, png format only allowed</span>
+              </ng-template>
+            </div> -->
+
+            <mat-error *ngIf="fileSize >= 500">*file size should be below 500kb</mat-error>
+
+            <div class="image-preview mb-3" *ngIf="previewUrl && !preview">
+              <img [src]="previewUrl" height="300" />
+            </div>
+          </mat-card-content>
+          <div class="d-flex justify-content-center">
+            <button type="submit" mat-raised-button color="primary" class="m-2" [disabled]="!telecallerForm.valid"
+              (click)="onSubmit(telecallerForm.value)">
+              Create Tele-Caller
+            </button>
+            <button type="button" mat-raised-button color="primary" class="m-2"
+              (click)="telecallerForm.reset()">Re-Set</button>
+          </div>
+        </mat-card>
+      </form>
+    </div>
+  </div>
+  </ng-template>
+</div>

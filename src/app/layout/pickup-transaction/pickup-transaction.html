@@ -1,0 +1,32 @@
+<app-page-header [heading]="'Pickup Transaction'" [icon]="'fa-bar-chart-o'"></app-page-header>
+<div *ngIf="!selectedBranch; else showList">
+    <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+<ng-template #showList>
+    <div class="row mb-2">
+        <div class="col-5"></div>
+        <div class="col-4 branch-name d-flex justify-content-end align-items-center">
+            <strong>{{ branchName }} &nbsp; BRANCH </strong>
+        </div>
+        <div *ngIf="user.branch.length !== 1" class="col-3 select-branch d-flex justify-content-start align-items-center" (click)="removeBranch()">
+            <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+        </div>
+    </div>
+    <mat-card>
+        <div class="row d-flex justify-content-center align-items-center">
+            <h5>Select from date and to date to fetch the Pickup Request list</h5>
+        </div>
+        <date-filter [cacheKey]="'donationVerification'" (setDate)="setDateFilter($event)"></date-filter>
+
+        <ngb-alert class="alert-box" [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">
+            {{ alert.message }}
+        </ngb-alert>
+    </mat-card>
+
+    <div *ngIf="transactionDetails.length > 0; else noList">
+
+        <app-donar-transaction-details class="transactionDetails" [tableData]="transactionDetails" [columnsToDisplay]="columnsToDisplay" [columnToDownload]="columnToDownload"
+            (checkboxEvent)="checkBoxChange($event)" (refresh)="refreshDonationList()">
+        </app-donar-transaction-details>
+    </div>
+</ng-template>

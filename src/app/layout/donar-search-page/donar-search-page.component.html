@@ -1,0 +1,133 @@
+<h3>Donor Search Dashboard</h3>
+
+<div class="top-nav-bar-wrap">
+  <mat-form-field class="col-8">
+    <input
+      matInput
+      type="tel"
+      maxlength="10"
+      placeholder="Enter Donor Mobile Number"
+      aria-label="number"
+      [(ngModel)]="searchField"
+      (keyup.enter)="searchDonar()"
+    />
+  </mat-form-field>
+  <button
+    class="col-2"
+    id="search-driver"
+    mat-stroked-button
+    (click)="searchDonar()"
+  >
+    Search
+  </button>
+</div>
+
+<br />
+
+<div class="py-2">
+  <ngb-alert
+    [type]="alert.type"
+    (close)="closeAlert(alert)"
+    *ngFor="let alert of alerts"
+    >{{ alert.message }}</ngb-alert
+  >
+</div>
+
+<ng-container *ngIf="atcDonor">
+  <div class="row submit">
+    <button mat-raised-button (click)="editDonarDetails()">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+      Edit</button>
+  </div>
+  <div class="row col-12 donar">
+    <div class="col-4">
+      <mat-card class="h-100">
+        <mat-card-title>
+          Donor Profile
+        </mat-card-title>
+        <mat-card-content>
+          <div class="row no-gutters">
+            <span class="field col-6">Donor Id</span>
+            <span class="value col-6 ">{{ atcDonor.id }}</span>
+          </div>
+          <div class="row no-gutters">
+            <span class="field col-6">First Name</span>
+            <span class="value col-6 ">{{ atcDonor.firstName }}</span>
+          </div>
+          <div class="row no-gutters">
+            <span class="field col-6">Last Name</span>
+            <span class="value col-6 ">{{ atcDonor.lastName }}</span>
+          </div>
+          <div class="row no-gutters">
+            <span class="field col-6">Phone Number</span>
+            <span class="value col-6 ">{{ atcDonor.username }}</span>
+          </div>
+          <div class="row no-gutters">
+            <span class="field col-6">Alternate Number</span>
+            <span class="value col-6 ">{{ atcDonor.userProfile.phone2 }}</span>
+          </div>
+          <div class="row no-gutters">
+            <span class="field col-6">Email</span>
+            <span class="value col-6">{{ atcDonor.email }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-4">
+      <mat-card class="h-100">
+        <mat-card-title>
+          Donor Other Details
+        </mat-card-title>
+        <mat-card-content>
+          <mat-card-content>
+            <div class="row no-gutters">
+              <span class="field col-6">Profile Id</span>
+              <span class="value col-6 ">{{
+                atcDonor.userProfile?.profileId
+              }}</span>
+            </div>
+            <div class="row no-gutters">
+              <span class="field col-6">Gender</span>
+              <span class="value col-6 ">{{
+                atcDonor.userProfile?.gender
+              }}</span>
+            </div>
+            <div class="row no-gutters">
+              <span class="field col-6">Address</span>
+              <span class="value col-6 ">{{
+                atcDonor.userProfile?.addressLine1
+              }}, &nbsp; {{
+                atcDonor.userProfile?.addressLine2
+              }}</span>
+            </div>
+            <div class="row no-gutters">
+              <span class="field col-6">PAN Number</span>
+              <span class="value col-6">{{
+                atcDonor.userProfile?.panCard
+              }}</span>
+            </div>
+            <div class="row no-gutters">
+              <span class="field col-6">Branch Name</span>
+              <span class="value col-6 ">{{
+                atcDonor.userProfile?.branch?.branchName
+              }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</ng-container>
+
+<mat-divider></mat-divider>
+
+<ng-container *ngIf="transferDetail.length > 0">
+  <app-donar-transaction-details
+    class="transactions"
+    [tableData]="transferDetail"
+    [columnsToDisplay] = "columnsToDisplay"
+    (refresh)="searchDonar()"
+  >
+  </app-donar-transaction-details>
+</ng-container>

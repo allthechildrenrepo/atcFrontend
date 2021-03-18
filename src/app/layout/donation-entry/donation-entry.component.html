@@ -1,0 +1,403 @@
+<div>
+  <app-page-header [heading]="pageTitle" [icon]="'fa-bar-chart-o'"></app-page-header>
+
+  <div *ngIf="!selectedBranch && !editTransactionForm; else showList">
+    <multi-branch-selector (branchSelected)="setBranch($event.branchId, $event.branchName)"></multi-branch-selector>
+  </div>
+  <ng-template #showList>
+    <div *ngIf="!editTransactionForm" class="row mb-2">
+      <div class="col-5"></div>
+      <div class="col-4 branch-name d-flex justify-content-end align-items-center">
+        <strong>{{ branchName }} &nbsp; BRANCH </strong>
+      </div>
+      <div *ngIf="user?.branch?.length !== 1"
+        class="col-3 select-branch d-flex justify-content-start align-items-center" (click)="removeBranch()">
+        <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+      </div>
+    </div>
+    <div *ngIf="searchField; else donorForm">
+      <div class="row m-3">
+        <div class="col-1 search-icon">
+          <i class="fa fa-search dm-2" (click)="validatePhone(searchItem.value)" aria-hidden="true">
+          </i>
+        </div>
+        <div class="col-5">
+          <mat-form-field class="search w-100">
+            <input matInput (keyup.enter)="validatePhone(searchItem.value)" #searchItem
+              placeholder="Enter the Donor phone number" />
+          </mat-form-field>
+        </div>
+        <div class="col-3 d-flex justify-content-center align-items-center">
+          <button mat-raised-button class="w-100" (click)="validatePhone(searchItem.value)">
+            Search
+          </button>
+        </div>
+        <div class="col-3 d-flex justify-content-center align-items-center">
+          <button mat-raised-button class="w-100" (click)="validatePhone('6666666666')">
+            Unknown Donor
+          </button>
+        </div>
+      </div>
+      <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+      </ngb-alert>
+    </div>
+  </ng-template>
+
+  <ng-template #donorForm>
+    <div class="container">
+      <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+      </ngb-alert>
+      <div class="d-flex justify-content-center">
+        <form [formGroup]="donationForm" class="example-form">
+          <mat-card *ngIf="!editTransactionForm" class="pb-0">
+            <mat-card-header class="card-header">
+              <mat-card-title class="m-0">
+                Donor Details
+              </mat-card-title>
+              <button mat-button *ngIf="!editTransactionForm" class="back-button" (click)="goBackToSearch()">
+                <i class="fa fa-angle-left p-2" aria-hidden="true"></i>Back
+              </button>
+            </mat-card-header>
+            <mat-card-content class="p-4">
+              <mat-form-field class="m-2 form-fields">
+                <input type="text" matInput placeholder="First Name" value="{{ donationForm.value.firstName }}"
+                  formControlName="firstName" [readonly]="!editDonorDetails" required />
+                <mat-error *ngIf="
+                    firstName.errors && (firstName.dirty || firstName.touched)
+                  ">
+                  <mat-error *ngIf="firstName.errors.required">Full Name is required</mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <input matInput placeholder="Second Name " value="{{donationForm.value.lastName}}"
+                  formControlName="lastName" [readonly]="!editDonorDetails" />
+                <mat-error *ngIf="
+                  lastName.errors && (lastName.dirty || lastName.touched)
+                ">
+                  <mat-error *ngIf="lastName.errors.required">Last Name is required, Enter Surname</mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <input matInput placeholder="Pan Card Number" value="{{ donationForm.value.pan }}" formControlName="pan"
+                  [readonly]="!editDonorDetails" />
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+
+                <mat-label>Phone Number</mat-label>
+                <span matPrefix>+91 &nbsp;</span>
+                <input matInput placeholder="8754442892" value="{{ donationForm.value.phone }}" formControlName="phone"
+                  readonly required />
+                <mat-error *ngIf="phone.errors && (phone.dirty || phone.touched)">
+                  <mat-error *ngIf="phone.errors.required">Phone Number is required</mat-error>
+                  <mat-error *ngIf="phone.errors.pattern">Phone number should contains only numbers</mat-error>
+                  <mat-error *ngIf="phone.errors.minlength || phone.errors.maxlength">Only 10 digit number allowed
+                  </mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <mat-label>Alternate Phone Number 1</mat-label>
+                <span matPrefix>+91 &nbsp;</span>
+                <input matInput placeholder="8754442892" value="{{donationForm.value.phone1}}" formControlName="phone1"
+                  [readonly]="!editDonorDetails" />
+                <mat-error *ngIf="phone1?.errors">
+                  <mat-error *ngIf="phone1?.errors.pattern">Letters not allowed</mat-error>
+                  <mat-error *ngIf="phone1.errors.minlength || phone1.errors.maxlength">Only 10 digit number allowed
+                  </mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <mat-label>Alternate Phone Number 2</mat-label>
+                <span matPrefix>+91 &nbsp;</span>
+                <input matInput placeholder="8754442892" value="{{donationForm.value.phone2}}" formControlName="phone2"
+                  [readonly]="!editDonorDetails" />
+                <mat-error *ngIf="phone2?.errors">
+                  <mat-error *ngIf="phone2?.errors.pattern">Letters not allowed</mat-error>
+                  <mat-error *ngIf="phone2.errors.minlength || phone2.errors.maxlength">Only 10 digit number allowed
+                  </mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <input matInput placeholder="Address line 1" formControlName="flat"
+                  value="{{ donationForm.value.flat }}" [readonly]="!editDonorDetails" required />
+                <mat-error *ngIf="flat.errors && (flat.dirty || flat.touched)">
+                  <mat-error *ngIf="flat.errors.required">Address is required</mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <input matInput placeholder="Address line 2" formControlName="address"
+                  value="{{ donationForm.value.address }}" [readonly]="!editDonorDetails" required />
+                <mat-error *ngIf="address.errors && (address.dirty || address.touched)">
+                  <mat-error *ngIf="address.errors.required">Address is required</mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <input matInput placeholder="Email" value="{{ donationForm.value.email }}"
+                  [readonly]="!editDonorDetails" formControlName="email" />
+                <mat-error *ngIf="email.errors && (email.dirty || email.touched)">
+                  <mat-error *ngIf="email.errors.required">email is required</mat-error>
+                  <mat-error *ngIf="email.errors.email">email is invalid</mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <mat-label>Gender</mat-label>
+                <input *ngIf="!editDonorDetails" matInput placeholder="Gender" value="{{ donationForm.value.gender }}"
+                  readonly formControlName="gender" />
+                <select *ngIf="editDonorDetails" matNativeControl [disabled]="true"
+                  value="{{ donationForm.value.gender }}" formControlName="gender">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="transgender">Transgender</option>
+                </select>
+              </mat-form-field>
+            </mat-card-content>
+          </mat-card>
+          <mat-card *ngIf="editTransactionForm">
+            <div class="row d-flex justify-content-center align-items-center">
+              <div class="col-6">
+                Name :&nbsp;<b>{{ donationForm.value.firstName }}</b>
+              </div>
+              <div class="col-6">
+                Phone number :&nbsp;<b>{{ donationForm.value.phone }}</b>
+              </div>
+            </div>
+          </mat-card>
+          <mat-card>
+            <mat-card-header class="card-header">
+              <mat-card-title class="m-0">
+                Donation Transaction Details
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="p-4">
+              <div class="row px-4">
+                <mat-label>
+                  <strong>Type of transaction : </strong>
+                </mat-label>
+                <mat-radio-group [(ngModel)]="selectedMode" formControlName="transactionMode" name="transaction"
+                  required>
+                  <mat-radio-button class="px-1" *ngFor="let mode of modeOfTransaction; let i = index" [value]="mode.id"
+                    [disabled]="alreadyPaymentModeSelected">
+                    {{ mode.name }}
+                  </mat-radio-button>
+                </mat-radio-group>
+                <!-- <mat-error *ngIf="transactionMode?.errors && (transactionMode?.dirty || transactionMode?.touched)">
+                  <mat-error *ngIf="transactionMode.errors.required">Transaction mode is required</mat-error>
+                </mat-error> -->
+              </div>
+
+              <mat-form-field class="m-2 form-fields">
+                <span matPrefix>
+                  <i class="fa fa-rupee p-1"></i>
+                </span>
+                <input matInput placeholder="Amount" value="{{ disableCheckAmount ? 0 : donationForm.value.amount }}"
+                  formControlName="amount" [readonly]="disableCheckAmount" [required]="!disableCheckAmount" />
+                <mat-error *ngIf="amount?.errors && (amount?.dirty || amount?.touched)">
+                  <mat-error *ngIf="amount.errors.required">Amount is required</mat-error>
+                  <mat-error *ngIf="amount.errors.pattern">Amount should be in numbers</mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <!-- <mat-form-field *ngIf="modeOfTransaction[selectedMode]?.name=='Trust visit'" class="m-2 form-fields">
+                <input matInput placeholder="Recipt Id" formControlName="reciptId"
+                  value="{{donationForm.value.reciptId}}" />
+              </mat-form-field> -->
+
+              <!--  6 is the cash mode id. Dont need to display transaction id for cash -->
+              <mat-form-field class="m-2 form-fields" [hidden]="isPickupMode">
+                <input matInput placeholder="Transaction Id / Recipt Id / Cheque No" formControlName="transactionId"
+                  value="{{donationForm.value.transactionId}}" />
+                <mat-error *ngIf="transactionId?.errors && (transactionId?.dirty || transactionId?.touched)">
+                  <mat-error *ngIf="transactionId.errors.required">Transaction ID is required</mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <input matInput placeholder="Remarks" formControlName="remarks" />
+              </mat-form-field>
+
+              <!-- <mat-form-field class="m-2 form-fields" *ngIf="!trustVisit">
+                <mat-label>Telecallers ID</mat-label>
+                <input *ngIf="editTransactionForm" matInput placeholder="Telecaller"
+                  value="{{ editTransactionForm?.telecaller?.firstName+'-'+editTransactionForm?.telecaller?.atcProfile?.atcId }}"
+                  formControlName="telecaller" readonly />
+                <mat-select *ngIf="!editTransactionForm" [(ngModel)]="selectedTelecaller" formControlName="telecaller">
+                  <mat-option *ngFor="let telecaller of telecallers" [value]="telecaller.id">
+                    {{ telecaller.fullName }} ( {{ telecaller.atcProfile?.atcId }} )
+                  </mat-option>
+                </mat-select>
+              </mat-form-field> -->
+
+              <mat-form-field class="m-2 form-fields" *ngIf="!trustVisit">
+                <mat-label>Telecallers ID</mat-label>
+                <!-- <input *ngIf="editTransactionForm" matInput placeholder="Telecaller"
+                  value="{{ '('+editTransactionForm?.telecaller?.atcId+')'+' '+editTransactionForm.telecaller?.atcProfile?.voiceCallingName +'-'+editTransactionForm.telecaller?.fullName}}"
+                  formControlName="telecaller" readonly /> -->
+                <!-- <input *ngIf="!editTransactionForm" matInput type="text" placeholder="Select Telecaller"
+                  area-label="Number" [formControl]="telecaller" [matAutocomplete]="auto"> -->
+                <input matInput type="text" placeholder="Select Telecaller" area-label="Number"
+                  [formControl]="telecaller" [matAutocomplete]="auto" [required]="!trustVisit">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                  <mat-option *ngFor="let telecaller of filteredOptions | async"
+                    (onSelectionChange)="telecallerSelected(telecaller)" (click)="telecallerSelected(telecaller)"
+                    [value]="telecaller?.atcId+' '+telecaller?.atcProfile?.voiceCallingName +'-'+telecaller?.fullName">
+                    ({{telecaller.atcId}})&nbsp;{{telecaller.atcProfile?.voiceCallingName}}-{{telecaller.fullName}}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error *ngIf="telecaller?.errors && (telecaller?.dirty || telecaller?.touched)">
+                  <mat-error *ngIf="telecaller.errors.required">Telecaller is required</mat-error>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="m-2 form-fields">
+                <mat-label>{{ isPickupMode ? 'Pickup Date ( mm / dd / yyyy)' : 'Donated Date ( mm / dd / yyyy )'}}
+                </mat-label>
+                <input class="ml-2" formControlName="donatedDate" matInput readonly placeholder=" mm/ dd / yyyy "
+                  (click)="fromPicker.open()" [matDatepicker]="fromPicker" (dateChange)="setDonatedDate($event)"
+                  required />
+                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field *ngIf="!isPickupMode" class="m-2 form-fields">
+                <input matInput placeholder="Name for Receipt" formControlName="receiptName" />
+              </mat-form-field>
+
+              <!-- <mat-form-field class="m-2 form-fields">
+                <textArea matInput placeholder="Pickup Address" formControlName="pickupAddress"
+                  value="{{ donationForm.value.pickupAddress }}" [readonly]="!editDonorDetails" required></textArea>
+                <mat-error *ngIf="pickupAddress.errors && (pickupAddress.dirty || pickupAddress.touched)">
+                  <mat-error *ngIf="pickupAddress.errors.required">Pickup Address is required</mat-error>
+                </mat-error>
+              </mat-form-field> -->
+              <div class="row mt-2 ml-2" [hidden]="!isPickupMode" class="m-2 form-fields">
+                <mat-checkbox (change)="setPickAddress($event)">Set Donor Address as Pickup Address</mat-checkbox>
+              </div>
+
+              <div class="row ml-2">
+                <mat-form-field [hidden]="!isPickupMode" class="mr-3 form-fields">
+                  <textarea matInput placeholder="Pickup Address" [formControl]="pickupAddress"
+                    value="{{ donationForm.value.pickupAddress }}" [required]="isPickupMode">
+                </textarea>
+                  <mat-error *ngIf="pickupAddress.errors && (pickupAddress.dirty || pickupAddress.touched)">
+                    <mat-error *ngIf="pickupAddress.errors.required">Pickup Address is required</mat-error>
+                  </mat-error>
+                </mat-form-field>
+                <!-- 
+              <mat-form-field [hidden]="!isPickupMode" class="ml-2 form-fields">
+                <input matInput placeholder="Pickup Time" formControlName="pickupTime"
+                  value="{{ donationForm.value.pickupTime }}" [required]="isPickupMode" />
+                <mat-error *ngIf="pickupTime.errors && (pickupTime.dirty || pickupTime.touched)">
+                  <mat-error *ngIf="pickupTime.errors.required">Pickup time is required</mat-error>
+                </mat-error>
+              </mat-form-field> -->
+                <div class="time-field form-fields" [hidden]="!isPickupMode">
+                  <mat-label>Pickup Time *
+                </mat-label>
+                  <!-- <input matInput type="time" id="appt" name="appt" formControlName="pickupTime" min="09:00" max="18:00"
+                  [required]="isPickupMode"> -->
+                  <!-- <ejs-timepicker placeholder='Select a time' formControlName="pickupTime" [required]="isPickupMode">
+                  </ejs-timepicker> -->
+                  <ngx-timepicker-field placeholder="Pickup Time" formControlName="pickupTime" [required]="isPickupMode" [format]=12>
+                  </ngx-timepicker-field>
+                  <!-- <input formControlName="pickupTime" [ngxTimepicker]="picker">
+<ngx-material-timepicker #picker></ngx-material-timepicker> -->
+                  <mat-error class="time-error" *ngIf="pickupTime.errors && (pickupAddress.dirty || pickupAddress.touched)">
+                    <mat-error *ngIf="pickupTime?.errors?.required">Pickup time is required</mat-error>
+                  </mat-error>
+                </div>
+              </div>
+              <!-- <div class="ngx-timepicker-field-example">
+                <ngx-timepicker-field formControlName="pickupTime" [format]=12></ngx-timepicker-field>
+              </div> -->
+
+              <div class="row ml-0">
+                <mat-form-field class="m-2 form-fields">
+                  <mat-label>Donated Bank</mat-label>
+                  <mat-select [(ngModel)]="selectedDonatedBank" formControlName="donatedBank">
+                    <mat-option value="SBI">SBI</mat-option>
+                    <mat-option value="ICICI">ICICI</mat-option>
+                    <mat-option value="Axis">Axis</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="d-flex align-items-center">
+                  <mat-radio-group [(ngModel)]="selectedDonorType" formControlName="donorType" name="donor Type"
+                    required>
+                    <mat-radio-button class="ml-2" value="New Donor">New Donor</mat-radio-button>
+                    <mat-radio-button class="ml-3" value="Old Donor">Old Donor</mat-radio-button>
+                    <mat-radio-button class="ml-3" value="Trust Base">Trust Base</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+
+              <div class="row m-2">
+                <mat-checkbox [checked]="is80G === true" (change)="is80GChecked($event)">80G</mat-checkbox>
+              </div>
+
+              <!-- <div class="row" *ngIf="!editTransactionForm"> -->
+              <div class="row">
+                <input type="file" accept=".jpeg, .jfif, .jpg, .png" (change)="compressFile($event)"
+                  style="display: none;" #screenshotRef />
+
+                <button mat-stroked-button type="button" (click)="screenshotRef.click()" class="m-2">
+                  <i class="fa fa-user-o mr-2 fa-1x" aria-hidden="true"></i>
+                  Add Picture
+                </button>
+
+                <!-- <input type="file" accept=".jpg,.png,.jpeg" id="image-input" (change)="uploadScreenshot($event)" style="display: none;" #screenshotRef>
+
+                <button mat-stroked-button type="button" (click)="screenshotRef.click()" class="m-2">
+                  <i class="fa fa-user-o mr-2 fa-1x" aria-hidden="true"></i>
+                  Add Picture
+                </button> -->
+
+                <div class="screen-shot" *ngIf="screenshotPic; else formatWarning">
+                  <span class="margin">{{ screenshotPicName }}</span>
+                  <button *ngIf="preview" class="margin" type="button" (click)="previewScreenshot()">
+                    preview
+                  </button>
+                  <button *ngIf="!preview" class="margin" type="button" (click)="preview = true">
+                    close
+                  </button>
+                  <i (click)="removeScreenshot()" class="fa fa-trash delete margin" aria-hidden="true"></i>
+                </div>
+                <ng-template #formatWarning>
+                  <span class="padding">*.jpeg, jpg, png format only allowed</span>
+                </ng-template>
+              </div>
+
+              <mat-error *ngIf="fileSize >= 500">*file size should be below 500kb</mat-error>
+
+              <div class="image-preview mb-3" *ngIf="imgResultAfterCompress && !preview">
+                <img [src]="imgResultAfterCompress" height="300" />
+              </div>
+
+              <!-- <div class="image-preview mb-3" *ngIf="previewUrl && !preview">
+                <img [src]="previewUrl" height="300" />
+              </div> -->
+            </mat-card-content>
+            <div class="d-flex justify-content-center">
+              <button mat-raised-button type="submit" color="primary" class="m-2" [disabled]="!donationForm.valid"
+                (click)="onSubmit(donationForm.value)">
+                Submit
+              </button>
+              <button *ngIf="!editTransactionForm" mat-raised-button color="primary" class="m-2"
+                (click)="resetDonationForm()">
+                Reset
+              </button>
+              <button *ngIf="editTransactionForm" mat-raised-button class="m-2" (click)="closeDonorForm()">
+                Close
+              </button>
+            </div>
+          </mat-card>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,87 @@
+<app-page-header [heading]="'PickUpAdmin'" [icon]="'fa-bar-chart-o'"></app-page-header>
+<div *ngIf="!selectedBranch; else showList">
+    <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+<ng-template #showList>
+    <div class="row mb-2">
+        <div class="col-5"></div>
+        <div class="col-4 branch-name d-flex justify-content-end align-items-center">
+            <strong>{{ branchName }} &nbsp; BRANCH </strong>
+        </div>
+        <div *ngIf="user.branch.length !== 1" class="col-3 select-branch d-flex justify-content-start align-items-center" (click)="removeBranch()">
+            <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+        </div>
+    </div>
+    <mat-card>
+        <div class="row d-flex justify-content-center align-items-center">
+            <h5>Select from date and to date to fetch the Pickup Request list</h5>
+        </div>
+        <date-filter [cacheKey]="'donationVerification'" (setDate)="setDateFilter($event)"></date-filter>
+
+        <ngb-alert class="alert-box" [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">
+            {{ alert.message }}
+        </ngb-alert>
+    </mat-card>
+
+    <div *ngIf="transactionDetails.length > 0;">
+            <app-donar-transaction-details
+              class="transactionDetails"
+              [tableData]="transactionDetails"
+              [columnsToDisplay]="columnsToDisplay"
+              (refresh)="refreshBatch()"
+              (assignPickupAgent)="assignAgent($event)"
+              (pickUpconfirmPopUp)="confirmPopUp($event)"
+            >
+            </app-donar-transaction-details>
+        <!-- <mat-card class="my-2">
+            <div class="row my-3 title">
+                <div class="col-2">Name</div>
+                <div class="col-2">Address</div>
+                <div class="col-2">Date</div>
+                <div class="col-2">Remarks</div>
+                <div class="col-1">Status</div>
+                <div class="col-1">Agent</div>
+                <div class="col-2">Action</div>
+            </div>
+            <div class="row my-2 py-1 pickup-rows  d-flex align-items-center"
+                *ngFor="let transactionDetail of transactionDetails">
+                <div class="col-2">{{transactionDetail.donar?.fullName}}, &nbsp;{{transactionDetail.donar?.username}}</div>
+                <div class="col-2">
+                    {{transactionDetail.donar?.userProfile?.addressLine1}},&nbsp;{{transactionDetail.donar?.userProfile?.addressLine2}}
+                </div>
+                <div class="col-2">{{transactionDetail.donated_date}}</div>
+                <div class="col-2">{{transactionDetail.remarks}}</div>
+                <div class="col-1">
+                    {{ transactionDetail.status }}
+                </div>
+                <div class="col-1">
+                    {{ transactionDetail.agentName }}
+                </div>
+                <div class="col-2">
+                    <button *ngIf="transactionDetail._status == 0" mat-raised-button class="w-100"
+                        (click)="assignAgent(transactionDetail, '1')">
+                        Assign Agent
+                    </button>
+                    <div *ngIf="transactionDetail._status == 1">
+                        <button mat-raised-button class="w-100 my-1" (click)="confirmPopUp(transactionDetail, '3')">
+                            Picked up
+                        </button>
+                        <button mat-raised-button class="w-100" (click)="setStatus(transactionDetail, '2')">
+                            Broken
+                        </button>
+                    </div>
+                    <div *ngIf="transactionDetail._status == 2">
+                        <button mat-raised-button class="w-100" disabled>
+                            Pickup Broken
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+        </mat-card> -->
+        <!-- <app-donar-transaction-details class="transactionDetails" [tableData]="transactionDetails"
+          [columnsToDisplay]="columnsToDisplay">
+        </app-donar-transaction-details> -->
+    </div>
+</ng-template>

@@ -1,0 +1,195 @@
+<div class="row">
+  <div class="col-10">
+    <h5>
+      Donation Transaction Details
+    </h5>
+  </div>
+  <div class="col-2 d-flex justify-content-end align-items-center">
+    <i (click)="closeDialog()" class="fa fa-times closed" aria-hidden="true"></i>
+  </div>
+</div>
+<div class="row my-2 col-12">
+  <div class="col-3">
+    <mat-card>
+      <mat-card-title>
+        Transaction Details
+      </mat-card-title>
+      <mat-card-content>
+        <div class="row no-gutters">
+          <span class="field col-7">Amount</span>
+          <span class="value col-5 ">{{ donationTransaction.amount }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Transaction ID</span>
+          <span class="value col-5 ">{{ donationTransaction.transaction_id }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Donated Date</span>
+          <span class="value col-5 ">{{ donationTransaction.donated_date }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Receipt Name</span>
+          <span class="value col-5 ">{{ donationTransaction.receipt_name }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Mode</span>
+          <span class="value col-5 ">{{modeOfTransaction }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Verified By</span>
+          <span class="value col-5">{{ donationTransaction.approved_by}}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Donor Type</span>
+          <span class="value col-5">{{ donationTransaction.donor_type }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Donated Bank</span>
+          <span class="value col-5">{{ donationTransaction.donated_bank}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-3">
+    <mat-card>
+      <mat-card-title>
+        Donor Profile
+      </mat-card-title>
+      <mat-card-content>
+        <div class="row no-gutters">
+          <span class="field col-7">First Name</span>
+          <span class="value col-5 ">{{ donationTransaction.donar?.firstName }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Last Name</span>
+          <span class="value col-5 ">{{ donationTransaction.donar?.lastName }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Phone No</span>
+          <span class="value col-5 ">{{ donationTransaction.donar?.username }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Alternate No</span>
+          <span class="value col-5 ">{{ donationTransaction.donar?.userProfile.phone2 }}</span>
+        </div>
+        <div class="row no-gutters">
+          <span class="field col-7">Email</span>
+          <span class="value col-5">{{ donationTransaction.donar?.email }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-3">
+    <mat-card>
+      <mat-card-title>
+        Donor Details
+      </mat-card-title>
+      <mat-card-content>
+        <mat-card-content>
+          <div class="row no-gutters">
+            <span class="field col-7">Address</span>
+            <span class="value col-5 ">{{ donationTransaction.donar?.userProfile?.addressLine1 }},&nbsp;{{ donationTransaction.donar?.userProfile?.addressLine2
+              }}
+            </span>
+          </div>
+          <div class="row no-gutters">
+            <span class="field col-7">Gender</span>
+            <span class="value col-5 ">{{ donationTransaction.donar?.userProfile?.gender }}
+            </span>
+          </div>
+          <div class="row no-gutters">
+            <span class="field col-7">PAN Number</span>
+            <span class="value col-5">{{ donationTransaction.donar?.userProfile?.panCard }}
+            </span>
+          </div>
+          <div class="row no-gutters">
+            <span class="field col-7">Branch Name</span>
+            <span class="value col-5 ">{{ donationTransaction.donar?.userProfile?.branch[0]?.branchName }}
+            </span>
+          </div>
+        </mat-card-content>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-3">
+    <mat-card>
+      <mat-card-title>
+        Telecaller Details
+      </mat-card-title>
+      <mat-card-content>
+        <mat-card-content>
+
+          <div class="row no-gutters">
+            <span class="field col-7">ATC id</span>
+            <span class="value col-5 ">{{ donationTransaction.telecaller?.atcId }}
+            </span>
+          </div>
+          <div class="row no-gutters">
+              <span class="field col-7">VC Name</span>
+              <span class="value col-5 ">{{ donationTransaction.telecaller?.atcProfile?.voiceCallingName }}
+              </span>
+            </div>
+          <div class="row no-gutters">
+            <span class="field col-7">Name</span>
+            <span class="value col-5 ">{{ donationTransaction.telecaller?.fullName }}
+            </span>
+          </div>
+          <div class="row no-gutters">
+            <span class="field col-7">Branch Name</span>
+            <span class="value col-5 ">{{ donationTransaction.telecaller?.atcProfile?.branch[0]?.branchName }}
+            </span>
+          </div>
+        </mat-card-content>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div *ngIf="donationTransaction.modeOfTransaction === '14'">
+  <h5 class="mt-4 mb-3">Pickup Details</h5>
+  <mat-card>
+    <div class="row">
+      <div class="col-6 border-right">
+        <div class="row d-flex justify-content-center align-items-center"><b>Pickup Address</b></div>
+        <div class="row d-flex justify-content-center align-items-center mx-2">
+          {{donationTransaction.pickup_address}}
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-6">
+            <div class="row d-flex justify-content-center align-items-center"><b>Pickup Date</b></div>
+            <div class="row d-flex justify-content-center align-items-center mx-2">{{ donationTransaction.donated_date}}
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row d-flex justify-content-center align-items-center"><b>Pickup Time</b></div>
+            <div class="row d-flex justify-content-center align-items-center mx-2">{{ donationTransaction.pickup_time}}
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-6">
+            <div class="row d-flex justify-content-center align-items-center"><b>Pickup Agent</b></div>
+            <div class="row d-flex justify-content-center align-items-center mx-2">{{ donationTransaction.agentName}}
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row d-flex justify-content-center align-items-center"><b>Remarks</b></div>
+            <div class="row d-flex justify-content-center align-items-center">{{ donationTransaction.remarks}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<div *ngIf="transaction.length">
+  <h5 class="mb-3">
+    Receipt Details
+  </h5>
+  <app-receipt-details [columnsToDisplay]="columnsToDisplay" [dataSource]="transaction">
+  </app-receipt-details>
+</div>

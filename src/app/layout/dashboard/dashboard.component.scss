@@ -1,0 +1,41 @@
+mat-card {
+  padding: 10px;
+  margin-left: 100px;
+
+  mat-card-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  mat-card-content {
+    .row {
+      font-size: 14px;
+      font-family: Arial, serif;
+      padding: 5px;
+
+      .field {
+        color: #4a4a4a;
+        font-size: 14px;
+      }
+
+      .value {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+
+
+.container {
+  .header {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    float: left;
+  }
+  .space {
+    min-height: 150px;
+  }
+}
+

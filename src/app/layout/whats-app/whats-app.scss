@@ -1,0 +1,38 @@
+mat-card {
+    padding: 10px;
+  
+    mat-card-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  
+    mat-card-content {
+      .row {
+        font-size: 14px;
+        font-family: Arial, serif;
+        padding: 5px;
+  
+        .field {
+          color: #4a4a4a;
+          font-size: 14px;
+        }
+  
+        .value {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+.green {
+  color: green;
+}
+.red {
+  color: red;
+}
+.grey { 
+  color: grey;
+}
+.phoneconnecting{
+  width: 100px
+}
+  

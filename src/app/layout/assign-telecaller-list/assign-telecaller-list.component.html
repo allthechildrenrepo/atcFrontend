@@ -1,0 +1,36 @@
+<div *ngIf="donors.length > 0; else noDonors">
+  <div>
+    <div class="row">
+      <h4>Donors Details</h4>
+    </div>
+    <div id="print-section">
+      <table style="margin-bottom:5px; border:1px solid;">
+          <tr>
+              <th style="border-right:1px solid; text-aling:center">Telecaller</th>
+              <th>Date</th>
+            </tr>
+            <tr>
+              <td style="border-right:1px solid; text-aling:center">{{telecaller?.fullName}} - {{telecaller?.atcId}}</td>
+              <td></td>
+            </tr>
+      </table>
+      <table>
+        <tr>
+          <th>Phone</th>
+          <th>Remarks</th>
+        </tr>
+        <tr *ngFor="let donor of donors">
+          <td>{{donor?.phone}}</td>
+          <td>{{donor?.remarks}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="row print">
+    <button mat-raised-button class="doNotPrint" (click)="closeDonorsList()">Close</button>
+    <button mat-raised-button class="print-button" (click)="printPage()">Print</button>
+  </div>
+</div>
+<ng-template #noDonors>
+  <p>No Donors Found</p>
+</ng-template>

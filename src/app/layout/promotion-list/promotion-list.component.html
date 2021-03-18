@@ -1,0 +1,150 @@
+<app-page-header [heading]="'Promotion Dashboard'" [icon]="'fa-bar-chart-o'"></app-page-header>
+<div *ngIf="!selectedBranch; else showList">
+  <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+<ng-template #showList>
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-4 branch-name d-flex justify-content-end align-items-center">
+      <strong>{{ selectedBranch.branchName }} &nbsp; BRANCH </strong>
+    </div>
+    <div *ngIf="user.branch.length !== 1" (click)="removeBranch()" class="col-3 select-branch d-flex justify-content-start align-items-center">
+      <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+    </div>
+  </div>
+  <div class="container">
+    <div class="row d-flex justify-content-center align-items-right">
+      <mat-form-field class="w-100" appearance="fill">
+        <mat-label> Select WhatsApp Device</mat-label>
+        <mat-select (selectionChange)="deviceSelected($event)">
+          <mat-option *ngFor="let device of wassangerDevicess" [value]="device.id">
+            {{device.phone}} - {{ device.deviceName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div *ngIf="selectedDevice" class="container overflow">
+    <div class="row">
+      <div class="col-9">
+        <wassanger-device-status [device]="selectedDevice"></wassanger-device-status>
+      </div>
+      <div class="col-3 d-flex align-items-center align-self-center">
+        <button *ngIf="!activePromotion" mat-raised-button type="submit" color="primary" class="m-2" (click)="createPromotion()">
+          Create Promotion
+        </button>
+        <span *ngIf="activePromotion">Since there is an active promotion for this device, you cannot create a new promoiton now. If you need to create
+          a new promotion - pause / terminate the existing promotion</span>
+      </div>
+    </div>
+    <div class="row">
+      <!-- mat table to display promotion list and progress -->
+    </div>
+    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+    </ngb-alert>
+    <h5 class="mt-4">Promotion List</h5>
+    <table *ngIf="promotionList.length > 0; else noPromotions" mat-table [dataSource]="promotionListDataSource" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="promotion_name">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center">Promotion Name</span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span class="d-flex mx-2 justify-content-center">{{element.name}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_date">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center">Created date</span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span class="d-flex mx-2 justify-content-center">{{element.created_at | date:'d MMM y, h:mm a'}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_by">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center">Scheduled By</span>
+        </th>
+        <td mat-cell class="mx-2" *matCellDef="let element">
+          <span class="d-flex mx-2 justify-content-center">{{element.created_by.first_name}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cron_time">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center">Scheduled time</span>
+        </th>
+        <td mat-cell class="mx-2" *matCellDef="let element">
+          <span class="d-flex mx-2 justify-content-center">{{element.scheduled_date}} {{element.cron_time}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="message">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center">Message</span>
+        </th>
+        <td mat-cell class="mx-2" *matCellDef="let element">
+          <span class="d-flex mx-2 justify-content-center">{{element.message}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="download">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center">Download</span>
+        </th>
+        <td mat-cell class="mx-2" *matCellDef="let element">
+          <span class="d-flex mx-2 justify-content-center">
+            <a *ngIf="element.consumer_file" href="{{element.consumer_file}}" target="_blank">
+              <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </a>
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center">Status</span>
+        </th>
+        <td mat-cell class="mx-2" *matCellDef="let element">
+          <span class="d-flex mx-2 justify-content-center">{{element.statusCode}}</span>
+          <i *ngIf="element.status == 1" class="fa fa-spin fa-spinner fa-pulse"></i>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell class="mx-2" *matCellDef="let element">
+          <div *ngIf="element.status !== 3 && element.status !== 2" class="row d-flex mx-2 justify-content-center">
+            <!-- <div class="col-6"> -->
+            <button mat-stroked-button class="my-1 pause" *ngIf="element.status < 2" (click)="pausePromion(element)">
+              Pause
+            </button>
+            <!-- <button mat-stroked-button class="start" *ngIf="element.status == 0" (click)="startPromotion(element)">
+          Start
+        </button> -->
+            <button mat-stroked-button class="my-1 start" *ngIf="element.status == 4" (click)="startPromotion(element)">
+              Re-Schedule
+            </button>
+            <!-- </div> -->
+            <!-- <div class="col-6"> -->
+            <button mat-stroked-button class="my-1 terminate" (click)="terminatePromotion(element, '4')">
+              Terminate
+            </button>
+            <!-- </div> -->
+
+          </div>
+
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+    </table>
+    <ng-template #noPromotions>
+      <mat-card>
+        There is no Promotion created for selected device
+      </mat-card>
+    </ng-template>
+  </div>
+</ng-template>

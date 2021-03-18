@@ -1,0 +1,51 @@
+<app-page-header [heading]="'Generate Batch'" [icon]="'fa-bar-tick-o'"></app-page-header>
+<div *ngIf="!selectedBranch; else showList">
+  <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+<ng-template #showList>
+  <div class="py-2">
+    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+    </ngb-alert>
+  </div>
+
+  <div class="row"
+    *ngIf="userBranches.length > 1 || (userBranches.length === 1 && userBranches[0].branchName === 'ADMIN OFFICE'); else singleBranchUser">
+    <div class="col-5">
+      <button *ngIf="transactionDetails.length" mat-raised-button color="primary" [disabled]="batchList.length == 0"
+        (click)="checkBatch()">
+        Generate Batch
+      </button>
+    </div>
+    <div class="col-4 d-flex justify-content-end align-items-center">
+      <strong>{{ branchName }} &nbsp; BRANCH </strong>
+    </div>
+    <!-- <div class="col-2 branch-name">
+      <p>{{branchName}}</p>
+    </div> -->
+    <div class="col-3 select-branch" (click)="removeBranch()">
+      <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another
+      branch
+    </div>
+  </div>
+  <ng-template #singleBranchUser>
+    <div class="row">
+      <div class="col-7">
+        <button *ngIf="transactionDetails.length" mat-raised-button color="primary" [disabled]="batchList.length == 0"
+          (click)="checkBatch()">
+          Generate Batch
+        </button>
+      </div>
+      <div class="col-5">
+        <strong>{{ branchName }} &nbsp; BRANCH </strong>
+      </div>
+    </div>
+  </ng-template>
+
+  <div *ngIf="transactionDetails.length > 0; else noList">
+
+    <app-donar-transaction-details class="transactionDetails" [tableData]="transactionDetails"
+      [columnsToDisplay]="columnsToDisplay" (checkboxEvent)="checkBoxChange($event)" [batchListLength]="batchListLength"
+      (refresh)="refreshDonationList()">
+    </app-donar-transaction-details>
+  </div>
+</ng-template>

@@ -1,0 +1,141 @@
+<div class="row ml-1 mt-3 mb-2">
+  <h5>
+    Current Transaction Details
+  </h5>
+</div>
+<mat-card>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-2"><b>Name</b></div>
+    <div class="col-3 border-right">{{currentTransaction?.donar?.fullName}}</div>
+    <div class="col-1"></div>
+    <div class="col-2"><b>Transaction ID</b></div>
+    <div class="col-3">{{currentTransaction?.transaction_id}}</div>
+  </div>
+  <div class="row">
+    <div class=col-1></div>
+    <div class="col-2"><b>Phone</b></div>
+    <div class="col-3 border-right">{{currentTransaction?.donar?.username}}</div>
+    <div class="col-1"></div>
+    <div class="col-2"><b>Donated Date</b></div>
+    <div class="col-3">{{currentTransaction?.donated_date}}</div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-2"><b>Amount</b></div>
+    <div class="col-3 border-right">{{currentTransaction?.amount}}</div>
+    <div class="col-1"></div>
+    <div class="col-2"><b>Telecaller ID</b></div>
+    <div class="col-3">{{currentTransaction?.telecaller?.atcId}}</div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-2"><b>Transaction Mode</b></div>
+    <div class="col-3 border-right">{{ getModeOfTransaction(currentTransaction?.modeOfTransaction) }}</div>
+    <div class="col-1"></div>
+    <div class="col-2"><b>Telecaller Name</b></div>
+    <div class="col-3">{{currentTransaction?.telecaller?.fullName}}</div>
+  </div>
+</mat-card>
+
+<div class="row ml-1 mt-4 mb-2">
+  <h5>Past Transactions Details</h5>
+</div>
+<div *ngIf="pastTransaction.length; else noTransactions">
+  <div class="example-container mat-elevation-z8">
+    <table class="mat-elevation-z8" mat-table id="donationTable" [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center"> Name </span>
+        </th>
+        <td mat-cell *matCellDef="let pastTransaction">
+          <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.donar?.fullName }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center"> Number </span>
+        </th>
+        <td mat-cell *matCellDef="let pastTransaction">
+          <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.donar?.username }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="mode">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center"> Transaction Mode </span>
+        </th>
+        <td mat-cell *matCellDef="let pastTransaction">
+          <span
+            class="label d-flex mx-2 justify-content-center">{{getModeOfTransaction(pastTransaction?.modeOfTransaction)}}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="transactionId">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center"> Transaction ID </span>
+        </th>
+        <td mat-cell *matCellDef="let pastTransaction">
+          <span class="label d-flex mx-2 justify-content-center" [ngClass]="{'make-red': pastTransaction?.transaction_id == currentTransaction?.transaction_id}">{{ pastTransaction?.transaction_id  }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center"> Amount </span>
+        </th>
+        <td mat-cell *matCellDef="let pastTransaction">
+          <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.amount }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="donatedDate">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center"> Donated Date </span>
+        </th>
+        <td mat-cell *matCellDef="let pastTransaction">
+          <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.donated_date }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="telecallerId">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center"> Telecaller ID </span>
+        </th>
+        <td mat-cell *matCellDef="let pastTransaction">
+          <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.telecaller?.atcId }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="telecallerName">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="d-flex mx-2 justify-content-center"> Telecaller Name </span>
+        </th>
+        <td mat-cell *matCellDef="let pastTransaction">
+          <span class="label d-flex mx-2 justify-content-center">{{ pastTransaction?.telecaller?.fullName }}
+          </span>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+  </div>
+</div>
+<ng-template #noTransactions>
+  <mat-card>
+    <h6 class="d-flex justify-content-center align-items-center">There is No Past Transaction</h6>
+  </mat-card>
+</ng-template>
+
+<div class="d-flex justify-content-center mt-4">
+  <button mat-raised-button type="submit" class="verify m-2" (click)="verifyTransaction()">
+    <b>Verify</b>
+  </button>
+  <button mat-raised-button type="submit" class="verify m-2" (click)="notVerifyTransaction()">
+    <b>Not verified</b>
+  </button>
+  <button mat-raised-button class="m-2" (click)="close()">
+    Close
+  </button>
+</div>

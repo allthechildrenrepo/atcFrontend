@@ -1,0 +1,345 @@
+<app-page-header [heading]="'Food Donation'" [icon]="'fa-bar-chart-o'"></app-page-header>
+<div *ngIf="!selectedBranch; else showDate">
+  <h3 class="m-4">Select the Branch:</h3>
+  <div *ngIf="userBranches[0].branchName === 'ADMIN OFFICE'; else notAdmin">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div *ngFor="let branch of allBranches" class="col-3 m-2 justify-content-center align-items-center">
+        <button mat-raised-button class="w-100" (click)="setBranch(branch.branchId)">
+          {{ branch.branchName }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <ng-template #notAdmin>
+    <div class="row d-flex justify-content-center align-items-center">
+      <div *ngFor="let branch of userBranches" class="col-3 m-2 justify-content-center align-items-center">
+        <button mat-raised-button class="w-100" (click)="setBranch(branch.branchId)">
+          {{ branch.branchName }}
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<ng-template #showDate>
+  <div *ngIf="enterFoodDonation; else showDates">
+    <h4>Date:{{selectedDate}}</h4>
+    <div class="py-3">
+      <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+      </ngb-alert>
+  </div>
+    <div class="row choose-date">
+      <p (click)="backToCalendar()"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back
+      </p>
+    </div>
+    <div class="row">
+      <div class="col-5" *ngFor="let time of ['breakFast', 'lunch', 'dinner', 'snacks']">
+        <!-- <div *ngIf="foodDonation; else editFoodDonation"> -->
+          <div *ngIf="foodDonation[time]; else editFoodTime">
+            <div *ngIf="editBookedFoodDonation[time][0]; else showBookedDonations">
+              <div class="row">
+                <div class="col-6 time-title">
+                  <h5>{{ time | uppercase}}</h5>
+                </div>
+                <div class="col-6 time-title">
+                  <i (click)="cancelEditdDonation(time, name.value)" class="fa fa-times"
+                    aria-hidden="true">&nbsp;Cancel</i>
+                  <button mat-raised-button
+                    (click)="saveBookedDonation(time, name.value, phone.value, reason.value, remarks.value)">Save</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Name
+                </div>
+                <div class="col-8">
+                  <input type=text #name value={{foodDonation[time].name}}>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Phone
+                </div>
+                <div class="col-8">
+                  <input type=text #phone value={{foodDonation[time].phone}}>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Reason
+                </div>
+                <div class="col-8">
+                  <input type=text #reason value={{foodDonation[time].reason}}>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Remarks
+                </div>
+                <div class="col-8">
+                  <input type=text #remarks value={{foodDonation[time].remarks}}>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Food
+                </div>
+                <div class="col-7">
+                  <mat-form-field>
+                    <mat-select placeholder=" Select Food" (selectionChange)="selectFood($event.value, time)"
+                      [(ngModel)]="editBookedFoodDonation[time][1]">
+                      <mat-option *ngFor="let food of foodVariety" [value]="food">
+                        {{ food }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <ng-template #showBookedDonations>
+              <div class="row">
+                <div class="col-8">
+                  <h5>{{ time | uppercase}}</h5>
+                </div>
+                <div class="col-2"></div>
+                <div *ngIf="nonPastDay" class="col-2">
+                  <i (click)="editBookedDonation(time)" class="fa fa-pencil" aria-hidden="true">&nbsp;Edit</i>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Name
+                </div>
+                <div class="col-8">
+                  {{foodDonation[time].name}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Phone
+                </div>
+                <div class="col-8">
+                  {{foodDonation[time].phone}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Reason
+                </div>
+                <div class="col-8">
+                  {{foodDonation[time].reason}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Remarks
+                </div>
+                <div class="col-8">
+                  {{foodDonation[time].remarks}}
+                </div>
+              </div>
+              <div class="row padding">
+                <div class="col-4">
+                  Food
+                </div>
+                <div class="col-8">
+                  {{editBookedFoodDonation[time][1]}}
+                </div>
+              </div>
+            </ng-template>
+          </div>
+          <ng-template #editFoodTime>
+            <div *ngIf="nonPastDay; else noEntry">
+              <!-- <div class="row">
+                <div class="col-8">
+                  <h5>{{ time | uppercase}}</h5>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-2">
+                  <i (click)="saveBookedDonation(time, name.value, phone.value, reason.value, remarks.value)"
+                    class="fa fa-check" aria-hidden="true">&nbsp;Save</i>
+                </div>
+              </div> -->
+              <div class="row">
+                <div class="col-6 time-title">
+                  <h5>{{ time | uppercase}}</h5>
+                </div>
+                <div class="col-6 time-title">
+                  <!-- <i (click)="cancelEditdDonation(time, name.value)" class="fa fa-times"
+                    aria-hidden="true">&nbsp;Cancel</i> -->
+                  <button mat-raised-button
+                    (click)="saveBookedDonation(time, name.value, phone.value, reason.value, remarks.value)">Save</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Name
+                </div>
+                <div class="col-8">
+                  <input type=text #name>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Phone
+                </div>
+                <div class="col-8">
+                  <input type=text #phone>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Reason
+                </div>
+                <div class="col-8">
+                  <input type=text #reason>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Remarks
+                </div>
+                <div class="col-8">
+                  <input type=text #remarks>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  Food
+                </div>
+                <div class="col-7">
+                  <mat-form-field>
+                    <mat-select placeholder=" Select Food" (selectionChange)="selectFood($event.value, time)"
+                      [(ngModel)]="editBookedFoodDonation[time][1]">
+                      <mat-option *ngFor="let food of foodVariety" [value]="food">
+                        {{ food }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <ng-template #noEntry>
+              <div class="row">
+                <div class="col-8">
+                  <h5>{{ time | uppercase}}</h5>
+                </div>
+              </div>
+              <div class="no-entry">
+                <h5>No Entry</h5>
+              </div>
+              <!-- <div class="row my-2 text-center"><span>{{ time | uppercase}}</span>&nbsp;-&nbsp;No Entry</div> -->
+            </ng-template>
+          </ng-template>
+        <!-- </div> -->
+        <!-- <ng-template #editFoodDonation>
+          <div ngIf="nonPastDay; else noEntry">
+            <div class="row">
+              <div class="col-6 time-title">
+                <h5>{{ time | uppercase}}</h5>
+              </div>
+              <div class="col-6 time-title">
+                <i (click)="cancelEditdDonation(time, name.value)" class="fa fa-times"
+                    aria-hidden="true">&nbsp;Cancel</i>
+                <button mat-raised-button
+                  (click)="saveBookedDonation(time, name.value, phone.value, reason.value, remarks.value)">Save</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                Name
+              </div>
+              <div class="col-8">
+                <input type=text #name>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                Phone
+              </div>
+              <div class="col-8">
+                <input type=text #phone>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                Reason
+              </div>
+              <div class="col-8">
+                <input type=text #reason>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                Remarks
+              </div>
+              <div class="col-8">
+                <input type=text #remarks>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                Food
+              </div>
+              <div class="col-7">
+                <mat-form-field>
+                  <mat-select placeholder=" Select Food" (selectionChange)="selectFood($event.value, time)"
+                    [(ngModel)]="editBookedFoodDonation[time][1]">
+                    <mat-option *ngFor="let food of foodVariety" [value]="food">
+                      {{ food }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <ng-template #noEntry>
+            <div class="row my-2 text-center"><span>{{ time | uppercase}}</span>&nbsp;-&nbsp;No Entry</div>
+          </ng-template>
+        </ng-template> -->
+      </div>
+    </div>
+
+    <!-- <div *ngIf="submitButton" class="row submit">
+      <button mat-raised-button (click)="submitFoodDonation()">Submit</button>
+    </div> -->
+  </div>
+  <ng-template #showDates>
+    <div
+      *ngIf="userBranches.length > 1 || (userBranches.length === 1 && userBranches[0].branchName === 'ADMIN OFFICE'); else singleBranchUser"
+      class="row choose-date">
+      <p (click)="removeBranch()"><i class="fa fa-chevron-left" aria-hidden="true"></i>Choose Branch
+      </p>
+    </div>
+    <div class="row text-center my-2">
+      <h4>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h4>
+    </div>
+    <div class="row text-center">
+      <div class="btn-group">
+        <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+          (viewDateChange)="changeMonth()">
+          Previous
+        </div>
+        <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+          Today
+        </div>
+        <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+          (viewDateChange)="changeMonth()">
+          Next
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+    <br>
+    <div class="row">
+      <div class="col-3 breakfast"><i class="fa fa-circle" aria-hidden="true"></i>&nbsp;&nbsp;Break-Fast</div>
+      <div class="col-3 lunch"><i class="fa fa-circle" aria-hidden="true"></i>&nbsp;&nbsp;Lunch</div>
+      <div class="col-3 dinner"><i class="fa fa-circle" aria-hidden="true"></i>&nbsp;&nbsp;Dinner</div>
+      <div class="col-3 snacks"><i class="fa fa-circle" aria-hidden="true"></i>&nbsp;&nbsp;Snacks</div>
+    </div>
+    <div>
+      <mwl-calendar-month-view [viewDate]="viewDate" [refresh]="refresh" [events]="events"
+        (dayClicked)="dayClicked($event.day)">
+      </mwl-calendar-month-view>
+    </div>
+  </ng-template>
+</ng-template>

@@ -1,0 +1,195 @@
+<!-- <div *ngIf="showReciptForm; else showRecipt"> -->
+<div class="row my-2">
+  <div class="col-6">
+    <app-page-header [heading]="'Receipt Form'" [icon]="'fa-bar-chart-o'"></app-page-header>
+  </div>
+  <div *ngIf="reciptDetails" class="col-6 d-flex justify-content-end align-items-center">
+    <i (click)="closeDialog()" class="fa fa-times closed" aria-hidden="true"></i>
+  </div>
+</div>
+
+<div *ngIf="!selectedBranch && !reciptDetails; else showReceiptForm">
+  <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+<ng-template #showReceiptForm>
+  <div *ngIf="!reciptDetails" class="row">
+    <div class="col-5">
+      <mat-checkbox (change)='checkForeignNumber($event)' color='primary' >Foreign Number</mat-checkbox>
+    </div>
+    <div class="col-4 d-flex justify-content-end align-items-center">
+      <strong>{{ selectedBranchName }} &nbsp; BRANCH </strong>
+    </div>
+    <div *ngIf="user.branch.length !== 1" class="col-3 select-branch" (click)="removeBranch()">
+      <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+    </div>
+  </div>
+  <div *ngIf="showForm; else receiptTransaction">
+    <div class="row d-flex justify-content-center">
+      <button mat-raised-button type="submit" color="primary" class="m-2" (click)="generateRecipt()">
+        Generate Recipt
+      </button>
+
+    </div>
+    <div class="mx-2 my-2 row">
+      <h5>Recipt Transaction Details</h5>
+    </div>
+    <div *ngIf="transaction.length;else noRecords">
+      <app-receipt-details [columnsToDisplay]="columnsToDisplay" [dataSource]="dataSource">
+      </app-receipt-details>
+    </div>
+    <ng-template #noRecords>
+      <mat-card>
+        <p>No Receipt Details</p>
+      </mat-card>
+    </ng-template>
+  </div>
+  <ng-template #receiptTransaction>
+    <mat-card>
+      <form class="recipt-form" [formGroup]="receiptForm">
+        <div class="row">
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Recipt ID" formControlName="reciptId" required />
+            <mat-error *ngIf="reciptId?.errors && (reciptId?.dirty || reciptId?.touched)">
+              <mat-error *ngIf="reciptId.errors.required">Recipt ID is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-5 m-2 form-fields">
+            <mat-label>Donated date (dd/mm/yyyy)</mat-label>
+            <input class="ml-2" formControlName="donatedDate" matInput placeholder=" dd / mm / yyyy "
+              value="{{ receiptForm.value.donatedDate }}" required />
+            <!-- (click)="fromPicker.open()" [matDatepicker]="fromPicker" />
+        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker> -->
+            <mat-error *ngIf="donatedDate?.errors && (donatedDate?.dirty || donatedDate?.touched)">
+              <mat-error *ngIf="donatedDate.errors.required">Donated Date is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-10 m-2 form-fields">
+            <input matInput placeholder="Name" formControlName="name" required />
+            <mat-error *ngIf="name?.errors && (name?.dirty || name?.touched)">
+              <mat-error *ngIf="name.errors.required">Donor name is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Whatsapp number" formControlName="phone" required />
+            <span *ngIf="!foreignNumber" matPrefix>+91 &nbsp;</span>
+            <mat-error *ngIf="phone?.errors && (phone?.dirty || phone?.touched) && !foreignNumber">
+              <mat-error *ngIf="phone.errors.required">Phone number is required</mat-error>
+              <mat-error *ngIf="phone.errors.pattern">Phone number should be in numbers</mat-error>
+              <mat-error *ngIf="phone.errors.minlength || phone.errors.maxlength">Only 10 digit number allowed
+              </mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Phone number 2" formControlName="phone2" />
+            <span *ngIf="!foreignNumber" matPrefix>+91 &nbsp;</span>
+            <mat-error *ngIf="phone2?.errors && (phone2?.dirty || phone2?.touched) && !foreignNumber">
+              <mat-error *ngIf="phone2.errors.pattern">Phone number should be in numbers</mat-error>
+              <mat-error *ngIf="phone2.errors.minlength || phone2.errors.maxlength">Only 10 digit number allowed
+              </mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Amount" formControlName="amount" required />
+            <mat-error *ngIf="amount?.errors && (amount?.dirty || amount?.touched)">
+              <mat-error *ngIf="amount.errors.required">Amount is required</mat-error>
+              <mat-error *ngIf="amount.errors.pattern">Amount should be in numbers</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Amount in words" formControlName="amountInWords" required />
+            <span matPrefix>Rupees &nbsp;</span>
+            <span matPostfix>&nbsp; only</span>
+            <mat-error *ngIf="amountInWords?.errors && (amountInWords?.dirty || amountInWords?.touched)">
+              <mat-error *ngIf="amountInWords.errors.required">Amount in Words Form is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Bank Name" formControlName="bank" />
+            <mat-error *ngIf="bank?.errors && (bank?.dirty || bank?.touched)">
+              <mat-error *ngIf="bank.errors.required">Bank Name is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Bank Branch Name" formControlName="branch" />
+            <mat-error *ngIf="branch?.errors && (branch?.dirty || branch?.touched)">
+              <mat-error *ngIf="branch.errors.required">branch Name is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Transaction ID / Cheque number" formControlName="transactionId" />
+            <mat-error *ngIf="transactionId?.errors && (transactionId?.dirty || transactionId?.touched)">
+              <mat-error *ngIf="transactionId.errors.required">Transaction number is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <div class="col-5 d-flex align-items-center">
+            <mat-checkbox [checked]="is80G === true" (change)="is80GChecked($event)">80G</mat-checkbox>
+          </div>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Address Line1" formControlName="address1" />
+            <mat-error *ngIf="address1?.errors && (address1?.dirty || address1?.touched)">
+              <mat-error *ngIf="address1.errors.required">Address Line1 is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Address Line2" formControlName="address2" />
+            <mat-error *ngIf="address2?.errors && (address2?.dirty || address2?.touched)">
+              <mat-error *ngIf="address2.errors.required">Address Line2 is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Email" formControlName="email" />
+            <mat-error *ngIf="email?.errors && (email?.dirty || email?.touched)">
+              <mat-error *ngIf="email.errors.required">Email is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-5 m-2 form-fields">
+            <input matInput placeholder="Pincode" formControlName="pincode" />
+            <mat-error *ngIf="pincode?.errors && (pincode?.dirty || pincode?.touched)">
+              <mat-error *ngIf="pincode.errors.required">Pincode is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+
+
+
+        <p class="d-flex justify-content-center mt-4" *ngIf="!receiptForm.valid">** All required fields must be filled
+        </p>
+        <div class="d-flex justify-content-center mt-4">
+          <button mat-raised-button type="submit" [disabled]="!receiptForm.valid" color="primary" class="m-2"
+            (click)="onSubmit(receiptForm.value)">
+            Submit
+          </button>
+          <button mat-raised-button class="m-2" (click)="resetForm()">
+            Reset
+          </button>
+          <button *ngIf="!reciptDetails" mat-raised-button class="m-2" (click)="removeBranch()">
+            New Entry
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  </ng-template>
+</ng-template>

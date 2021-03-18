@@ -1,0 +1,48 @@
+mat-card {
+    .row {
+      word-break: break-word;
+    }
+    padding: 10px;
+    // overflow-x: overlay;
+    // overflow-y: overlay;
+    height: 100%;
+  
+    mat-card-title {
+      font-size: 14px;
+      font-weight: bold;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #efefef;
+    }
+  
+    mat-card-content {
+      margin-bottom: 5px;
+      
+      .row {
+        font-size: 12px;
+        font-family: Arial, serif;
+        padding: 5px;
+  
+        .field {
+          color: #4a4a4a;
+        }
+  
+        .value {
+          font-weight: bold;
+          overflow-wrap: break-word;
+        }
+      }
+    }
+  }
+
+  .border-right {
+    border-right: 1px solid #dad6d6;
+  }
+
+  .col-5 {
+      width: 150px;
+  }
+
+//   ::-webkit-scrollbar {
+//     width: 0px;  /* Remove scrollbar space */
+//     background: transparent;  /* Optional: just make scrollbar invisible */
+// }

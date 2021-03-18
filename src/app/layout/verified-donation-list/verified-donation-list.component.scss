@@ -1,0 +1,15 @@
+.date {
+    display: flex !important ;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.branch-name {
+    text-align: end;
+    padding-right: 0px;
+    padding-top: 0.2rem;
+  }
+  
+  .select-branch:hover {
+    cursor: pointer;
+  }

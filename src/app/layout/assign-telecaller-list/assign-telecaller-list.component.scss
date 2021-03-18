@@ -1,0 +1,36 @@
+table {
+    width: 100%;
+}
+
+.telecaller-details {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2rem;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.print {
+    text-align: end;
+    display: block;
+    // margin-right: 1rem;
+    margin-top: 1rem;
+  
+    .print-button {
+        background-color: green;
+        color: white;
+        border: none;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+  }
+
+  @media print{
+    .doNotPrint{display:none !important;}
+  }
+
+ 

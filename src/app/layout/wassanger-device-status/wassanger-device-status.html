@@ -1,0 +1,71 @@
+<mat-card>
+    <div class="row pl-1 heading">
+        <div class="col-10">
+            {{ device.deviceName }} -
+            <span class="sub-heading pl-1"> ( {{ device.phone}} )</span>
+        </div>
+        <div class="col-2 d-flex align-self-center">
+            <button *ngIf="!refreshing" mat-button (click)="refresh()"> Refresh </button>
+            <i *ngIf="refreshing" class="fa fa-spin fa-spinner fa-pulse"></i>
+        </div>
+    </div>
+    <div class="row p-2 ml-2">
+        <div class="col-4">
+            <div class="row sub-field-heading">
+                Status
+            </div>
+            <div class="row sub-field-heading-value ">
+                {{ device.session?.status }}
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row sub-field-heading ">
+                Deivce Model
+            </div>
+            <div class="row sub-field-heading-value ">
+                {{ device.info?.platform?.manufacturer }} ( {{ device.info?.platform?.model}})
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row sub-field-heading ">
+                Battery
+            </div>
+            <div class="row sub-field-heading-value ">
+                {{ device.info?.battery }} %
+                <span class="red" *ngIf="device.info?.battery < 25">
+                    <i class="fa fa-battery-quarter pl-1" aria-hidden="true"></i>
+                    Low Battery
+                </span>
+                <span *ngIf="device.info?.battery > 25">
+                    <i class="fa fa-battery-three-quarters pl-1" aria-hidden="true"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row p-2 ml-2">
+        <div class="col-4">
+            <div class="row sub-field-heading ">
+                Queue filled
+            </div>
+            <div class="row sub-field-heading-value ">
+                {{ device.queue?.size }} / {{ device.queue?.total }}
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row sub-field-heading ">
+                Queue Available
+            </div>
+            <div class="row sub-field-heading-value ">
+                {{ device.queue?.available }}
+            </div>
+        </div>
+        <!-- <div class="col-2">
+            <div class="row sub-field-heading">
+                Status
+            </div>
+            <div class="row sub-field-heading-value ">
+                {{ device.status }}
+            </div>
+        </div> -->
+    </div>
+</mat-card>

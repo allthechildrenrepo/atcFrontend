@@ -1,0 +1,102 @@
+<app-page-header
+  [heading]="'Dashboard'"
+  [icon]="'fa-bar-chart-o'"
+></app-page-header>
+
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="space"></div>
+
+  <div class="row col-12 user-details">
+    <div class="col-6">
+      <mat-card class="w-100">
+        <mat-card-header>
+          <mat-card-title>
+            {{ localValue?.fullName }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="m-2">
+          <div class="row no-gutters">
+            <span class="label col-6">First Name</span>
+            <span class="value col-6">{{ localValue?.firstname }}</span>
+          </div>
+
+          <div class="row no-gutters">
+            <span class="label col-6">Last Name</span>
+            <span class="value col-6">{{ localValue?.lastname }}</span>
+          </div>
+
+          <div class="row no-gutters">
+            <span class="label col-6">Email</span>
+            <span class="value col-6">{{ localValue?.email }}</span>
+          </div>
+          <div class="row no-gutters">
+            <span class="label col-6">Branch Name</span>
+            <span class="value col-6" *ngFor="let branch of localValue?.branch">{{
+               branch.branchName
+            }} |</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-6">
+      <mat-card class="w-80">
+        <mat-card-header>
+          <mat-card-title>
+            WhatsApp Status -
+            <span *ngIf="checkingStatus; else statusDone" class="grey">
+              Checking Status ....
+            </span>
+            <ng-template #statusDone>
+              <span *ngIf="whatsappConnected; else getQR" class="green">
+                Active
+                <i class="fa fa-whatsapp mx-2 green" aria-hidden="true"></i
+              ></span>
+              <ng-template #getQR>
+                <span class="red">
+                  InActive
+                  <i class="fa fa-whatsapp mx-2 red" aria-hidden="true"></i
+                ></span>
+              </ng-template>
+            </ng-template>
+            <button mat-button (click)="checkWhatsappStatus()">
+              <i class="fa fa-refresh mx-2" aria-hidden="true"></i>
+            </button>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content *ngIf="checkingStatus; else statusLoaded">
+          <p>Checking whatsapp connectivity ....</p>
+          <mat-progress-bar
+            color="secondary"
+            mode="indeterminate"
+          ></mat-progress-bar>
+        </mat-card-content>
+        <ng-template #statusLoaded>
+          <mat-card-content
+            class="m-2"
+            *ngIf="whatsappConnected; else QRScreen"
+          >
+          <div class="row">
+            <div class="col-8">
+              <h5>Registered mobile phone Connected</h5>
+            </div>
+            <div class="col-4">
+              <img class="phoneconnecting" src="../../../assets/wapconnect.jpg" />
+            </div>
+          </div>
+          </mat-card-content>
+          <ng-template #QRScreen>
+            <mat-card-content class="m-2">
+              <p>
+                To activate whatsapp, scan the QR code from the
+                device on which WhatsApp is registered. Please contact Admin office
+              </p>
+              <p>
+                Note: Click on reload, to refresh the status.
+              </p>
+            </mat-card-content>
+          </ng-template>
+        </ng-template>
+      </mat-card>
+    </div>
+  </div>
+</div>

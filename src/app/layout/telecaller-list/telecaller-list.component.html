@@ -1,0 +1,101 @@
+<app-page-header [heading]="'Tele-Caller List'" [icon]="'fa-bar-tick-o'"></app-page-header>
+<div *ngIf="!selectedBranch; else showList">
+  <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+
+<ng-template #showList>
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-4 branch-name d-flex justify-content-end align-items-center">
+      <strong>{{ selectedBranch.branchName }} &nbsp; BRANCH </strong>
+    </div>
+    <div *ngIf="user.branch.length !== 1" (click)="removeBranch()" class="col-3 select-branch d-flex justify-content-start align-items-center">
+      <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another
+      branch
+    </div>
+  </div>
+
+  <br />
+  <mat-table #matTable [dataSource]="teleCallerDataSource" matSort>
+    <ng-container matColumnDef="ATC-ID">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        ATC ID
+      </mat-header-cell>
+      <mat-cell *matCellDef="let teleCaller">
+        <span class="label">{{ teleCaller.atcProfile?.atcId }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Name">
+      <mat-header-cell *matHeaderCellDef>
+        Name
+      </mat-header-cell>
+      <mat-cell *matCellDef="let teleCaller">
+        <span class="label">{{ teleCaller.fullName }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="alias">
+      <mat-header-cell *matHeaderCellDef>
+        Voice Calling Name
+      </mat-header-cell>
+      <mat-cell *matCellDef="let teleCaller">
+        <span class="label">{{ teleCaller.atcProfile?.voiceCallingName }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef>
+        Phone
+      </mat-header-cell>
+      <mat-cell *matCellDef="let teleCaller">
+        <span class="label">{{ teleCaller.username }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="voice">
+      <mat-header-cell *matHeaderCellDef>
+        VC number 1
+      </mat-header-cell>
+      <mat-cell *matCellDef="let teleCaller">
+        <span class="label">{{
+          teleCaller.atcProfile?.voiceCallingNumber1
+        }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="voice1">
+      <mat-header-cell *matHeaderCellDef>
+        VC number 2
+      </mat-header-cell>
+      <mat-cell *matCellDef="let teleCaller">
+        <span class="label">{{
+          teleCaller.atcProfile?.voiceCallingNumber2
+        }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="voice2">
+      <mat-header-cell *matHeaderCellDef>
+        VC number 3
+      </mat-header-cell>
+      <mat-cell *matCellDef="let teleCaller">
+        <span class="label">{{
+            teleCaller.atcProfile?.voiceCallingNumber3
+        }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="count">
+      <mat-header-cell *matHeaderCellDef>
+        Count
+      </mat-header-cell>
+      <mat-cell *matCellDef="let teleCaller">
+        <span class="label"></span>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+  </mat-table>
+</ng-template>

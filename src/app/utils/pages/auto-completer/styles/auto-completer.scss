@@ -1,0 +1,35 @@
+//@import '../../../../styles/_variables.scss';
+//@import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
+
+//.auto-completer {
+//  .auto-completer-example {
+//    margin-bottom: 30px;
+//
+//    .auto-completer-title {
+//      font-size: $font-size-lg;
+//      font-weight: 300;
+//      letter-spacing: $letter-spacing-lg;
+//      margin-top: 0;
+//    }
+//  }
+//}
+
+.auto-complete-images {
+  .mat-option {
+    height: 120px;
+    padding: 20px 10px;
+  }
+
+  .auto-complete-image {
+    height: 80px;
+    margin-right: 10px;
+  }
+}
+
+//@media only screen and (max-width: $screen-xs-max)
+//{
+//  .cdk-overlay-pane {
+//    padding-top: 0px;
+//    position: fixed;
+//  }
+//}

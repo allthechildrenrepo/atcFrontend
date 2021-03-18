@@ -1,0 +1,44 @@
+<app-page-header [heading]="'Not verified List'" [icon]="'fa-bar-tick-o'"></app-page-header>
+<div *ngIf="!selectedBranch; else showList">
+  <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+<ng-template #showList>
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-4 d-flex justify-content-end align-items-center">
+      <strong>{{ selectedBranch.branchName }} &nbsp;BRANCH </strong>
+    </div>
+    <div *ngIf="user.branch.length !== 1" class="col-3 select-branch" (click)="removeBranch()">
+      <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+    </div>
+  </div>
+    <div class="row d-flex justify-content-center align-items-center">
+      <mat-form-field class=col-3>
+        <mat-label>Enter Donor number</mat-label>
+        <input class="ml-2" [(ngModel)]="donorId" matInput placeholder="Donor ID">
+      </mat-form-field>
+      <button class="col-2 w-50" mat-raised-button color="primary" (click)="filterByDonorId()">
+        Search
+      </button>
+      <!-- <div class="col-1"></div>
+      <mat-form-field class=col-3>
+        <mat-label>Enter Telecaller ID</mat-label>
+        <input class="ml-2" [(ngModel)]="telecallerId" matInput placeholder="Telecaller ID">
+      </mat-form-field>
+      <button class="col-2 w-50" mat-raised-button color="primary" [disabled]="!telecallerId"
+        (click)="filterBytelecallerId()">
+        Search
+      </button> -->
+    </div>
+
+
+  <ngb-alert class="alert-box" [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">
+      {{ alert.message }}
+    </ngb-alert>
+  
+  <div *ngIf="transactionDetails.length > 0; else noList">
+    <app-donar-transaction-details class="transactionDetails" [tableData]="transactionDetails"
+      [columnsToDisplay]="columnsToDisplay" (refresh)="getDonationList()">
+    </app-donar-transaction-details>
+  </div>
+</ng-template>

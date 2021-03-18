@@ -1,0 +1,115 @@
+<form [formGroup]="donorForm" class="example-form">
+  <mat-card class="pb-0">
+    <mat-card-header class="card-header">
+      <mat-card-title class="m-0">
+        Donor Details
+      </mat-card-title>
+      <button mat-button class="back-button">
+        <i class="fa fa-angle-left p-2" aria-hidden="true"></i>Back
+      </button>
+    </mat-card-header>
+    <mat-card-content class="p-4">
+      <mat-form-field class="m-2 form-fields">
+        <input type="text" matInput placeholder="First Name" value="{{ donorForm.value.firstName}}"
+          formControlName="firstName" required />
+        <mat-error *ngIf="
+            firstName.errors && (firstName.dirty || firstName.touched)
+          ">
+          <mat-error *ngIf="firstName.errors.required">Full Name is required</mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="m-2 form-fields">
+        <input matInput placeholder="Second Name " value="{{donorForm.value.lastName}}"
+          formControlName="lastName" required />
+        <mat-error *ngIf="
+          lastName.errors && (lastName.dirty || lastName.touched)
+        ">
+          <mat-error *ngIf="lastName.errors.required">Last Name is required, Enter Surname</mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="m-2 form-fields">
+        <input matInput placeholder="Pan Card Number" value="{{ donorForm.value.pan }}"
+          formControlName="pan" />
+      </mat-form-field>
+
+      <mat-form-field class="m-2 form-fields">
+
+        <mat-label>Phone Number</mat-label>
+        <span matPrefix>+91 &nbsp;</span>
+        <input matInput placeholder="8754442892" value="{{ donorForm.value.phone }}" formControlName="phone"
+          readonly required />
+        <mat-error *ngIf="phone.errors && (phone.dirty || phone.touched)">
+          <mat-error *ngIf="phone.errors.required">Phone Number is required</mat-error>
+          <mat-error *ngIf="phone.errors.pattern">Letters not allowed</mat-error>
+          <mat-error *ngIf="phone.errors.minlength || phone.errors.maxlength">Only 10 digit number allowed
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="m-2 form-fields">
+        <mat-label>Alternate Phone Number 1</mat-label>
+        <span matPrefix>+91 &nbsp;</span>
+        <input matInput placeholder="8754442892" value="{{donorForm.value.phone1}}" formControlName="phone1"/>
+        <mat-error *ngIf="phone1?.errors">
+          <mat-error *ngIf="phone1?.errors.pattern">Letters not allowed</mat-error>
+          <mat-error *ngIf="phone1.errors.minlength || phone1.errors.maxlength">Phone number should be in 10 digit
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="m-2 form-fields">
+        <mat-label>Alternate Phone Number 2</mat-label>
+        <span matPrefix>+91 &nbsp;</span>
+        <input matInput placeholder="8754442892" value="{{donorForm.value.phone2}}" formControlName="phone2"/>
+        <mat-error *ngIf="phone2?.errors">
+          <mat-error *ngIf="phone2?.errors.pattern">Letters not allowed</mat-error>
+          <mat-error *ngIf="phone2.errors.minlength || phone2.errors.maxlength">Phone number should be in 10 digit
+          </mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="m-2 form-fields">
+        <input matInput placeholder="Address line 1" formControlName="flat"
+          value="{{ donorForm.value.flat }}" required />
+        <mat-error *ngIf="flat.errors && (flat.dirty || flat.touched)">
+          <mat-error *ngIf="flat.errors.required">Address is requuird</mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="m-2 form-fields">
+        <input matInput placeholder="Address line 2" formControlName="address"
+          value="{{ donorForm.value.address }}" required />
+        <mat-error *ngIf="address.errors && (address.dirty || address.touched)">
+          <mat-error *ngIf="address.errors.required">Address is requuird</mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="m-2 form-fields">
+        <input matInput placeholder="Email" value="{{ donorForm.value.email }}" formControlName="email" />
+        <mat-error *ngIf="email.errors && (email.dirty || email.touched)">
+          <mat-error *ngIf="email.errors.required">email is required</mat-error>
+          <mat-error *ngIf="email.errors.email">email is invalid</mat-error>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="m-2 form-fields">
+        <mat-label>Gender</mat-label>
+        <select matNativeControl value="{{ donorForm.value.gender }}" formControlName="gender" required>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="transgender">Transgender</option>
+        </select>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+  <div class="d-flex justify-content-center mt-4">
+    <button mat-raised-button type="submit" [disabled]="!donorForm.valid" color="primary" class="m-2" (click)="onSave(donorForm.value)">
+      Save
+    </button>
+    <button mat-raised-button class="m-2" (click)="closeEditForm()">
+      Close
+    </button>
+  </div>
+</form>

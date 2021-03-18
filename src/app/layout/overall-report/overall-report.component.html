@@ -1,0 +1,100 @@
+<app-page-header [heading]="'Overall Report'" [icon]="'fa-bar-tick-o'"></app-page-header>
+<mat-card>
+  <mat-card-title>
+    Filter
+  </mat-card-title>
+  <mat-card-content>
+    <div class="row my-2 mx-1">
+      <h5>Select Year and Month</h5>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        <select [(ngModel)]="selectedYear" (ngModelChange)="onYearSelection()">
+          <option *ngFor="let year of years" [value]="year">{{year}}</option>
+        </select>
+      </div>
+      <div class="col-11 d-flex justify-content-center align-items-center">
+        <mat-radio-group class="d-flex justify-content-center align-items-center" [(ngModel)]="selectedMonth">
+          <mat-radio-button class="pl-1 pr-3" (change)="updateMonth(month)" *ngFor="let month of months" [value]="month">
+            {{month}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="row my-2 mx-1">
+      <h5>Doanation type</h5>
+    </div>
+    <div class="row">
+      <div class="col-9">
+          <mat-chip-list aria-label="Donation type">
+              <mat-chip *ngFor="let mode of modeOfTransaction" (click)="filter(mode)">  {{mode.name}}
+              </mat-chip>
+              <mat-chip  (click)="filter()">  Overall
+              </mat-chip>
+          </mat-chip-list>
+      </div>
+      <div class="col-3 pr-2">
+            <div class="row d-flex justify-content-center align-items-center"><b>Verified Transaction</b></div>
+            <div class="row mt-2">
+              <div class="col-6 border-right">
+                <div class="row d-flex justify-content-center align-items-center">
+                  Total Count
+                </div>
+                <div class="row d-flex justify-content-center align-items-center">
+                  <h3 class="count">{{verifiedTransactionCount}}</h3>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row d-flex justify-content-center align-items-center">
+                  Total Amount
+                </div>
+                <div class="row d-flex justify-content-center align-items-center">
+                  <h3 class="amount">{{verifiedTransactionTotal}}</h3>
+                </div>
+              </div>
+            </div>
+        </div>
+        
+    </div>
+   
+  </mat-card-content>
+</mat-card>
+<div class="row mt-2">
+ 
+  <!-- <div class="col-6 pl-2">
+    <mat-card>
+      <div class="row d-flex justify-content-center align-items-center"><b>InProgress Transaction</b></div>
+      <div class="row mt-2">
+        <div class="col-6 border-right">
+          <div class="row d-flex justify-content-center align-items-center">
+            Total Count
+          </div>
+          <div class="row d-flex justify-content-center align-items-center">
+            <h3 class="count">{{progressTransactionCount}}</h3>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row d-flex justify-content-center align-items-center">
+            Total Amount
+          </div>
+          <div class="row d-flex justify-content-center align-items-center">
+            <h3 class="amount">{{progressTransactionTotal}}</h3>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div> -->
+</div>
+<div *ngIf="verifiedTransactionDetails.length">
+  <app-donar-transaction-details class="transactionDetails" [tableData]="verifiedTransactionDetails"
+    [columnsToDisplay]="columnsToDisplay">
+  </app-donar-transaction-details>
+</div>
+
+<mat-card *ngIf="!verifiedTransactionDetails.length && !progressTransactionDetails.length && selectedMonth">
+  There is no Transaction under given filter
+</mat-card>
+
+<ngb-alert class="alert-box" [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">
+  {{ alert.message }}
+</ngb-alert>

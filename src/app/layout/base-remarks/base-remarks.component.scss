@@ -1,0 +1,34 @@
+.select-branch:hover {
+    cursor: pointer;
+}
+
+.select-input {
+    width: 100%;
+}
+
+.submit {
+    button {
+        width: 100%;
+    }
+}
+
+.w-10 {
+    width: 20px;
+}
+
+.mat-footer-row,
+.mat-header-row,
+.mat-row {
+    display: inline-flex;
+    min-width: 100%;
+}
+
+.mat-column-donor_phone {
+    flex: 0 0 15% !important;
+}
+.mat-column-remarks {
+    flex: 0 0 70% !important;
+}
+.mat-column-conver_to_contact {
+    flex: 0 0 15% !important;
+}

@@ -1,0 +1,94 @@
+<!-- <div class="row">
+	<div class="col-4 search-icon">
+		<i class="fa fa-search dm-2" (click)="applyFilter($event.target.value)" aria-hidden="true">
+		</i></div>
+	<div class="col-8">
+		<mat-form-field class="search">
+			<input matInput (keyup)="applyFilter($event.target.value)" (keyup.enter)="applyFilter($event.target.value)"
+				#searchItem placeholder="Search Donor / Transaction Id / Amount" />
+		</mat-form-field>
+	</div>
+</div>
+
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+	<ng-container matColumnDef="{{column.value}}" *ngFor="let column of columnData[0] | keyvalue">
+		<th class="outer-th" mat-header-cell *matHeaderCellDef> {{column.key}} </th>
+		<td class="outer-td" mat-cell *matCellDef="let element">
+			<div *ngIf="column.key == 'Verified'; else values">
+				<span *ngIf="column.key == 'Verified'">
+					<i *ngIf="element[column.value] === true" class="fa fa-check verified" aria-hidden="true"></i>
+					<i *ngIf="element[column.value] === false" class="fa fa-times closed" aria-hidden="true"></i>
+				</span>
+			</div>
+			<ng-template #values>
+				<div *ngIf="column.key == 'Branch'; else nonBranches">
+					<span>{{branches[element[column.value]-1]?.branchName}}</span>
+				</div>
+				<ng-template #nonBranches>
+					<span
+						*ngIf="element[column.value] !== true && element[column.value] !== false">{{element[column.value]}}</span>
+					<span *ngIf="element[column.value] === true">Yes</span>
+					<span *ngIf="element[column.value] === false">No</span>
+				</ng-template>
+			</ng-template>
+		</td>
+	</ng-container>
+
+	<ng-container matColumnDef="expandedDetail">
+		<td mat-cell *matCellDef="let element" [attr.colspan]=3>
+
+			<div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+				<div class="row">
+					<table>
+						<tr *ngFor="let item of columnData[1] | keyvalue" class="inner-table">
+							<td class="inner-td header">{{ item.key }}</td>
+							<div *ngIf="item.key !== 'Transaction mode'; else transactionMode">
+								<td *ngIf="element[item.value] !== true && element[item.value] !== false"
+									class="inner-td">
+									{{ element[item.value] }}</td>
+								<td *ngIf="element[item.value] === true">Yes</td>
+								<td *ngIf="element[item.value] === false">No</td>
+							</div>
+							<ng-template #transactionMode>
+								<td>{{modeOfTransaction[element[item.value]-1]?.name}}</td>
+							</ng-template>
+						</tr>
+					</table>
+				</div>
+				<div class="row ">
+				<div class="center-element">
+					<button mat-stroked-button (click)="openScreenshot(element.screenshot_url)">Screenshot</button>
+				</div>
+				<div class="center-element">
+					<button mat-stroked-button (click)="editTransactionDetails(element)">Edit</button>
+				</div>
+				<div *ngIf="element.status !== 'Verified'" class="center-element">
+					<button mat-stroked-button (click)="notVerifiedTransaction(element)">Not Veified</button>
+				</div>
+
+				<div *ngIf="element.is_verified === false; else receipt" class="center-element">
+					<button mat-stroked-button (click)="approveDonation(element)">
+						<span *ngIf="!loaderVerify">Verify</span>
+						<i *ngIf="loaderVerify" class="fa fa-spin fa-2x fa-spinner fa-pulse"></i>
+					</button>
+				</div>
+				<ng-template #receipt>
+					<div class="center-element">
+						<button mat-stroked-button (click)="showReceipt(element)">Generate <br /> Receipt</button>
+					</div>
+				</ng-template>
+			</div> -->
+				<!-- <div class="center-element">
+					<i (click)="expandedElement=!element" class="fa fa-times close" aria-hidden="true"></i>
+				</div> -->
+			<!-- </div> -->
+<!-- 
+		</td>
+	</ng-container>
+
+	<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+	<tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+		[class.example-expanded-row]="expandedElement === element" (click)="expandedElement = element">
+	</tr>
+	<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table> -->

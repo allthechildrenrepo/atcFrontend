@@ -1,0 +1,136 @@
+<app-page-header class="doNotPrint" [heading]="'Base'" [icon]="'fa-bar-chart-o'"></app-page-header>
+
+<div *ngIf="!selectedBranchId; else showList">
+  <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+</div>
+
+<ng-template #showList>
+  <div class="container">
+    <div class="row" (click)="removeBranch()">
+      <div class="col-5"></div>
+      <div class="col-4 branch-name">
+        <p>
+          <strong>{{ selectedBranch.branchName }} BRANCH </strong>
+        </p>
+      </div>
+      <div class="col-3 select-branch">
+        <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+      </div>
+    </div>
+    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+      </ngb-alert>
+    <div class="row m-2">
+      <div class="col-4">
+        <mat-card class="h-100">
+          <mat-card-header>
+            <mat-card-title>
+              STATISTICS
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row py-2 mx-2 border">
+              <div class='col-8'>
+                Total base :
+              </div>
+              <div class='col-4'>
+                {{ leads?.length }}
+              </div>
+            </div>
+            <div class="row py-2 mx-2 border">
+              <div class='col-8'>
+                Unassinged base :
+              </div>
+              <div class='col-4'>
+                {{ unAssignedLeads?.length }}
+              </div>
+            </div>
+            <div class="row  py-2 mx-2 border">
+              <div class='col-8'>
+                Assigned base :
+              </div>
+              <div class='col-4'>
+                {{ teleCallerAssigned?.length }}
+              </div>
+            </div>
+            <div class="row py-2 mx-2 border">
+              <div class='col-8'>
+                Remarked base :
+              </div>
+              <div class='col-4'>
+                {{ remarksGiven?.length }}
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-4 assign-telecaller" >
+        <mat-card class="h-100">
+            <mat-card-header>
+                <mat-card-title>
+                  Assign TeleCaller
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content *ngIf="telecallerList.length > 0">
+                <div class="row">
+                    <form class="example-form mx-2">
+                        <mat-form-field class="example-full-width">
+                          <input type="text"
+                                 placeholder="Select teleCaller"
+                                 aria-label="Number"
+                                 matInput
+                                 [formControl]="myControl"
+                                 [matAutocomplete]="auto">
+                          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                            <!-- Use on change to set the tele caller object in global variable -->
+                              <mat-option *ngFor="let option of filteredOptions | async" (click)="telecallerSelected(option)" (onSelectionChange)="telecallerSelected(option)" [value]="option.atcId+' '+option?.atcProfile?.voiceCallingName +'-'+option.fullName">
+                                  ({{option.atcId}})&nbsp;{{option.atcProfile?.voiceCallingName}}-{{option.fullName}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </form>
+                      <div class="ml-2">
+                        <form [formGroup]="assignForm" (ngSubmit)="assignBase()">
+                          <div class="form-group">
+                            <label for="number">Enter the number of base to be assigned</label>
+                            <input formControlName="number" id="number" type="text"  class="form-control">
+                            <div *ngIf="assginFormControl.number.invalid" >
+                              <p *ngIf="assginFormControl.number.errors.pattern" class="red">Enter only number.</p>
+                            </div>
+                          </div>
+                          <button mat-raised-button color="primary" class="w-100" type="submit" [disabled]="!assignForm.valid">Assign base</button>
+                        </form>
+                      </div>
+                </div>
+                </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-4">
+        <mat-card class="h-100">
+          <mat-card-header>
+            <mat-card-title>
+              NEW REQUEST FOR BASE
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row  d-flex justify-content-center align-items-center">
+              <form [formGroup]="form" (ngSubmit)="requestForBase()">
+                <div class="form-group">
+                  <label for="number">Enter the number of base required</label>
+                  <input formControlName="number" id="number" type="text" class="form-control">
+                  <div *ngIf="f.number.invalid" >
+                    <p *ngIf="f.number.errors.pattern" class="red">Enter only number.</p>
+                  </div>
+                </div>
+                <button mat-raised-button color="primary" class="w-100" type="submit" [disabled]="!form.valid">Request</button>
+              </form>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div class="row m-2" *ngIf="showPendingRequests">
+      <base-pending-request class="w-100" *ngIf="selectedBranchId" [branchId]="selectedBranchId" [status]="0" [readOnly]="true"></base-pending-request>
+    </div>
+
+  </div>
+</ng-template>

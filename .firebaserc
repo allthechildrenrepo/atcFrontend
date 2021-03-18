@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "all-the-children",
+    "dev": "aththechildrendev"
+  }
+}
