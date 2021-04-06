@@ -4,9 +4,10 @@
     <button mat-raised-button class="download" color="priamry" (click)="openPdfInPrintPage()">Download & Print </button>
     <button mat-stroked-button disabled *ngIf="notAWhatsappNumber; else showSend">Not a Whatsapp number</button>
     <ng-template #showSend>
-    <button mat-raised-button *ngIf="!data.foreignNumber" class="download" color="priamry" (click)="sentViaWhatsAPP()"> Send WhatsApp
-    </button>
-  </ng-template>
+      <button mat-raised-button *ngIf="!data.foreignNumber" class="download" color="priamry"
+        (click)="sentViaWhatsAPP()"> Send WhatsApp
+      </button>
+    </ng-template>
     <button mat-raised-button *ngIf="data.email" class="download" color="priamry" (click)="sendEmail()"> Send Email
     </button>
     <button mat-stroked-button (click)="closeReceipt()" aria-hidden="true"> close </button>
@@ -19,7 +20,7 @@
       <i class="fa fa-window-close-o" (click)="closeReceipt()" aria-hidden="true"></i>
     </div>
   </ng-template>
- 
+
 </div>
 
 <div id="receipt">
@@ -27,7 +28,8 @@
     <div class="container m-2 pr-2 border border-top-0 border-bottom-0 border-right-0 border-dark">
       <div class="row ">
         <div *ngIf="data?.is80G;" class="col-6 p-4 border border-left-0 border-right-0 border-dark">
-          <img class="image-logo" src="../../../assets/allthechildren.png" (load)="logImageLoaded()" alt="All The Children" />
+          <img class="image-logo" src="../../../assets/allthechildren.png" (load)="logImageLoaded()"
+            alt="All The Children" />
           <span class="font-bold">All The Children</span>
           <br />
           <span>No 536, LIG - II, TNHB Colony, 1st Avenue</span>
@@ -42,7 +44,8 @@
           <br />
         </div>
         <div *ngIf="!data?.is80G;" class="col-6 p-4 border border-right-0 border-left-0 border-dark">
-          <img class="image-logo" src="../../../assets/allthechildren.png" (load)="logImageLoaded()" alt="All The Children" />
+          <img class="image-logo" src="../../../assets/allthechildren.png" (load)="logImageLoaded()"
+            alt="All The Children" />
           <span class="font-bold">All The Children</span>
           <br />
           <span>No 39/40, Palla 2nd Street</span>
@@ -151,7 +154,7 @@
           <br />
         </div>
       </div>
-      <div class="row p-1 border border-left-0 border-top-0 border-dark">
+      <div class="row p-1 lastborder border border-left-0 border-top-0 border-dark">
         <div class="col-7 border border-left-0 border-bottom-0 border-top-0 border-dark">
           <span>
             <b>Note:</b>
@@ -162,10 +165,13 @@
         <div class="col-5">
           <span>For All The Children</span>
           <br />
-          <img class="sign" src="../../../assets/seall.png"  (load)="signImageLoaded()"alt="" />
+          <img class="sign" src="../../../assets/seall.png" (load)="signImageLoaded()" alt="" />
           <br />
           <span>Authorized Signatory</span>
         </div>
+      </div>
+      <div class="row">
+        
       </div>
     </div>
   </div>

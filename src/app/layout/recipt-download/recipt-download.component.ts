@@ -67,14 +67,14 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
         document.body.appendChild(canvas);
         var imgWidth = 100;
         var pageHeight = 195;
-        var imgHeight = (canvas.height * imgWidth) / canvas.width;
+        var imgHeight = ((canvas.height * imgWidth) / canvas.width ) - 2 ;
         var heightLeft = imgHeight;
 
         const contentDataURL = canvas.toDataURL("image/png");
         // a4': [595.28, 841.89]
         this.pdf = new jspdf("p", "mm", [300, 350], false); // A4 size page of PDF
         var position = 0;
-        this.pdf.addImage(contentDataURL, "PNG", 2, 2, imgWidth, imgHeight, '', 'FAST');
+        this.pdf.addImage(contentDataURL, "PNG", 2, 2, imgWidth, imgHeight, '', 'SLOW');
         this.enableButton = true;
         this.dismissLoader();
       })
