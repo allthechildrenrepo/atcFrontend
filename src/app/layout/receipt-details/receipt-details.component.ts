@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WhatsAppTransaction } from 'src/app/shared/model/whats-app-transaction';
+import { TableUtil } from "../../shared/TableUtil";
+
 
 @Component({
   selector: 'app-receipt-details',
@@ -23,6 +25,10 @@ export class ReceiptDetailsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  downloadTable(tableId) {
+    TableUtil.exportToExcel(tableId, "whatsapp-transaction");
   }
 
   ngOnChanges() {

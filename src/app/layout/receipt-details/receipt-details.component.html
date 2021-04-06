@@ -1,4 +1,14 @@
-<table mat-table *ngIf="dataSource?.length > 0" [dataSource]="dataSource" class="mat-elevation-z8">
+<div *ngIf="dataSource?.length > 0"  class="row d-flexjustify-content-center">
+    <div class="col-7 d-flex  m-1  justify-content-start align-items-center">
+        Total number of receipt listed based on filter : {{dataSource?.length }}
+    </div>
+    <div class="col-4 d-flex justify-content-end  m-1  align-items-center">
+        <button mat-raised-button color="primary" (click)="downloadTable('recipttransactiondownload')">
+            Download as excel
+          </button>
+    </div>
+</div>
+<table mat-table *ngIf="dataSource?.length > 0" id="recipttransactiondownload" [dataSource]="dataSource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="created_date">
       <th mat-header-cell *matHeaderCellDef> Send date </th>
