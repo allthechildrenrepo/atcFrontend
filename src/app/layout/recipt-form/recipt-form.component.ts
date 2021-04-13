@@ -32,7 +32,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   // this showForm not display need to explore
   showForm: boolean = false;
   foreignNumber: boolean = false;
-  transaction: WhatsAppTransaction[] = [];
+  whatsappTransaction: WhatsAppTransaction;
   dataSource;
 
   is80G = false;
@@ -78,7 +78,6 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     this.createFormGroup();
     if (this.transactionDetails) {
       this.setEditableInputs();
-      this.fetchWhatsAppTransaction();
     }
   }
 
@@ -191,32 +190,38 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     // this.router.navigate(['/download-recipt']);
   }
 
-  fetchWhatsAppTransaction() {
+  fetchWhatsAppTransaction(receiptId) {
     console.log("working", this.transactionDetails);
-    //Mock params need to change
-    let param = {};
-    // param['donation'] = this.transactionDetails.id;
-    // param['branch_id'] = this.selectedBranch;
-    param['start_date'] = '2020-10-10';
-    param['end_date'] = '2020-10-11';
+    let param = {'receipt_id': receiptId};
     this.presentLoader();
-
-    //If the user is not an Admin, Restrict another branch WhatsApp transaction details.
-    // if(this.selectedBranch != 17) {
-    //     param['branch_id'] = this.selectedBranch;
-    // }
-
-    this.transaction = [];
     this.whatsAppTransactionService.get(param).subscribe((data) => {
-      data.forEach(element => {
-        this.transaction.push(new WhatsAppTransaction().deserializer(element));
-      });
-      this.dataSource = this.transaction;
+      this.whatsappTransaction = new WhatsAppTransaction().deserializer(data[0])
+      this.setWhatsAppEditInputs()
       this.dismissLoader();
     }, err => {
       this.somethingWentWrong();
       this.dismissLoader();
     })
+  }
+
+  setWhatsAppEditInputs(){
+    if(this.whatsappTransaction) {
+      this.receiptForm.controls["reciptId"].setValue(this.whatsappTransaction.receiptId);
+      this.receiptForm.controls["donatedDate"].setValue(this.whatsappTransaction.donatedDate);
+      this.receiptForm.controls["name"].setValue(this.whatsappTransaction.name);
+      this.receiptForm.controls["phone"].setValue(this.whatsappTransaction.whatsAppNumber);
+      this.receiptForm.controls["phone2"].setValue(this.whatsappTransaction.phone2);
+      this.receiptForm.controls["bank"].setValue(this.whatsappTransaction.bank);
+      this.receiptForm.controls["branch"].setValue(this.whatsappTransaction.bankBranch);
+      this.receiptForm.controls["transactionId"].setValue(this.whatsappTransaction.transaction);
+      this.receiptForm.controls["amount"].setValue(this.whatsappTransaction.amount);
+      this.receiptForm.controls["amountInWords"].setValue(this.whatsappTransaction.amountWords);
+      this.receiptForm.controls["address1"].setValue(this.whatsappTransaction.address);
+      this.receiptForm.controls["address2"].setValue(this.whatsappTransaction.address1);
+      this.receiptForm.controls["email"].setValue(this.whatsappTransaction.email);
+      this.receiptForm.controls["pincode"].setValue(this.whatsappTransaction.pincode);
+    }
+
   }
 
   setEditableInputs() {

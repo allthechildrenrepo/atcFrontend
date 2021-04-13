@@ -55,7 +55,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
    * Convert the html to pdf and send to whatsapp, or just download or go for print
    */
   convertHtmlToPDF() {
-    if(this.imageCounter < 2) {
+    if (this.imageCounter < 2) {
       return;
     }
     this.presentLoader();
@@ -67,7 +67,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
         document.body.appendChild(canvas);
         var imgWidth = 100;
         var pageHeight = 195;
-        var imgHeight = ((canvas.height * imgWidth) / canvas.width ) - 2 ;
+        var imgHeight = ((canvas.height * imgWidth) / canvas.width) - 2;
         var heightLeft = imgHeight;
 
         const contentDataURL = canvas.toDataURL("image/png");
@@ -132,7 +132,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
         this.notAWhatsappNumber = true;
         return;
       }
-    })      
+    })
   }
   /**
    * set the download and print page false and whatsappto true
@@ -140,15 +140,15 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
   sentViaWhatsAPP() {
     let phone = this.data.mobile;
     phone = "91" + this.data.mobile;
-      this.sendTo = phone;
-      if (this.data.mobile.length === 10) {
-        this.storeReceiptTrans(0);
-        document.body.removeChild(this.canvas);
-      } else {
-        alert("Message not sent,Donar number is not valid, It must be 10 digit length");
-        document.body.removeChild(this.canvas);
-        return;
-      }
+    this.sendTo = phone;
+    if (this.data.mobile.length === 10) {
+      this.storeReceiptTrans(0);
+      document.body.removeChild(this.canvas);
+    } else {
+      alert("Message not sent,Donar number is not valid, It must be 10 digit length");
+      document.body.removeChild(this.canvas);
+      return;
+    }
   }
 
   /**
@@ -178,14 +178,14 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     this.storeReceiptTrans(2);
   }
 
-  signImageLoaded(){
+  signImageLoaded() {
     this.imageCounter++;
     this.convertHtmlToPDF();
     console.log("sign loaded")
   }
 
 
-  logImageLoaded(){
+  logImageLoaded() {
     this.imageCounter++;
     this.convertHtmlToPDF();
     console.log("logo loaded")
@@ -207,6 +207,9 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
       message: "Hi thanks for the donation",
       branch_id: this.data.donatedBranch,
     };
+    let otherPrams = this.generateParams();
+    params = { ...params, ...otherPrams };
+
     this.receiptSendMailService.post(params).subscribe((data) => {
       this.dismissLoader();
       document.body.removeChild(this.canvas);
@@ -217,7 +220,29 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
       this.dismissLoader();
       return;
     })
+  }
+
+  generateParams() {
+    return {
+      'reciptId': this.data.reciptId,
+      'donated_date': this.data.donatedDate,
+      'name': this.data.name,
+      'phone1': this.sendTo,
+      'phone2': this.data.phone2,
+      'amount': this.data.amount,
+      'amount_in_words': this.data.amountWords,
+      'transaction': this.data.transaction,
+      'is_80g': this.data.is80G,
+      'bank': this.data.bank,
+      'bank_branch': this.data.branch,
+      'address_line_1': this.data.address,
+      'address_line_2': this.data.address1,
+      'pincode': this.data.pincode,
+      'email': this.data.email,
+      'donatedBranch': this.data.donatedBranch,
+      'foreign_number': this.data.foreignNumber,
     }
+  }
 
   /**
    * @param medium:
@@ -239,6 +264,8 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     if (this.data.donationId && this.data.donationId != "") {
       params['donation_id'] = this.data.donationId;
     }
+    let otherPrams = this.generateParams();
+    params = { ...params, ...otherPrams };
     this.whatsAppTransactionService.post(params).subscribe((data) => {
       this.isTrackDone = true;
       this.dismissLoader();

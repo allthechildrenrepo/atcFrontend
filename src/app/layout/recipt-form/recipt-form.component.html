@@ -13,14 +13,23 @@
 </div>
 <ng-template #showReceiptForm>
   <div *ngIf="!reciptDetails" class="row">
-    <div class="col-5">
-      <mat-checkbox (change)='checkForeignNumber($event)' color='primary' >Foreign Number</mat-checkbox>
+    <div class="col-3 d-flex justify-content-end align-items-center">
+      <mat-form-field>
+        <mat-label>Receipt Id to edit</mat-label>
+        <input class="ml-2" [(ngModel)]="receiptId" matInput placeholder="Phone number">
+      </mat-form-field>
+      <button mat-raised-button class="m-2" color="primary" [disabled]="!receiptId" (click)="fetchWhatsAppTransaction(receiptId)">
+        Search
+      </button>
     </div>
     <div class="col-4 d-flex justify-content-end align-items-center">
-      <strong>{{ selectedBranchName }} &nbsp; BRANCH </strong>
+      <mat-checkbox (change)='checkForeignNumber($event)' color='primary'>Foreign Number</mat-checkbox>
     </div>
-    <div *ngIf="user.branch.length !== 1" class="col-3 select-branch" (click)="removeBranch()">
-      <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+    <div class="col-5 d-flex justify-content-end align-items-center">
+      <strong>{{ selectedBranchName }} &nbsp; BRANCH </strong>
+      <div *ngIf="user.branch.length !== 1" class="select-branch" (click)="removeBranch()">
+        <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
+      </div>
     </div>
   </div>
   <div *ngIf="showForm; else receiptTransaction">

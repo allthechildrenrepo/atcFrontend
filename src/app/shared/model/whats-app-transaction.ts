@@ -13,6 +13,23 @@ export class WhatsAppTransaction {
     public reciptUrl: string;
     public branch: Branch;
     private _medium: number;
+    public donatedDate: string;
+    public name: string;
+    public mobile: string;
+    public phone2: string ;
+    public amount: string;
+    public amountWords: string
+    public transaction: string
+    public is80G: boolean 
+    public bank: string 
+    public bankBranch: string;
+    public address: string 
+    public address1: string 
+    public pincode: string 
+    public email: string 
+    public donatedBranch: Branch
+    public foreignNumber: string 
+
 
     deserializer(input) {
         if (input.telecaller) {
@@ -28,6 +45,26 @@ export class WhatsAppTransaction {
         this.receipt_id = input.receipt_id;
         this._medium = input.medium;
         this.reciptUrl = input.receipt;
+        this.donatedDate = input.donated_date;
+        this.name = input.name;
+        this.phone2 = input.phone2;
+        this.mobile = input.whatsapp_number;
+        this.is80G = input.is_80g;
+        this.address = input.address_line_1;
+        this.address1 = input.address_line_2;
+        this.pincode = input.pincode;
+        this.email = input.to_email;
+        this.donatedBranch = new Branch().deserialize(input.branch);
+
+        this.foreignNumber = input.foreign_number;
+        this.amount = input.amount;
+        this.amountWords = input.amount_in_words;
+        this.bank = input.bank;
+        this.bankBranch = input.bank_branch;
+        this.transaction = input.transaction;
+
+
+
         if(input.branch) {
             this.branch = new Branch().deserialize(input.branch);
         }
