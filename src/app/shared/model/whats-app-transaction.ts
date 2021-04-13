@@ -61,7 +61,7 @@ export class WhatsAppTransaction {
         this.amountWords = input.amount_in_words;
         this.bank = input.bank;
         this.bankBranch = input.bank_branch;
-        this.transaction = input.transaction;
+        this.transaction = input.bank_transaction_id;
 
 
 

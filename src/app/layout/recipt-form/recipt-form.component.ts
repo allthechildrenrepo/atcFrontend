@@ -209,7 +209,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       this.receiptForm.controls["reciptId"].setValue(this.whatsappTransaction.receiptId);
       this.receiptForm.controls["donatedDate"].setValue(this.whatsappTransaction.donatedDate);
       this.receiptForm.controls["name"].setValue(this.whatsappTransaction.name);
-      this.receiptForm.controls["phone"].setValue(this.whatsappTransaction.whatsAppNumber);
+      this.receiptForm.controls["phone"].setValue(this.whatsappTransaction.whatsAppNumber.substring(2));
       this.receiptForm.controls["phone2"].setValue(this.whatsappTransaction.phone2);
       this.receiptForm.controls["bank"].setValue(this.whatsappTransaction.bank);
       this.receiptForm.controls["branch"].setValue(this.whatsappTransaction.bankBranch);
