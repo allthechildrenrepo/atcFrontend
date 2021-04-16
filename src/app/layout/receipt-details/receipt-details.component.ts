@@ -18,6 +18,7 @@ export class ReceiptDetailsComponent implements OnInit {
     "amount",
     "branch",
     "status",
+    "is80G",
     "donatedDate",
     "generateReceipt"
   ];

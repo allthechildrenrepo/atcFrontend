@@ -191,7 +191,6 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   }
 
   fetchWhatsAppTransaction(receiptId) {
-    console.log("working", this.transactionDetails);
     let param = {'receipt_id': receiptId};
     this.presentLoader();
     this.whatsAppTransactionService.get(param).subscribe((data) => {
