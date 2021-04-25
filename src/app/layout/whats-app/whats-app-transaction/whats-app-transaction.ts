@@ -167,6 +167,7 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
         return [
             'created_date',
             'donation_id',
+            'donar_name',
             'medium',
             'receipt_id',
             'transaction',

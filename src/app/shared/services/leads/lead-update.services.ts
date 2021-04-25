@@ -32,3 +32,34 @@ export class LeadUpdateService extends HTTPBase {
     return params;
   }
 }
+
+
+@Injectable({
+  providedIn: "root"
+})
+export class ReceiptBulkUpdateService extends HTTPBase {
+  constructor(public endPoint: EndPoint, public httpClient: HttpClient) {
+    super(httpClient);
+  }
+
+  get isAuthenticatedEndpoint() {
+    return true;
+  }
+
+  get endpoint() {
+    return this.endPoint.uploadBulkReciptXls;
+  }
+
+  get filePayload() {
+    return false;
+  }
+  /**
+   * 
+   * @param sheet that uplaoded
+   */
+  getParams(sheet) {
+    const params = new FormData();
+    params.append("upload_receipt",  sheet, sheet.name);
+    return params;
+  }
+}

@@ -29,6 +29,7 @@ import { TelecallersReportComponent } from './telecallers-report/telecallers-rep
 import { OverallReportComponent } from './overall-report/overall-report.component';
 import { EditVerifiedDonationsComponent } from './edit-verified-donations/edit-verified-donations.component';
 import { PromotionListComponent } from './promotion-list/promotion-list.component';
+import { ReciptUploadComponent } from './recipt-upload-bulk/recipt-upload-bulk';
 
 
 const routes: Routes = [
@@ -64,6 +65,7 @@ const routes: Routes = [
             { path: 'edit-verified-donations', component: EditVerifiedDonationsComponent},
             { path: 'base-approval', component: BaseApprovalComponent},
             { path: 'base-upload', component: BaseUploadComponent},
+            { path: 'recipt-bulk', component: ReciptUploadComponent},
             { path: 'whats-app-trans', component: WhatsAPPTransactionComponent},
             { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
         ]

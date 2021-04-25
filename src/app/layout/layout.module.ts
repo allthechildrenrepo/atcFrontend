@@ -67,6 +67,7 @@ import { WassangerDeviceStatusComponent } from './wassanger-device-status';
 import { TimePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { ReciptUploadComponent } from './recipt-upload-bulk/recipt-upload-bulk';
 // import { NgxMaterialTimepickerContainerComponent } from 'ngx-material-timepicker/src/app/material-timepicker/components/ngx-material-timepicker-container/ngx-material-timepicker-container.component';
 
 
@@ -125,6 +126,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     MultiBranchSelector,
     BasePendingRequestComponent,
     BaseUploadComponent,
+    ReciptUploadComponent,
     BaseApprovalComponent,
     TrustTransactionComponent,
     WhatsAPPTransactionComponent,

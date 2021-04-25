@@ -64,6 +64,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     if (data) {
       this.reciptDetails = data.reciptDetails;
       this.transactionDetails = data.transactionDetails;
+      this.whatsappTransaction = data.transactionDetails;
       this.showForm = data.showReciptForm;
     }
   }
@@ -76,9 +77,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     }
     this.validateInputs();
     this.createFormGroup();
-    if (this.transactionDetails) {
-      this.setEditableInputs();
-    }
+    if(this.whatsappTransaction) this.setWhatsAppEditInputs();
   }
 
   validateInputs() {

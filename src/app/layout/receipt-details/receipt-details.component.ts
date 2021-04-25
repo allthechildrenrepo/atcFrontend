@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { WhatsAppTransaction } from 'src/app/shared/model/whats-app-transaction';
 import { TableUtil } from "../../shared/TableUtil";
+import { ReciptFormComponent } from '../recipt-form/recipt-form.component';
 
 
 @Component({
@@ -12,18 +14,22 @@ export class ReceiptDetailsComponent implements OnInit {
 
   @Input() dataSource;
   @Input() columnsToDisplay: string[] = [
-    "reciptId",
-    "mode",
-    "transactionId",
+    "receipt_id",
+    "medium",
+    "transaction",
+    "donar_name",
+    'whatsapp_number',
     "amount",
     "branch",
-    "status",
     "is80G",
-    "donatedDate",
-    "generateReceipt"
+    'sendUser',
+    'generate_recipt',
+    "receipt"
   ];
 
-  constructor() { }
+  constructor(
+    public dialog: MatDialog,
+  ) { }
 
   ngOnInit() {
   }
@@ -33,6 +39,16 @@ export class ReceiptDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {
+  }
+
+  generateReceipt(transaction) {
+    const dialogRef = this.dialog.open(ReciptFormComponent, {
+      width: "120vw",
+      autoFocus: false,
+      maxHeight: "90vh",
+      data: { transactionDetails: transaction, reciptDetails: true, showReciptForm: false }
+    });
+
   }
 
   viewReceipt(transaction: WhatsAppTransaction) {

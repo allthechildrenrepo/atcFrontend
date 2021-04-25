@@ -102,6 +102,10 @@ export class EndPoint {
     return this.serverUrl + "atc/base_upload/";
   }
 
+  get uploadBulkReciptXls() {
+    return this.serverUrl + "receipt/receipt_upload/";
+  }
+
   get raiseLeadRequest() {
     return this.serverUrl + "atc/lead_req/";
   }
@@ -120,6 +124,11 @@ export class EndPoint {
 
   get whatsappTransaction() {
     return this.serverUrl + "atc/receipt_trans/";
+  }
+
+  get whatsappTransactionFetch() {
+    return this.serverUrl + "receipt/fetch/";
+
   }
 
   get pickUpWhatsAppSendMessage() {

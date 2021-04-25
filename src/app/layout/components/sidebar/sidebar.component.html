@@ -9,11 +9,18 @@
       <i class="fa fa-phone-square" aria-hidden="true"></i>
       <span>{{ "Quick Receipt" | translate }}</span>
     </a>
-    <a [routerLink]="['/promotion-list']" *ngIf="isAccessible('Promotion')"
-    [routerLinkActive]="['router-link-active']" class="list-group-item">
-    <i class="fa fa-handshake-o" aria-hidden="true"></i>
-    <span>{{ "Promotion" | translate }}</span>
-  </a>
+
+    <a *ngIf="isAccessible('Receipt Bulk Upload')" [routerLink]="['/recipt-bulk']"
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-database" aria-hidden="true"></i>
+      <span>{{ "Receipt Bulk Upload" | translate }}</span>
+    </a>
+    
+    <a [routerLink]="['/promotion-list']" *ngIf="isAccessible('Promotion')" [routerLinkActive]="['router-link-active']"
+      class="list-group-item">
+      <i class="fa fa-handshake-o" aria-hidden="true"></i>
+      <span>{{ "Promotion" | translate }}</span>
+    </a>
     <a *ngIf="isAccessible('Base')" [routerLink]="['/base']" [routerLinkActive]="['router-link-active']"
       class="list-group-item">
       <i class="fa fa-database" aria-hidden="true"></i>
@@ -84,10 +91,10 @@
       <span>{{ "Verified List" | translate }}</span>
     </a>
     <a *ngIf="isAccessible('Edit Verified Donations')" [routerLink]="['/edit-verified-donations']"
-    [routerLinkActive]="['router-link-active']" class="list-group-item">
-    <i class="fa fa-pencil-square" aria-hidden="true"></i>
-    <span>{{ "Edit Verified Donations" | translate }}</span>
-  </a>
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-pencil-square" aria-hidden="true"></i>
+      <span>{{ "Edit Verified Donations" | translate }}</span>
+    </a>
     <a *ngIf="isAccessible('Donor Details')" [routerLink]="['/donor-list']" [routerLinkActive]="['router-link-active']"
       class="list-group-item">
       <i class="fa fa-address-card-o" aria-hidden="true"></i>
@@ -95,17 +102,17 @@
     </a>
 
     <a *ngIf="isAccessible('Overall Report')" [routerLink]="['/overall-report']"
-    [routerLinkActive]="['router-link-active']" class="list-group-item">
-    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-    <span>{{ "Overall Report" | translate }}</span>
-  </a>
+      [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+      <span>{{ "Overall Report" | translate }}</span>
+    </a>
 
     <a *ngIf="isAccessible('Branch Report')" [routerLink]="['/branch-report']"
       [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-file-text-o" aria-hidden="true"></i>
       <span>{{ "Branch Report" | translate }}</span>
     </a>
-    
+
     <a *ngIf="isAccessible('Create Tele-Caller')" [routerLink]="['/create-telecaller']"
       [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-address-book" aria-hidden="true"></i>
