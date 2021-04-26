@@ -65,7 +65,7 @@ export class VerifiedDonationListComponent extends BasePage implements OnInit {
       this.branchService.get().subscribe(
         response => {
           this.dismissLoader();
-          response.forEach(data => {
+          response.results.forEach(data => {
             this.allBranches.push(new Branch().deserialize(data));
           });
         },
@@ -175,10 +175,10 @@ export class VerifiedDonationListComponent extends BasePage implements OnInit {
       response => {
         this.dismissLoader();
         this.transactionDetails = [];
-        if (response.length == 0) {
+        if (response.results.length == 0) {
           this.showAlert("No donation under given dates", "success");
         } else {
-          response.forEach(data => {
+          response.results.forEach(data => {
             this.transactionDetails.push(
               new DonationTransaction().deserialize(data)
             );

@@ -62,7 +62,7 @@ export class TelecallerListComponent extends BasePage implements OnInit {
     this.presentLoader();
     this.telecallerService.get({ atc_profile__branch__id: this.selectedBranch.branchId }).subscribe(
       res => {
-        res.forEach(data => {
+        res.results.forEach(data => {
           this.telecallerList.push(new AtcUser().deserialize(data));
         });
         this.teleCallerDataSource = new MatTableDataSource(this.telecallerList);

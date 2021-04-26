@@ -109,7 +109,7 @@ export class NotVerifiedListComponent extends BasePage implements OnInit {
   //     .get(param)
   //     .subscribe(
   //       res => {
-  //         res.forEach(data => {
+  //         res.results.forEach(data => {
   //           if (localStorage.getItem('batchId')) {
 
   //             if (localStorage.getItem('batchId') < res[res.length - 1].id) {
@@ -147,7 +147,7 @@ export class NotVerifiedListComponent extends BasePage implements OnInit {
     this.fetchDonationTransactionService
       .get(params)
       .subscribe(response => {
-        response.forEach(data => {
+        response.results.forEach(data => {
           if ([14, 15, 16, 17, 18].indexOf(+data.mode_of_transaction_id) == -1) {
             this.transactionDetails.push(
               new DonationTransaction().deserialize(data)

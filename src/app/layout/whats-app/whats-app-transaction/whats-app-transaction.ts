@@ -143,7 +143,7 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
 
         this.transaction = [];
         this.whatsAppTransactionService.get(param).subscribe((data) => {
-            data.forEach(element => {
+            data.results.forEach(element => {
                 this.transaction.push(new WhatsAppTransaction().deserializer(element));
             });
             this.dataSource = this.transaction;

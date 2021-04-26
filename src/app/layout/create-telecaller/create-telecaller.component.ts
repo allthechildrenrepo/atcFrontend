@@ -109,7 +109,7 @@ export class CreateTelecallerComponent extends BasePage implements OnInit {
     this.branchService.get().subscribe(
       res => {
         this.dismissLoader();
-        res.forEach(data => {
+        res.results.forEach(data => {
           this.branches.push(new Branch().deserialize(data));
         });
       },

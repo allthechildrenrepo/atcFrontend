@@ -43,7 +43,7 @@ export class GenerateBatchComponent extends BasePage implements OnInit {
       this.branchService.get().subscribe(
         response => {
           this.dismissLoader();
-          response.forEach(data => {
+          response.results.forEach(data => {
             this.allBranches.push(new Branch().deserialize(data));
           });
         },
@@ -74,7 +74,7 @@ export class GenerateBatchComponent extends BasePage implements OnInit {
       .subscribe(response => {
         this.dismissLoader();
         this.transactionDetails = [];
-        response.forEach(data => {
+        response.results.forEach(data => {
           // not ot show pick up while generating batch
           if ([14, 15, 16, 17, 18].indexOf(+data.mode_of_transaction_id) == -1) {
             this.transactionDetails.push(

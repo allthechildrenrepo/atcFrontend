@@ -129,10 +129,10 @@ export class PickUpComponent extends BasePage implements OnInit {
             response => {
                 this.dismissLoader();
                 this.transactionDetails = [];
-                if (response.length == 0) {
+                if (response.results.length == 0) {
                     this.showAlert("No Pickup request under given dates", "success");
                 } else {
-                    response.forEach(data => {
+                    response.results.forEach(data => {
                         this.transactionDetails.push(
                             new DonationTransaction().deserialize(data)
                         );
@@ -355,7 +355,7 @@ export class PickUpRemarksDialog extends BasePage {
             .subscribe(transactionData => {
                 this.dismissLoader();
                 this.pastTransaction = [];
-                transactionData.forEach(data => {
+                transactionData.results.forEach(data => {
                     this.pastTransaction.push(new DonationTransaction().deserialize(data));
                 });
                 this.dataSource = new MatTableDataSource(this.pastTransaction);

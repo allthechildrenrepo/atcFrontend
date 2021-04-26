@@ -51,12 +51,12 @@ export class DonarSearchPageComponent extends BasePage {
     const params = this.searchDonarProfileService.getParams(this.searchField);
     this.searchDonarProfileService.get(params).subscribe(donorProfile => {
       this.dismissLoader();
-      if(donorProfile.length == 0) {
+      if(donorProfile.results.length == 0) {
         var message = this.searchField+" Donar number does not exisits";
         this.showMessage("danger", message);
         return;    
       }
-      this.atcDonor = new AtcUser().deserialize(donorProfile[0]);
+      this.atcDonor = new AtcUser().deserialize(donorProfile.results[0]);
       this.loadTransactions();
     },
     err => {
@@ -111,7 +111,7 @@ export class DonarSearchPageComponent extends BasePage {
       .subscribe(transferData => {
         this.dismissLoader();
         this.transferDetail = [];
-        transferData.forEach(data => {
+        transferData.results.forEach(data => {
           this.transferDetail.push(new DonationTransaction().deserialize(data));
         });
       });

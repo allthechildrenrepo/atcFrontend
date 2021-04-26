@@ -71,16 +71,14 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
 
   fetchWhatsAppTransaction() {
     this.presentLoader();
-
     //If the user is not an Admin, Restrict another branch WhatsApp transaction details.
     // if(this.selectedBranch != 17) {
     //     param['branch_id'] = this.selectedBranch;
     // }
     let param = { 'status':0}
-
     this.transaction = [];
     this.whatsAppTransactionService.get(param).subscribe((data) => {
-        data.forEach(element => {
+        data.results.forEach(element => {
             this.transaction.push(new WhatsAppTransaction().deserializer(element));
         });
         this.dataSource = this.transaction;

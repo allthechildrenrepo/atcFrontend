@@ -90,11 +90,11 @@ export class BatchDetailsComponent extends BasePage implements OnInit {
         res => {
           this.dismissLoader();
           this.batches = [];
-          if (res.length == 0) {
+          if (res.results.length == 0) {
             // this.showAlert("success", `There is no batch for verification under given date`);
             return;
           }
-          res.forEach(data => {
+          res.results.forEach(data => {
             this.batches.push(new Batch().deserialize(data));
           });
           if (refresh) {

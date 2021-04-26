@@ -136,8 +136,8 @@ export class DonationEntryComponent extends BasePage implements OnInit {
     this.transactionModeService.get().subscribe(
       data => {
         this.dismissLoader();
-        if (data) {
-          this.modeOfTransaction = data;
+        if (data.results) {
+          this.modeOfTransaction = data.results;
         }
         //15,16,17,18 - pickup other types should not be displayed in donation entry
         this.modeOfTransaction = this.modeOfTransaction.filter(mode => [15, 16, 17, 18].indexOf(mode.id) == -1)
@@ -192,7 +192,7 @@ export class DonationEntryComponent extends BasePage implements OnInit {
       res => {
         this.dismissLoader();
         this.telecallers = [];
-        res.forEach(data => {
+        res.results.forEach(data => {
           this.telecallers.push(new AtcUser().deserialize(data));
         });
 
@@ -387,8 +387,8 @@ export class DonationEntryComponent extends BasePage implements OnInit {
     this.donationForm.reset();
     let params = this.donorService.getParams(phoneNumber);
     this.donorService.get(params).subscribe(data => {
-      if (data.length > 0) {
-        this.donar = new AtcUser().deserialize(data[0]);
+      if (data.results.length > 0) {
+        this.donar = new AtcUser().deserialize(data.results[0]);
         if (this.donar.username === "6666666666" || true) {
           this.setFormInputs(this.donar);
           this.editDonorDetails = false;

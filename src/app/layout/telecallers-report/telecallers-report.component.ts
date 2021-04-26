@@ -103,7 +103,7 @@ export class TelecallersReportComponent extends BasePage implements OnInit {
     this.transactionModeService.get().subscribe(
       data => {
         this.dismissLoader();
-        this.modeOfTransaction = data;
+        this.modeOfTransaction = data.results;
       },
       err => {
         this.dismissLoader();
@@ -126,7 +126,7 @@ export class TelecallersReportComponent extends BasePage implements OnInit {
       res => {
         this.dismissLoader();
         this.telecallers = [];
-        res.forEach(data => {
+        res.results.forEach(data => {
           this.telecallers.push(new AtcUser().deserialize(data));
         });
       },
@@ -197,8 +197,8 @@ export class TelecallersReportComponent extends BasePage implements OnInit {
       response => {
         this.dismissLoader();
         this.verifiedTransactionDetails = [];
-        if (response.length) {
-          response.forEach(data => {
+        if (response.results.length) {
+          response.results.forEach(data => {
             this.verifiedTransactionDetails.push(
               new DonationTransaction().deserialize(data)
             );
@@ -221,8 +221,8 @@ export class TelecallersReportComponent extends BasePage implements OnInit {
     this.fetchDonationTransactionService.get(params).subscribe(
       response => {
         this.progressTransactionDetails = [];
-        if (response.length) {
-          response.forEach(data => {
+        if (response.results.length) {
+          response.results.forEach(data => {
             this.progressTransactionDetails.push(
               new DonationTransaction().deserialize(data)
             );

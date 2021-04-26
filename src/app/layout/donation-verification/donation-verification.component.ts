@@ -94,7 +94,7 @@ export class DonationVerificationComponent extends BasePage implements OnInit {
     this.branchService.get().subscribe(
       response => {
         this.dismissLoader();
-        response.forEach(data => {
+        response.results.forEach(data => {
           this.branches.push(new Branch().deserialize(data));
         });
       },
@@ -126,11 +126,11 @@ export class DonationVerificationComponent extends BasePage implements OnInit {
         res => {
           this.dismissLoader();
           this.batches = [];
-          if (res.length == 0) {
+          if (res.results.length == 0) {
             this.showAlert("success", `There is no batch for verification under given date`);
             return;
           }
-          res.forEach(data => {
+          res.results.forEach(data => {
             this.batches.push(new Batch().deserialize(data));
           });
           if (refresh) {
@@ -190,10 +190,10 @@ export class DonationVerificationComponent extends BasePage implements OnInit {
       .subscribe(
         response => {
           this.dismissLoader();
-          if (response.length === 0) {
+          if (response.results.length === 0) {
             this.showAlert("success", `There is no data for verification.`);
           }
-          response.forEach(data => {
+          response.results.forEach(data => {
             this.approvedDonationList.push(
               new DonationTransaction().deserialize(data)
             );

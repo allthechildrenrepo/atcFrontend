@@ -61,7 +61,7 @@ export class OverallReportComponent extends BasePage implements OnInit {
   fetchModeOfTransaction() {
     this.transactionModeService.get().subscribe(
       data => {
-        this.modeOfTransaction = data;
+        this.modeOfTransaction = data.results;
       },
       err => {
         this.somethingWentWrong();
@@ -124,8 +124,8 @@ export class OverallReportComponent extends BasePage implements OnInit {
     this.fetchDonationTransactionService.get(params).subscribe(
       response => {
         this.verifiedTransactionDetails = [];
-        if (response.length) {
-          response.forEach(data => {
+        if (response.results.length) {
+          response.results.forEach(data => {
             this.verifiedTransactionDetails.push(
               new DonationTransaction().deserialize(data)
             );

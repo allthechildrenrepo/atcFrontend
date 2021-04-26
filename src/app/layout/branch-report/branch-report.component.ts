@@ -62,7 +62,7 @@ export class BranchReportComponent extends BasePage implements OnInit {
     this.transactionModeService.get().subscribe(
       data => {
         this.dismissLoader();
-        this.modeOfTransaction = data;
+        this.modeOfTransaction = data.results;
       },
       err => {
         this.dismissLoader();
@@ -135,8 +135,8 @@ export class BranchReportComponent extends BasePage implements OnInit {
       response => {
         this.dismissLoader();
         this.verifiedTransactionDetails = [];
-        if (response.length) {
-          response.forEach(data => {
+        if (response.results.length) {
+          response.results.forEach(data => {
             this.verifiedTransactionDetails.push(
               new DonationTransaction().deserialize(data)
             );
@@ -159,8 +159,8 @@ export class BranchReportComponent extends BasePage implements OnInit {
     this.fetchDonationTransactionService.get(params).subscribe(
       response => {
         this.progressTransactionDetails = [];
-        if (response.length) {
-          response.forEach(data => {
+        if (response.results.length) {
+          response.results.forEach(data => {
             this.progressTransactionDetails.push(
               new DonationTransaction().deserialize(data)
             );

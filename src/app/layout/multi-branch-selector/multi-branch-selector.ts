@@ -41,7 +41,7 @@ export class MultiBranchSelector extends BasePage implements OnInit {
             this.branchService.get().subscribe(
                 response => {
                     this.dismissLoader();
-                    response.forEach(data => {
+                    response.results.forEach(data => {
                         this.allBranches.push(new Branch().deserialize(data));
                     });
                 },

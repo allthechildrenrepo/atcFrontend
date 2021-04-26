@@ -50,7 +50,7 @@ export class BasePendingRequestComponent extends BasePage implements OnInit {
     this.leadRequest = [];
     let params = this.leadRequestService.getPendingRequest(this.branchId);
     this.leadRequestService.get(params).subscribe((response) => {
-      response.forEach((data) => {
+      response.results.forEach((data) => {
         this.leadRequest.push(new BaseRequestModel().deserialize(data));
       });
       this.dataSource = new MatTableDataSource(this.leadRequest);
@@ -71,7 +71,7 @@ export class BasePendingRequestComponent extends BasePage implements OnInit {
       response => {
         this.dismissLoader();
         this.allBranches = {}
-        response.forEach(data => {
+        response.results.forEach(data => {
           this.allBranches[data.id] = new Branch().deserialize(data);
         });
       },
