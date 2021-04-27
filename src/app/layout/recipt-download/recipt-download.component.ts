@@ -242,6 +242,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
       'email': this.data.email,
       'donatedBranch': this.data.donatedBranch,
       'foreign_number': this.data.foreignNumber,
+      'payment_mode': this.data.payment_mode,
     }
   }
 

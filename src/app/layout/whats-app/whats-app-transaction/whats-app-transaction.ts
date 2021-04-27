@@ -174,6 +174,7 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
             'whatsapp_number',
             'sendUser',
             'is80G',
+            'payment_mode',
             'branch',
             'receipt'
         ];

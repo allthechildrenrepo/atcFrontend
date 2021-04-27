@@ -76,10 +76,16 @@
         </div>
 
         <div class="row">
-          <mat-form-field class="col-10 m-2 form-fields">
+          <mat-form-field class="col-7 m-2 form-fields">
             <input matInput placeholder="Name" formControlName="name" required />
             <mat-error *ngIf="name?.errors && (name?.dirty || name?.touched)">
               <mat-error *ngIf="name.errors.required">Donor name is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-3 m-2 form-fields">
+            <input matInput placeholder="payment mode" formControlName="payment_mode" />
+            <mat-error *ngIf="payment_mode?.errors && (payment_mode?.dirty || payment_mode?.touched)">
+              <mat-error *ngIf="payment_mode.errors.required">Payment mode is required</mat-error>
             </mat-error>
           </mat-form-field>
         </div>

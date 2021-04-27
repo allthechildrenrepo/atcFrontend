@@ -51,6 +51,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   address2: FormControl;
   pincode: FormControl;
   email: FormControl;
+  payment_mode: FormControl;
 
   constructor(
     public dialog: MatDialog,
@@ -90,6 +91,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       Validators.minLength(10),
       Validators.maxLength(10)
     ]);
+    this.payment_mode = new FormControl("", [Validators.required]);
     this.phone2 = new FormControl("", [
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
@@ -123,7 +125,8 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       address1: this.address1,
       address2: this.address2,
       pincode: this.pincode,
-      email: this.email
+      email: this.email,
+      payment_mode: this.payment_mode
     });
   }
 
@@ -218,6 +221,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       this.receiptForm.controls["address2"].setValue(this.whatsappTransaction.address1);
       this.receiptForm.controls["email"].setValue(this.whatsappTransaction.email);
       this.receiptForm.controls["pincode"].setValue(this.whatsappTransaction.pincode);
+      this.receiptForm.controls["payment_mode"].setValue(this.whatsappTransaction.payment_mode)
     }
 
   }
@@ -234,6 +238,8 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     this.receiptForm.controls["address1"].setValue(this.transactionDetails.donar.userProfile.addressLine1);
     this.receiptForm.controls["address2"].setValue(this.transactionDetails.donar.userProfile.addressLine2);
     this.receiptForm.controls["email"].setValue(this.transactionDetails.donar.email);
+    this.receiptForm.controls["payment_mode"].setValue(this.whatsappTransaction.payment_mode)
+
     // this.receiptForm.controls["pincode"].setValue(this.transactionDetails.);
 
   }
@@ -257,6 +263,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     reciptData['email'] = receiptValue.email;
     reciptData['donatedBranch'] = this.selectedBranch;
     reciptData['foreignNumber'] = this.foreignNumber;
+    reciptData['payment_mode'] = receiptValue.payment_mode;
 
     const dialogRef = this.dialog.open(ReciptDownloadComponent, {
       autoFocus: false,

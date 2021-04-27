@@ -22,6 +22,7 @@ export class ReceiptDetailsComponent implements OnInit {
     "amount",
     "branch",
     "is80G",
+    "payment_mode",
     'sendUser',
     'generate_recipt',
     "receipt"

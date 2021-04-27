@@ -69,6 +69,7 @@ export class TransactionReceiptDetailsComponent extends BasePage implements OnIn
       'whatsapp_number',
       'sendUser',
       'branch',
+      "payment_mode",
       'receipt'
     ];
   }
