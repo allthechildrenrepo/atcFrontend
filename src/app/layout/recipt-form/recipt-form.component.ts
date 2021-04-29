@@ -52,6 +52,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   pincode: FormControl;
   email: FormControl;
   payment_mode: FormControl;
+  mode:string;
 
   constructor(
     public dialog: MatDialog,
@@ -66,6 +67,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       this.reciptDetails = data.reciptDetails;
       this.transactionDetails = data.transactionDetails;
       this.whatsappTransaction = data.transactionDetails;
+      this.mode = data.mode;
       this.showForm = data.showReciptForm;
     }
   }
@@ -264,7 +266,8 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     reciptData['donatedBranch'] = this.selectedBranch;
     reciptData['foreignNumber'] = this.foreignNumber;
     reciptData['payment_mode'] = receiptValue.payment_mode;
-
+    reciptData['mode'] = this.mode;
+    reciptData['id'] = this.whatsappTransaction.id;
     const dialogRef = this.dialog.open(ReciptDownloadComponent, {
       autoFocus: false,
       maxHeight: "90vh",

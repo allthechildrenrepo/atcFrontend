@@ -30,6 +30,7 @@ export class WhatsAppTransaction {
     public donatedBranch: Branch
     public foreignNumber: string 
     public payment_mode: string;
+    public id: number;
 
 
     deserializer(input) {
@@ -64,7 +65,7 @@ export class WhatsAppTransaction {
         this.bankBranch = input.bank_branch;
         this.transaction = input.bank_transaction_id;
         this.payment_mode = input.payment_mode;
-
+        this.id = input.id;
 
 
         if(input.branch) {

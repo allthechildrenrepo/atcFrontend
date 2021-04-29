@@ -13,6 +13,8 @@ import { ReciptFormComponent } from '../recipt-form/recipt-form.component';
 export class ReceiptDetailsComponent implements OnInit {
 
   @Input() dataSource;
+  @Input() mode = 'normalMode';
+
   @Input() columnsToDisplay: string[] = [
     "receipt_id",
     "medium",
@@ -47,7 +49,7 @@ export class ReceiptDetailsComponent implements OnInit {
       width: "120vw",
       autoFocus: false,
       maxHeight: "90vh",
-      data: { transactionDetails: transaction, reciptDetails: true, showReciptForm: false }
+      data: { transactionDetails: transaction, mode:this.mode, reciptDetails: true, showReciptForm: false }
     });
 
   }

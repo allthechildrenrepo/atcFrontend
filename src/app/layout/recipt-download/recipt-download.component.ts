@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from "@angular/
 import htmlToImage from "html-to-image";
 import * as jspdf from "jspdf";
 import { User } from '../../shared/model';
-import { WhatsAppTransactionService } from '../../shared/services/whatsapp-transaction.service';
+import { WhatsAppTransactionService, WhatsAppTransactionServiceV2 } from '../../shared/services/whatsapp-transaction.service';
 import { whatsAppSendFileService, WhatsAppCheckNumber } from '../../shared/services/whatsapp.service';
 import { BasePage } from '../../utils';
 import { ReceiptSendMailService } from '../../shared/services/receipt.service';
@@ -35,6 +35,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     public sendWhatsapp: whatsAppSendFileService,
     public whatsAppNumberCheck: WhatsAppCheckNumber,
     public receiptSendMailService: ReceiptSendMailService,
+    public receiptv2service: WhatsAppTransactionServiceV2,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     public snackBar: MatSnackBar
@@ -209,17 +210,33 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     };
     let otherPrams = this.generateParams();
     params = { ...params, ...otherPrams };
+    if (this.data.mode == 'normalMode') {
+      this.receiptSendMailService.post(params).subscribe((data) => {
+        this.dismissLoader();
+        document.body.removeChild(this.canvas);
+        this.isTrackDone = true;
+        return;
+      }, (err) => {
+        this.somethingWentWrong();
+        this.dismissLoader();
+        return;
+      })
+    } else {
+      let enpoint = this.receiptv2service.endpointsss + '/' + this.data.id;
+      console.log("sadasdasd s  ")
 
-    this.receiptSendMailService.post(params).subscribe((data) => {
-      this.dismissLoader();
-      document.body.removeChild(this.canvas);
-      this.isTrackDone = true;
-      return;
-    }, (err) => {
-      this.somethingWentWrong();
-      this.dismissLoader();
-      return;
-    })
+      console.log(enpoint)
+      this.receiptv2service.put(enpoint).subscribe((data) => {
+        this.dismissLoader();
+        document.body.removeChild(this.canvas);
+        this.isTrackDone = true;
+        return;
+      }, (err) => {
+        this.somethingWentWrong();
+        this.dismissLoader();
+        return;
+      })
+    }
   }
 
   generateParams() {
@@ -268,14 +285,32 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     }
     let otherPrams = this.generateParams();
     params = { ...params, ...otherPrams };
-    this.whatsAppTransactionService.post(params).subscribe((data) => {
-      this.isTrackDone = true;
-      this.dismissLoader();
-      this.dismissPopUp ? this.closeReceipt() : "";
-    }, (err) => {
-      this.somethingWentWrong();
-      this.dismissLoader();
-    })
+
+    if (this.data.mode == 'normalMode') {
+      this.whatsAppTransactionService.post(params).subscribe((data) => {
+        this.isTrackDone = true;
+        this.dismissLoader();
+        this.dismissPopUp ? this.closeReceipt() : "";
+      }, (err) => {
+        this.somethingWentWrong();
+        this.dismissLoader();
+      })
+    } else {
+      let enpoint = this.receiptv2service.endpointsss + '/' + this.data.id;
+      console.log("asdasdasdasdasd s  ")
+
+      console.log(enpoint)
+      this.receiptv2service.put(enpoint).subscribe((data) => {
+        this.dismissLoader();
+        document.body.removeChild(this.canvas);
+        this.isTrackDone = true;
+        return;
+      }, (err) => {
+        this.somethingWentWrong();
+        this.dismissLoader();
+        return;
+      })
+    }
   }
 
 }

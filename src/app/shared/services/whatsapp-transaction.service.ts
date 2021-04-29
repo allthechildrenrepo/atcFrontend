@@ -50,4 +50,8 @@ export class WhatsAppTransactionServiceV2 extends HTTPBase {
         return this.endPoint.whatsappTransactionFetch;
     }
 
+    get endpointsss() {
+        return this.endPoint.whatsappTransactionFetch;
+    }
+
 }

@@ -18,7 +18,10 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
   fileUploading = false;
   public alerts: Array<any> = [];
   transaction: WhatsAppTransaction[] = [];
-  dataSource
+  dataSource;
+  selectedBranchName: string;
+  selectedBranch: number;
+  
 
   constructor(
     public leadUpdateService: ReceiptBulkUpdateService,
@@ -30,7 +33,7 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
   }
 
   ngOnInit(){
-    this.fetchWhatsAppTransaction()
+    // this.fetchWhatsAppTransaction()
   }
 
   ngAfterViewInit() {
@@ -75,7 +78,7 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
     // if(this.selectedBranch != 17) {
     //     param['branch_id'] = this.selectedBranch;
     // }
-    let param = { 'status':0}
+    let param = { 'status':0 , 'branch_id': this.selectedBranch }
     this.transaction = [];
     this.whatsAppTransactionService.get(param).subscribe((data) => {
         data.results.forEach(element => {
@@ -87,6 +90,18 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
         this.somethingWentWrong();
         this.dismissLoader();
     })
+}
+
+setBranch(branch) {
+  this.selectedBranch = branch.branchId;
+  this.selectedBranchName = branch.branchName;
+  this.fetchWhatsAppTransaction();
+}
+
+removeBranch() {
+  this.selectedBranch = null;
+  this.selectedBranchName = null;
+  this.transaction = [];
 }
 
 
