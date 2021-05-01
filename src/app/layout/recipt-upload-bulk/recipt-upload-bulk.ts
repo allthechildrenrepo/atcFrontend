@@ -21,6 +21,9 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
   dataSource;
   selectedBranchName: string;
   selectedBranch: number;
+  currentPage:number = 0;
+  previouspageUrl: string;
+  nextPageUrl: string;
   
 
   constructor(
@@ -72,15 +75,20 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
     this.fileToUpload = files[0];
   }
 
-  fetchWhatsAppTransaction() {
+  fetchWhatsAppTransaction(url= null) {
     this.presentLoader();
     //If the user is not an Admin, Restrict another branch WhatsApp transaction details.
     // if(this.selectedBranch != 17) {
     //     param['branch_id'] = this.selectedBranch;
     // }
-    let param = { 'status':0 , 'branch_id': this.selectedBranch }
-    this.transaction = [];
-    this.whatsAppTransactionService.get(param).subscribe((data) => {
+    let param = {  'branch_id': this.selectedBranch }
+      this.transaction = [];
+   if(!url){
+     url = this.whatsAppTransactionService.endpointsss;
+   }
+   this.whatsAppTransactionService.getwithURL(url,param).subscribe((data) => {
+      this.previouspageUrl = data.previous;
+      this.nextPageUrl = data.next;
         data.results.forEach(element => {
             this.transaction.push(new WhatsAppTransaction().deserializer(element));
         });
@@ -116,7 +124,7 @@ removeBranch() {
    */
   uploadFileToServer() {
     this.fileUploading = true;
-    const param = this.leadUpdateService.getParams(this.fileToUpload);
+    const param = this.leadUpdateService.getParams(this.fileToUpload, this.selectedBranch);
     this.leadUpdateService.postMultiPardData(param).subscribe(
       res => {
         if (res.status) {
@@ -144,5 +152,15 @@ removeBranch() {
         this.resetFile();
       }
     );
+  }
+
+  showPreviousPage(){
+    this.fetchWhatsAppTransaction(this.previouspageUrl);
+    this.currentPage = this.currentPage - 1; 
+  }
+
+  showNextPage() {
+    this.fetchWhatsAppTransaction(this.nextPageUrl);
+    this.currentPage = this.currentPage + 1;
   }
 }

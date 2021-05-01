@@ -50,7 +50,7 @@ export class TransactionReceiptDetailsComponent extends BasePage implements OnIn
     this.presentLoader();
     this.transaction = [];
     this.whatsAppTransactionService.get(param).subscribe((data) => {
-      data.forEach(element => {
+      data.results.forEach(element => {
         this.transaction.push(new WhatsAppTransaction().deserializer(element));
       });
       this.dismissLoader();

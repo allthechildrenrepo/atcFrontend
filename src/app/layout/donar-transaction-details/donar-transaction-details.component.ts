@@ -113,10 +113,11 @@ export class DonarTransactionDetailsComponent extends BasePage implements OnInit
 
   fetchModeOfTransaction() {
     this.presentLoader();
+
     this.transactionModeService.get().subscribe(
       data => {
         this.dismissLoader();
-        this.modeOfTransaction = data;
+        this.modeOfTransaction = data.results;
       },
       err => {
         this.dismissLoader();

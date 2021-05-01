@@ -1,55 +1,6 @@
 <div class="fixed-header">
   <app-page-header class="doNotPrint" [heading]="'Recipt Bulk Upload Dashboard'" [icon]="'fa-bar-chart-o'">
   </app-page-header>
-  <div>
-    <div class="container justify-content-center">
-      <div class="row  d-flex justify-content-center align-items-center">
-        <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
-        </ngb-alert>
-      </div>
-      <div class="row  d-flex justify-content-center align-items-center">
-        <mat-card class="card m-2 w-80">
-          <mat-card-header>
-            <mat-card-title class="title">
-              UPLOAD RECIPT SHEET
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-              <div *ngIf="fileToUpload" class="row">
-                <div class="col-8">
-                  <p><strong>{{ fileToUpload?.name }} </strong>file ready to upload</p>
-                  <mat-progress-bar *ngIf="fileUploading" mode="indeterminate"></mat-progress-bar>
-                </div>
-                <div class="col-4">
-                  <button mat-raised-button color="primary" [disabled]="!fileToUpload" (click)="uploadFileToServer()">
-                    Upload
-                  </button>
-                </div>
-              </div>
-            <div class="row m-2 d-flex align-items-center">
-              <div class="col-8">
-                <p class="para-text">1. Only XSLS file less than 15 MB</p>
-                <input type="file" #file style="display: none" (change)="onFilesAdded()" />
-              </div>
-              <div class="col-4">
-                <button *ngIf="!fileToUpload; else upload" [disabled]="uploading || uploadSuccessful" mat-raised-button
-                  color="primary" class="add-files-btn" (click)="addFiles()">
-                  Add XSLS File
-                </button>
-                <ng-template #upload>
-                  <button mat-raised-button color="primary" class="add-files-btn" (click)="removeFile()">
-                    Remove XSLS File
-                  </button>
-                </ng-template>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-  </div>
-</div>
-<div>
   <div *ngIf="!selectedBranch && transaction?.length == 0; else showReceiptForm">
     <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
   </div>
@@ -62,12 +13,83 @@
         </div>
       </div>
     </div>
-    <div class="row" *ngIf="transaction?.length == 0">
-      <div class="col-12 d-flex justify-content-center align-items-center">
-        No records found for the selected Branch
+    <div>
+      <div class="container justify-content-center">
+        <div class="row  d-flex justify-content-center align-items-center">
+          <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}
+          </ngb-alert>
+        </div>
+        <div class="row  d-flex justify-content-center align-items-center">
+          <mat-card class="card m-2 w-80">
+            <mat-card-header>
+              <mat-card-title class="title">
+                UPLOAD RECIPT SHEET
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div *ngIf="fileToUpload" class="row">
+                <div class="col-8">
+                  <p><strong>{{ fileToUpload?.name }} </strong>file ready to upload</p>
+                  <mat-progress-bar *ngIf="fileUploading" mode="indeterminate"></mat-progress-bar>
+                </div>
+                <div class="col-4">
+                  <button mat-raised-button color="primary" [disabled]="!fileToUpload" (click)="uploadFileToServer()">
+                    Upload
+                  </button>
+                </div>
+              </div>
+              <div class="row m-2 d-flex align-items-center">
+                <div class="col-8">
+                  <p class="para-text">1. Only XSLS file less than 15 MB</p>
+                  <input type="file" #file style="display: none" (change)="onFilesAdded()" />
+                </div>
+                <div class="col-4">
+                  <button *ngIf="!fileToUpload; else upload" [disabled]="uploading || uploadSuccessful"
+                    mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">
+                    Add XSLS File
+                  </button>
+                  <ng-template #upload>
+                    <button mat-raised-button color="primary" class="add-files-btn" (click)="removeFile()">
+                      Remove XSLS File
+                    </button>
+                  </ng-template>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
     </div>
-    <app-receipt-details [dataSource]="transaction" [mode]="'bulkUpdate'">
-    </app-receipt-details>
+    <div>
+      <div class="row" *ngIf="transaction?.length == 0">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+          No records found for the selected Branch
+        </div>
+      </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li class="page-item" [class.disabled]="previouspageUrl == null">
+            <a class="page-link" (click)="showPreviousPage()">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+          <li class="page-item" [class.disabled]="nextPageUrl == null">
+            <a class="page-link" (click)="showNextPage()">Next</a>
+          </li>
+        </ul>
+      </nav>
+      <app-receipt-details [dataSource]="transaction" [mode]="'bulkUpdateMode'">
+      </app-receipt-details>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li class="page-item" [class.disabled]="previouspageUrl == null">
+            <a class="page-link" (click)="showPreviousPage()">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+          <li class="page-item" [class.disabled]="nextPageUrl == null">
+            <a class="page-link" (click)="showNextPage()">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </ng-template>
 </div>

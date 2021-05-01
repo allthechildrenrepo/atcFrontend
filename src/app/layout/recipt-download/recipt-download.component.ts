@@ -210,8 +210,11 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     };
     let otherPrams = this.generateParams();
     params = { ...params, ...otherPrams };
-    if (this.data.mode == 'normalMode') {
-      this.receiptSendMailService.post(params).subscribe((data) => {
+    debugger;
+    if (this.data.mode == 'bulkUpdateMode') {
+
+      let enpoint = this.receiptv2service.endpointsss + this.data.id + "/";
+      this.receiptv2service.putWithEndpoint(params,enpoint).subscribe((data) => {
         this.dismissLoader();
         document.body.removeChild(this.canvas);
         this.isTrackDone = true;
@@ -222,11 +225,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
         return;
       })
     } else {
-      let enpoint = this.receiptv2service.endpointsss + '/' + this.data.id;
-      console.log("sadasdasd s  ")
-
-      console.log(enpoint)
-      this.receiptv2service.put(enpoint).subscribe((data) => {
+      this.receiptSendMailService.post(params).subscribe((data) => {
         this.dismissLoader();
         document.body.removeChild(this.canvas);
         this.isTrackDone = true;
@@ -258,7 +257,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
       'pincode': this.data.pincode,
       'email': this.data.email,
       'donatedBranch': this.data.donatedBranch,
-      'foreign_number': this.data.foreignNumber,
+      'foreign_number': this.data.foreignNumber ? "True" : "False",
       'payment_mode': this.data.payment_mode,
     }
   }
@@ -285,22 +284,13 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     }
     let otherPrams = this.generateParams();
     params = { ...params, ...otherPrams };
-
-    if (this.data.mode == 'normalMode') {
-      this.whatsAppTransactionService.post(params).subscribe((data) => {
-        this.isTrackDone = true;
-        this.dismissLoader();
-        this.dismissPopUp ? this.closeReceipt() : "";
-      }, (err) => {
-        this.somethingWentWrong();
-        this.dismissLoader();
-      })
-    } else {
-      let enpoint = this.receiptv2service.endpointsss + '/' + this.data.id;
+debugger;
+    if (this.data.mode == 'bulkUpdateMode') {
+      let enpoint = this.receiptv2service.endpointsss + this.data.id + "/";
       console.log("asdasdasdasdasd s  ")
 
       console.log(enpoint)
-      this.receiptv2service.put(enpoint).subscribe((data) => {
+      this.receiptv2service.putWithEndpoint(params,enpoint).subscribe((data) => {
         this.dismissLoader();
         document.body.removeChild(this.canvas);
         this.isTrackDone = true;
@@ -309,6 +299,15 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
         this.somethingWentWrong();
         this.dismissLoader();
         return;
+      })
+    } else {
+      this.whatsAppTransactionService.post(params).subscribe((data) => {
+        this.isTrackDone = true;
+        this.dismissLoader();
+        this.dismissPopUp ? this.closeReceipt() : "";
+      }, (err) => {
+        this.somethingWentWrong();
+        this.dismissLoader();
       })
     }
   }

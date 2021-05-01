@@ -56,6 +56,21 @@ export abstract class HTTPBase {
     return this.httpClient.get(this.endpoint, { headers: this.header });
   }
 
+
+  /**
+   * @httpParams - httpParam
+   * Append the header with the get request in httpclient
+   */
+   getwithURL(url,httpParams?): Observable<any> {
+    if (httpParams) {
+      return this.httpClient.get(url, {
+        headers: this.header,
+        params: httpParams
+      });
+    }
+    return this.httpClient.get(url, { headers: this.header });
+  }
+
   /**
    * @param data  - body to post
    * Appends header to the post request in http Client
@@ -93,6 +108,16 @@ export abstract class HTTPBase {
       head = head.set("Authorization", `Token ${this.token}`);
     }
     return this.httpClient.put(this.endpoint, data, {
+      headers: head
+    });
+  }
+
+  putWithEndpoint(data,endpoint?, httpParams?):Observable<any>{
+    let head = new HttpHeaders();
+    if (this.isAuthenticatedEndpoint) {
+      head = head.set("Authorization", `Token ${this.token}`);
+    }
+    return this.httpClient.put(endpoint, data, {
       headers: head
     });
   }

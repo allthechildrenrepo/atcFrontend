@@ -57,9 +57,10 @@ export class ReceiptBulkUpdateService extends HTTPBase {
    * 
    * @param sheet that uplaoded
    */
-  getParams(sheet) {
+  getParams(sheet, selectedBranch:number=null) {
     const params = new FormData();
     params.append("upload_receipt",  sheet, sheet.name);
+    if(selectedBranch) params.append("branch_id", selectedBranch.toString())
     return params;
   }
 }

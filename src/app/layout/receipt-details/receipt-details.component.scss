@@ -20,3 +20,8 @@ th.mat-header-cell {
     text-align: center;
     font-weight: bold;
 }
+
+mat-header-cell {
+    display:flex;
+    justify-content:flex-end;
+   }
