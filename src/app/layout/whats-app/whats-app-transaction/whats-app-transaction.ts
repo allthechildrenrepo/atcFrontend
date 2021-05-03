@@ -26,6 +26,10 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
     branchName: string;
     user: User;
 
+    currentPage:number = 0;
+    previouspageUrl: string;
+    nextPageUrl: string;
+
     src: string;
     @ViewChild('imgRef', { static: false }) img: ElementRef;
 
@@ -65,6 +69,16 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
         this.branchName = null;
     }
 
+
+  showPreviousPage(){
+    this.fetchWhatsAppTransaction({},this.previouspageUrl);
+    this.currentPage = this.currentPage - 1; 
+  }
+
+  showNextPage() {
+    this.fetchWhatsAppTransaction({},this.nextPageUrl);
+    this.currentPage = this.currentPage + 1;
+  }
 
     setFromDate(dateEvent) {
         this.resetDateFilter();
@@ -133,16 +147,25 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
         this.resetReceiptIdFilter();
     }
 
-    fetchWhatsAppTransaction(param) {
+    fetchWhatsAppTransaction(param, url?) {
         this.presentLoader();
 
         //If the user is not an Admin, Restrict another branch WhatsApp transaction details.
         if(this.selectedBranch != 17) {
             param['branch_id'] = this.selectedBranch;
         }
+        let serivceMethod;
+        debugger
+        if(!url){
+            serivceMethod = this.whatsAppTransactionService.get(param)
+        } else {
+            serivceMethod = this.whatsAppTransactionService.getwithURL(url)
+        }
 
         this.transaction = [];
-        this.whatsAppTransactionService.get(param).subscribe((data) => {
+        serivceMethod.subscribe((data) => {
+            this.previouspageUrl = data.previous;
+            this.nextPageUrl = data.next;
             data.results.forEach(element => {
                 this.transaction.push(new WhatsAppTransaction().deserializer(element));
             });

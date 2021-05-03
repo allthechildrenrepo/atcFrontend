@@ -190,6 +190,28 @@
   <h5 class="mb-3">
     Receipt Details
   </h5>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+      <li class="page-item" [class.disabled]="previouspageUrl == null">
+        <a class="page-link" (click)="showPreviousPage()">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+      <li class="page-item" [class.disabled]="nextPageUrl == null">
+        <a class="page-link" (click)="showNextPage()">Next</a>
+      </li>
+    </ul>
+  </nav>
   <app-receipt-details [columnsToDisplay]="columnsToDisplay" [dataSource]="transaction">
   </app-receipt-details>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+      <li class="page-item" [class.disabled]="previouspageUrl == null">
+        <a class="page-link" (click)="showPreviousPage()">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+      <li class="page-item" [class.disabled]="nextPageUrl == null">
+        <a class="page-link" (click)="showNextPage()">Next</a>
+      </li>
+    </ul>
+  </nav>
 </div>

@@ -81,7 +81,7 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
     // if(this.selectedBranch != 17) {
     //     param['branch_id'] = this.selectedBranch;
     // }
-    let param = {  'branch_id': this.selectedBranch }
+    let param = { 'status':0, 'branch_id': this.selectedBranch }
       this.transaction = [];
    if(!url){
      url = this.whatsAppTransactionService.endpointsss;

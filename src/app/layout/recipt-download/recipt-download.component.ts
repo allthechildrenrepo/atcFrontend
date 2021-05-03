@@ -196,6 +196,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
    * send email set mail as true and send 
    */
   sendEmail() {
+    this.presentLoader();
     var file = this.pdf.output('datauristring');
     let params = {
       ack: file.split('data:application/pdf;filename=generated.pdf;base64,')[1],
@@ -210,7 +211,6 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     };
     let otherPrams = this.generateParams();
     params = { ...params, ...otherPrams };
-    debugger;
     if (this.data.mode == 'bulkUpdateMode') {
 
       let enpoint = this.receiptv2service.endpointsss + this.data.id + "/";

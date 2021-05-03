@@ -52,7 +52,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   pincode: FormControl;
   email: FormControl;
   payment_mode: FormControl;
-  mode:string;
+  mode: string;
 
   constructor(
     public dialog: MatDialog,
@@ -80,7 +80,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     }
     this.validateInputs();
     this.createFormGroup();
-    if(this.whatsappTransaction) this.setWhatsAppEditInputs();
+    if (this.whatsappTransaction) this.setWhatsAppEditInputs();
   }
 
   validateInputs() {
@@ -195,7 +195,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   }
 
   fetchWhatsAppTransaction(receiptId) {
-    let param = {'receipt_id': receiptId};
+    let param = { 'receipt_id': receiptId };
     this.presentLoader();
     this.whatsAppTransactionService.get(param).subscribe((data) => {
       this.whatsappTransaction = new WhatsAppTransaction().deserializer(data.results[0])
@@ -207,12 +207,14 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     })
   }
 
-  setWhatsAppEditInputs(){
-    if(this.whatsappTransaction) {
+  setWhatsAppEditInputs() {
+    if (this.whatsappTransaction) {
+      let number = this.whatsappTransaction.whatsAppNumber.length > 10 ? this.whatsappTransaction.whatsAppNumber.substring(2) :
+        this.whatsappTransaction.whatsAppNumber
       this.receiptForm.controls["reciptId"].setValue(this.whatsappTransaction.receiptId);
       this.receiptForm.controls["donatedDate"].setValue(this.whatsappTransaction.donatedDate);
       this.receiptForm.controls["name"].setValue(this.whatsappTransaction.name);
-      this.receiptForm.controls["phone"].setValue(this.whatsappTransaction.whatsAppNumber.substring(2));
+      this.receiptForm.controls["phone"].setValue(number);
       this.receiptForm.controls["phone2"].setValue(this.whatsappTransaction.phone2);
       this.receiptForm.controls["bank"].setValue(this.whatsappTransaction.bank);
       this.receiptForm.controls["branch"].setValue(this.whatsappTransaction.bankBranch);
@@ -267,7 +269,9 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     reciptData['foreignNumber'] = this.foreignNumber;
     reciptData['payment_mode'] = receiptValue.payment_mode;
     reciptData['mode'] = this.mode;
-    reciptData['id'] = this.whatsappTransaction.id;
+    if (this.whatsappTransaction) {
+      reciptData['id'] = this.whatsappTransaction.id;
+    }
     const dialogRef = this.dialog.open(ReciptDownloadComponent, {
       autoFocus: false,
       maxHeight: "90vh",

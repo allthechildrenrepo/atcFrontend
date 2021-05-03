@@ -22,6 +22,9 @@ export class TransactionReceiptDetailsComponent extends BasePage implements OnIn
   donationTransaction: DonationTransaction;
   modeOfTransaction;
   transaction;
+  currentPage:number = 0;
+  previouspageUrl: string;
+  nextPageUrl: string;
 
   constructor(
     public whatsAppTransactionService: WhatsAppTransactionService,
@@ -44,6 +47,17 @@ export class TransactionReceiptDetailsComponent extends BasePage implements OnIn
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+
+  showPreviousPage(){
+    this.fetchWhatsAppTransaction(this.previouspageUrl);
+    this.currentPage = this.currentPage - 1; 
+  }
+
+  showNextPage() {
+    this.fetchWhatsAppTransaction(this.nextPageUrl);
+    this.currentPage = this.currentPage + 1;
   }
 
   fetchWhatsAppTransaction(param) {

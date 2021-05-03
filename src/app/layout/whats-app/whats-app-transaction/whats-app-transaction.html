@@ -56,8 +56,30 @@
             </div>
             </div>
     </mat-card>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li class="page-item" [class.disabled]="previouspageUrl == null">
+            <a class="page-link" (click)="showPreviousPage()">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+          <li class="page-item" [class.disabled]="nextPageUrl == null">
+            <a class="page-link" (click)="showNextPage()">Next</a>
+          </li>
+        </ul>
+      </nav>
     <app-receipt-details [columnsToDisplay]="columnsToDisplay" [dataSource]="dataSource">
     </app-receipt-details>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li class="page-item" [class.disabled]="previouspageUrl == null">
+            <a class="page-link" (click)="showPreviousPage()">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+          <li class="page-item" [class.disabled]="nextPageUrl == null">
+            <a class="page-link" (click)="showNextPage()">Next</a>
+          </li>
+        </ul>
+      </nav>
 </ng-template>
 <!-- <div>
     <img #imgRef> // Note that the #imgRef reference is required to be identified by Angular
