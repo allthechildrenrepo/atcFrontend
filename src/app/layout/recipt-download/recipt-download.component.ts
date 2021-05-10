@@ -287,9 +287,6 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
 debugger;
     if (this.data.mode == 'bulkUpdateMode') {
       let enpoint = this.receiptv2service.endpointsss + this.data.id + "/";
-      console.log("asdasdasdasdasd s  ")
-
-      console.log(enpoint)
       this.receiptv2service.putWithEndpoint(params,enpoint).subscribe((data) => {
         this.dismissLoader();
         document.body.removeChild(this.canvas);

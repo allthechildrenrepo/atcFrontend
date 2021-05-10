@@ -24,6 +24,7 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
   currentPage:number = 0;
   previouspageUrl: string;
   nextPageUrl: string;
+  currentPageURL: string;
   
 
   constructor(
@@ -87,6 +88,7 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
      url = this.whatsAppTransactionService.endpointsss;
    }
    this.whatsAppTransactionService.getwithURL(url,param).subscribe((data) => {
+    this.currentPageURL= url
       this.previouspageUrl = data.previous;
       this.nextPageUrl = data.next;
         data.results.forEach(element => {
@@ -98,6 +100,10 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
         this.somethingWentWrong();
         this.dismissLoader();
     })
+}
+
+refreshParent(){
+  this.fetchWhatsAppTransaction(this.currentPageURL);
 }
 
 setBranch(branch) {

@@ -270,6 +270,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     reciptData['payment_mode'] = receiptValue.payment_mode;
     reciptData['mode'] = this.mode;
     if (this.whatsappTransaction) {
+      reciptData['mode'] = "bulkUpdateMode" // edit mode also we call update api
       reciptData['id'] = this.whatsappTransaction.id;
     }
     const dialogRef = this.dialog.open(ReciptDownloadComponent, {

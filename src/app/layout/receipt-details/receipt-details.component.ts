@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { WhatsAppTransaction } from 'src/app/shared/model/whats-app-transaction';
 import { TableUtil } from "../../shared/TableUtil";
@@ -14,6 +14,7 @@ export class ReceiptDetailsComponent implements OnInit {
 
   @Input() dataSource;
   @Input() mode = 'normalMode';
+  @Output() refreshParent= new EventEmitter<any>();
 
   @Input() columnsToDisplay: string[] = [
     "receipt_id",
@@ -49,6 +50,11 @@ export class ReceiptDetailsComponent implements OnInit {
       maxHeight: "90vh",
       data: { transactionDetails: transaction, mode:this.mode, reciptDetails: true, showReciptForm: false }
     });
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.refreshParent.emit()
+    });
+
 
   }
 
