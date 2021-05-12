@@ -265,6 +265,8 @@ export class PickUpRemarksDialog extends BasePage {
         {agentName: 'SUNDHARAM', agentNumber: 9566102944},
         {agentName: 'VAITHEESHWARAN', agentNumber: 8807270148},
         {agentName: 'SRINIVASAN', agentNumber:9176980446},
+        {agentName: 'HARIPRASATH', agentNumber: 9952007858},
+        {agentName: 'GANESH', agentNumber: 9952374377},
         {agentName: 'johnson', agentNumber: 9003974931}
 ]
     
