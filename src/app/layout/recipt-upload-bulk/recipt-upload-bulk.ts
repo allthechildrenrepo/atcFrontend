@@ -138,23 +138,11 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
     const param = this.leadUpdateService.getParams(this.fileToUpload, this.selectedBranch);
     this.leadUpdateService.postMultiPardData(param).subscribe(
       res => {
-        if (res.status) {
-          this.showNotification(
-            "bottom",
-            "center",
-            "success",
-            "info-circle",
-            this.fileToUpload.name + " Uploaded Successfully"
-          );
-          this.fileToUpload = null;
-        } else {
-          this.showNotification(
-            "bottom",
-            "center",
-            "danger",
-            "info-circle",
-            this.fileToUpload.name + " not Uploaded, please check the file"
-          );
+        this.dismissLoader()
+        let type = res.status ? 'success' : 'failure'
+        this.showNotification("bottom", "center", type, "", res.message)
+        if(res.status){
+          this.refreshParent();
         }
         this.resetFile();
       },
