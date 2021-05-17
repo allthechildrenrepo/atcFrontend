@@ -111,7 +111,6 @@ export class OverallReportComponent extends BasePage implements OnInit {
       start_date: this.selectedYear + '-' + numMonth + '-' + 1,
       end_date: this.selectedYear + '-' + numMonth + '-' + new Date(this.selectedYear, numMonth, 0).getDate(),
     };
-    debugger;
     if(this.selectedFilterMode) {
       params['mode_of_transaction_id'] = this.selectedFilterMode.id;
     }

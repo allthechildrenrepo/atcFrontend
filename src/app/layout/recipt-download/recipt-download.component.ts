@@ -284,7 +284,6 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     }
     let otherPrams = this.generateParams();
     params = { ...params, ...otherPrams };
-debugger;
     if (this.data.mode == 'bulkUpdateMode') {
       let enpoint = this.receiptv2service.endpointsss + this.data.id + "/";
       this.receiptv2service.putWithEndpoint(params,enpoint).subscribe((data) => {

@@ -40,7 +40,7 @@ import { TrustVisitDonarComponent } from './trust-visit-donar/trust-visit-donar.
 import { UserDashboardComponent } from './user-dashbord/user-dashboard.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { VerifiedDonationListComponent } from './verified-donation-list/verified-donation-list.component';
-import { WhatsAPPComponent } from './whats-app';
+import { WhatsAPPComponent, WhatsappTransactionBulkDownloadDialog } from './whats-app';
 import { WhatsAPPTransactionComponent } from './whats-app/whats-app-transaction';
 import { ReceiptViewDownloadComponent } from './receipt-view-download/receipt-view-download.component';
 import { AssignTelecallerListComponent } from './assign-telecaller-list/assign-telecaller-list.component';
@@ -133,6 +133,7 @@ import { ReciptUploadComponent } from './recipt-upload-bulk/recipt-upload-bulk';
     BaseComponent,
     ReceiptViewDownloadComponent,
     PickUpRemarksDialog,
+    WhatsappTransactionBulkDownloadDialog,
     AssignTelecallerListComponent,
     EditDonorDetailsComponent,
     SwitchBranchAlertComponent,
@@ -153,6 +154,6 @@ import { ReciptUploadComponent } from './recipt-upload-bulk/recipt-upload-bulk';
     WassangerDeviceStatusComponent,
   ],
   providers: [DatePipe, NgxImageCompressService],
-  entryComponents: [PickUpRemarksDialog, RemarksDialog, ImageDialogComponent, ReciptDownloadComponent, ReceiptViewDownloadComponent, EditDonorTransactonComponent, SpinnerComponent, AssignTelecallerListComponent, EditDonorDetailsComponent, SwitchBranchAlertComponent, TransactionReceiptDetailsComponent, PreviousTransactionComponent, BatchSelectionAlert, CreatePromotionComponent, PromotionImageComponent]
+  entryComponents: [PickUpRemarksDialog,WhatsappTransactionBulkDownloadDialog, RemarksDialog, ImageDialogComponent, ReciptDownloadComponent, ReceiptViewDownloadComponent, EditDonorTransactonComponent, SpinnerComponent, AssignTelecallerListComponent, EditDonorDetailsComponent, SwitchBranchAlertComponent, TransactionReceiptDetailsComponent, PreviousTransactionComponent, BatchSelectionAlert, CreatePromotionComponent, PromotionImageComponent]
 })
 export class LayoutModule { }

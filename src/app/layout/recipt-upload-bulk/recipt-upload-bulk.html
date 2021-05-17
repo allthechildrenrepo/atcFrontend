@@ -64,6 +64,13 @@
      
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-end">
+          <li class="page-item" >
+            <button mat-raised-button 
+                   class="page-link" 
+                   color="primary" 
+                   *ngIf="deleteList.length"
+                  (click)="deleteReceipt()">Delete</button>
+          </li>
           <li class="page-item" [class.disabled]="previouspageUrl == null">
             <a class="page-link" (click)="showPreviousPage()">Previous</a>
           </li>
@@ -78,7 +85,10 @@
           No records found for the selected Branch
         </div>
       </div>
-      <app-receipt-details [dataSource]="transaction" [mode]="'bulkUpdateMode'" (refreshParent)="refreshParent()">
+      <app-receipt-details [dataSource]="transaction" 
+                            [mode]="'bulkUpdateMode'" 
+                            (refreshParent)="refreshParent()"
+                            (checkboxEvent)="checkboxselectedEvent($event)">
       </app-receipt-details>
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-end">

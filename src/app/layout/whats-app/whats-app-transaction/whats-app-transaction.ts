@@ -7,6 +7,7 @@ import { ReceiptViewDownloadComponent } from '../../receipt-view-download/receip
 import { DateFormaterService } from '../../../shared/services/date.service';
 import { User } from '../../../shared/model';
 import { Branch } from '../../../shared/model/branch';
+import { WhatsappTransactionBulkDownloadDialog } from '..';
 // import * as base64 from "base64";
 
 
@@ -155,7 +156,6 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
             param['branch_id'] = this.selectedBranch;
         }
         let serivceMethod;
-        debugger
         if(!url){
             serivceMethod = this.whatsAppTransactionService.get(param)
         } else {
@@ -201,5 +201,13 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
             'branch',
             'receipt'
         ];
+    }
+
+    PostForDownload(){
+        let dialogRef = this.dialog.open(WhatsappTransactionBulkDownloadDialog, {
+            width: "100vw",
+            autoFocus: false,
+            maxHeight: "90vh",
+        });
     }
 }

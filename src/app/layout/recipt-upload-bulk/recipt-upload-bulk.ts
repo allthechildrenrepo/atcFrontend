@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from "@angular/core";
 import { MatDialog, MatSnackBar } from "@angular/material";
 import { WhatsAppTransaction } from "src/app/shared/model";
+import { WhatsappDeleteService } from "src/app/shared/services/whatsapp-bulk-download.service";
 import { WhatsAppTransactionService, WhatsAppTransactionServiceV2 } from "src/app/shared/services/whatsapp-transaction.service";
 import { LeadUpdateService, ReceiptBulkUpdateService } from '../../shared/services/leads';
 import { BasePage } from "../../utils";
@@ -21,28 +22,32 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
   dataSource;
   selectedBranchName: string;
   selectedBranch: number;
-  currentPage:number = 0;
+  currentPage: number = 0;
   previouspageUrl: string;
   nextPageUrl: string;
   currentPageURL: string;
-  
+  deleteList: number[] = [];
+
 
   constructor(
     public leadUpdateService: ReceiptBulkUpdateService,
     public whatsAppTransactionService: WhatsAppTransactionServiceV2,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public whatsappDeleteService: WhatsappDeleteService
   ) {
     super(dialog, snackBar);
   }
 
-  ngOnInit(){
+  ngOnInit() {
     // this.fetchWhatsAppTransaction()
   }
 
   ngAfterViewInit() {
-    this.file.nativeElement.value = null;
-    this.fileToUpload = null;
+    if (this.file) {
+      this.file.nativeElement.value = null;
+      this.fileToUpload = null;
+    }
   }
 
   addFiles() {
@@ -76,47 +81,47 @@ export class ReciptUploadComponent extends BasePage implements AfterViewInit {
     this.fileToUpload = files[0];
   }
 
-  fetchWhatsAppTransaction(url= null) {
+  fetchWhatsAppTransaction(url = null) {
     this.presentLoader();
     //If the user is not an Admin, Restrict another branch WhatsApp transaction details.
     // if(this.selectedBranch != 17) {
     //     param['branch_id'] = this.selectedBranch;
     // }
-    let param = { 'status':0, 'branch_id': this.selectedBranch }
-      this.transaction = [];
-   if(!url){
-     url = this.whatsAppTransactionService.endpointsss;
-   }
-   this.whatsAppTransactionService.getwithURL(url,param).subscribe((data) => {
-    this.currentPageURL= url
+    let param = { 'status': 0, 'branch_id': this.selectedBranch }
+    this.transaction = [];
+    if (!url) {
+      url = this.whatsAppTransactionService.endpointsss;
+    }
+    this.whatsAppTransactionService.getwithURL(url, param).subscribe((data) => {
+      this.currentPageURL = url
       this.previouspageUrl = data.previous;
       this.nextPageUrl = data.next;
-        data.results.forEach(element => {
-            this.transaction.push(new WhatsAppTransaction().deserializer(element));
-        });
-        this.dataSource = this.transaction;
-        this.dismissLoader();
+      data.results.forEach(element => {
+        this.transaction.push(new WhatsAppTransaction().deserializer(element));
+      });
+      this.dataSource = this.transaction;
+      this.dismissLoader();
     }, err => {
-        this.somethingWentWrong();
-        this.dismissLoader();
+      this.somethingWentWrong();
+      this.dismissLoader();
     })
-}
+  }
 
-refreshParent(){
-  this.fetchWhatsAppTransaction(this.currentPageURL);
-}
+  refreshParent() {
+    this.fetchWhatsAppTransaction(this.currentPageURL);
+  }
 
-setBranch(branch) {
-  this.selectedBranch = branch.branchId;
-  this.selectedBranchName = branch.branchName;
-  this.fetchWhatsAppTransaction();
-}
+  setBranch(branch) {
+    this.selectedBranch = branch.branchId;
+    this.selectedBranchName = branch.branchName;
+    this.fetchWhatsAppTransaction();
+  }
 
-removeBranch() {
-  this.selectedBranch = null;
-  this.selectedBranchName = null;
-  this.transaction = [];
-}
+  removeBranch() {
+    this.selectedBranch = null;
+    this.selectedBranchName = null;
+    this.transaction = [];
+  }
 
 
   /**removes the files after it added */
@@ -160,13 +165,41 @@ removeBranch() {
     );
   }
 
-  showPreviousPage(){
+  showPreviousPage() {
     this.fetchWhatsAppTransaction(this.previouspageUrl);
-    this.currentPage = this.currentPage - 1; 
+    this.currentPage = this.currentPage - 1;
   }
 
   showNextPage() {
     this.fetchWhatsAppTransaction(this.nextPageUrl);
     this.currentPage = this.currentPage + 1;
   }
+
+
+
+  checkboxselectedEvent(event) {
+    const eventData: WhatsAppTransaction = event.data;
+    if (event.checked) this.deleteList.push(eventData.id);
+    else {
+      const index: number = this.deleteList.indexOf(eventData.id);
+      this.deleteList.splice(index, 1);
+    }
+    this.deleteList = [...new Set(this.deleteList)];
+  }
+
+  deleteReceipt(){
+    let params = { 'transaction_ids': this.deleteList};
+    debugger;
+    this.presentLoader()
+    this.whatsappDeleteService.post(params).subscribe((data) => {
+      this.dismissLoader()
+      let type = data.status ? 'success' : 'failure'
+      this.showNotification("bottom", "center", type, "", data.message)
+      if(data.status){
+        this.refreshParent();
+      }
+    })
+    
+  }
+
 }

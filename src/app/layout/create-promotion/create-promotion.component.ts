@@ -59,7 +59,6 @@ export class CreatePromotionComponent extends BasePage implements OnInit {
     super(dialog, snackBar)
     this.selectedDevice = data.selectedDevice;
     this.branch = data.branch;
-    debugger;
   }
 
   ngOnInit() {

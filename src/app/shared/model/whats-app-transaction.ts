@@ -31,6 +31,8 @@ export class WhatsAppTransaction {
     public foreignNumber: string 
     public payment_mode: string;
     public id: number;
+    public approved_by: string;
+    public upload_by: string;
 
 
     deserializer(input) {
@@ -66,6 +68,8 @@ export class WhatsAppTransaction {
         this.transaction = input.bank_transaction_id;
         this.payment_mode = input.payment_mode;
         this.id = input.id;
+        this.upload_by = input.upload_by;
+        this.approved_by = input.approved_by;
 
 
         if(input.branch) {

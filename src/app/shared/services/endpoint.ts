@@ -152,4 +152,12 @@ export class EndPoint {
     // 5f8d1d8e42c8c0987a692c7d/download
     // https://api.wassenger.com/v1/files/5f8d1d8e42c8c0987a692c7d/download
   }
+
+  get whatsappbulkdownload() {
+    return this.serverUrl+"/receipt/download/"
+  }
+
+  get whatsappdelete() {
+    return this.serverUrl+"/receipt/delete/"
+  }
 }

@@ -44,7 +44,6 @@ export class SidebarComponent implements OnInit {
 
     this.telecallerService.get(params).subscribe(
       res => {
-        debugger;
         const user = new AtcUser().deserialize(res.results[0]);
         this.mockGroups = user.group;
       }
