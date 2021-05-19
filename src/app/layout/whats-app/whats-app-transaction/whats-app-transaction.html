@@ -1,13 +1,13 @@
 <app-page-header [heading]="'WhatsApp Transaction'" [icon]="'fa-bar-chart-o'"></app-page-header>
 <div *ngIf="!selectedBranch; else showList">
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-6"></div>
         <div class="col-4 d-flex justify-content-end  m-1  align-items-center">
             <button mat-raised-button color="primary" (click)="PostForDownload()">
                 Download In Bulk
             </button>
         </div>
-    </div>
+    </div> -->
     <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
 </div>
 <ng-template #showList>

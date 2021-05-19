@@ -50,7 +50,7 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
         if (this.user.branch.length > 0) {
             adminBranch = this.user.branch.filter(branch => branch.branch_id == 17)[0]
             if (adminBranch) {
-                this.setBranch(adminBranch)
+                // this.setBranch(adminBranch)
             }
         }
         if (this.user.branch.length === 1) {
@@ -204,8 +204,10 @@ export class WhatsAPPTransactionComponent extends BasePage implements OnInit {
     }
 
     PostForDownload(){
+        debugger;
         let dialogRef = this.dialog.open(WhatsappTransactionBulkDownloadDialog, {
             width: "100vw",
+            data:{ branch: this.selectedBranch},
             autoFocus: false,
             maxHeight: "90vh",
         });

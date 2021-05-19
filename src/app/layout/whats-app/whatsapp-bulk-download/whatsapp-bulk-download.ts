@@ -16,6 +16,7 @@ export class WhatsappTransactionBulkDownloadDialog extends BasePage {
     minDate: any;
     email: string;
     lastSearched: any;
+    branch: any;
 
     constructor(
         public dialogRef: MatDialogRef<WhatsappTransactionBulkDownloadDialog>,
@@ -26,6 +27,7 @@ export class WhatsappTransactionBulkDownloadDialog extends BasePage {
         public dateFormaterService: DateFormaterService
     ) {
         super(dialog, snackBar);
+        this.branch = data.branch
         this.resetDateFilter();
     }
 
@@ -64,7 +66,10 @@ export class WhatsappTransactionBulkDownloadDialog extends BasePage {
         let params = { 'from_date': this.dateFormaterService.converDateToYmd(this.fromDate), 
                        'end_date': this.dateFormaterService.converDateToYmd(this.toDate), 
                        tomorrow: this.dateFormaterService.converDateToYmd(tomorrow), 
-                       'to_email': this.email.split(",") }
+                       'to_email': this.email.split(","),
+                       "branch_id": this.branch
+                     }
+                     debugger;
         this.bulkDownloadService.post(params).subscribe((data) => {
             this.dismissLoader()
             let type = data.status ? 'success' : 'failure'
