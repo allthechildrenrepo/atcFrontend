@@ -28,7 +28,7 @@ export class WhatsAppTransaction {
     public pincode: string 
     public email: string 
     public donatedBranch: Branch
-    public foreignNumber: string 
+    public foreignNumber: boolean 
     public payment_mode: string;
     public id: number;
     public approved_by: string;

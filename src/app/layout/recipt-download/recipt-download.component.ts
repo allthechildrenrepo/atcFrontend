@@ -104,23 +104,27 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
 
   closeReceipt() {
     if (this.isTrackDone == false) {
-      this.optionsAlert(
-        "No Actions done! ",
-        "'YES' - receipt will be downloaded and tracked ,  'NO' - close without any action",
-        (data) => {
-          if (data) {
-            this.downloadPdf();
-            this.dismissPopUp = true;
-          } else {
-            document.body.removeChild(this.canvas);
-            this.pdf = undefined;
-            this.dialogRef.close();
-          }
-        }
-      )
+      // document.body.removeChild(this.canvas);
+      this.pdf = undefined;
+      this.dialogRef.close(this.isTrackDone);
+
+      // this.optionsAlert(
+      //   "No Actions done! ",
+      //   "'YES' - receipt will be downloaded and tracked ,  'NO' - close without any action",
+      //   (data) => {
+      //     if (data) {
+      //       this.downloadPdf();
+      //       this.dismissPopUp = true;
+      //     } else {
+      //       document.body.removeChild(this.canvas);
+      //       this.pdf = undefined;
+      //       this.dialogRef.close();
+      //     }
+      //   }
+      // )
     } else {
       this.pdf = undefined;
-      this.dialogRef.close();
+      this.dialogRef.close(this.isTrackDone);
     }
   }
   checkWhatsappNumber() {

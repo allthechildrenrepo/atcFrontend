@@ -226,6 +226,11 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       this.receiptForm.controls["email"].setValue(this.whatsappTransaction.email);
       this.receiptForm.controls["pincode"].setValue(this.whatsappTransaction.pincode);
       this.receiptForm.controls["payment_mode"].setValue(this.whatsappTransaction.payment_mode)
+      if(this.whatsappTransaction.foreignNumber){
+        this.foreignNumber = this.whatsappTransaction.foreignNumber
+        this.receiptForm.get('phone').clearValidators();
+        this.receiptForm.get('phone2').clearValidators()
+      }
     }
 
   }
@@ -280,6 +285,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(res => {
+      if(!res) return
       this.closeDialog();
     });
 
