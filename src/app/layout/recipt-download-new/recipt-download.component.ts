@@ -267,7 +267,7 @@ export class ReciptDownloadNewComponent extends BasePage implements OnInit {
       'donatedBranch': this.data.donatedBranch,
       'foreign_number': this.data.foreignNumber ? "True" : "False",
       'payment_mode': this.data.payment_mode,
-      'dod': this.data.dob
+      'dob': this.data.dob
     }
   }
 
