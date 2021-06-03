@@ -18,7 +18,6 @@ import { TransactionModeService } from "../../shared/services/transaction-mode.s
 import { Branch } from "../../shared/model/branch";
 import { DonationApproveService } from "../../shared/services/donation-approve.service";
 import { EditDonorTransactonComponent } from "../edit-donor-transacton/edit-donor-transacton.component";
-import { ReciptDownloadComponent } from "../recipt-download/recipt-download.component";
 import { TableUtil } from "../../shared/TableUtil";
 import { ImageDialogComponent } from "../image-dialog/image-dialog.component";
 import { BatchService } from '../../shared/services/batch.service';

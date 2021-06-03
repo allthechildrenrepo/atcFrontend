@@ -11,10 +11,10 @@ import { ReceiptSendMailService } from '../../shared/services/receipt.service';
 
 @Component({
   selector: "app-recipt-download",
-  templateUrl: "./recipt-download.component.html",
+  templateUrl: "./new-recipt-download.component.html",
   styleUrls: ["./recipt-download.component.scss"]
 })
-export class ReciptDownloadComponent extends BasePage implements OnInit {
+export class ReciptDownloadNewComponent extends BasePage implements OnInit {
 
   pdf: any;
   whatsapp_id: string = null;
@@ -31,7 +31,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
 
   constructor(
     public whatsAppTransactionService: WhatsAppTransactionService,
-    public dialogRef: MatDialogRef<ReciptDownloadComponent>,
+    public dialogRef: MatDialogRef<ReciptDownloadNewComponent>,
     public sendWhatsapp: whatsAppSendFileService,
     public whatsAppNumberCheck: WhatsAppCheckNumber,
     public receiptSendMailService: ReceiptSendMailService,
@@ -49,6 +49,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
   }
 
   ngAfterViewInit() {
+    debugger
     this.convertHtmlToPDF();
   }
 
@@ -59,11 +60,13 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
     if (this.imageCounter < 2) {
       return;
     }
-    this.presentLoader();
+    // this.presentLoader()
     this.fileName = this.data.reciptId + '-' + this.data.mobile + '.pdf';
     htmlToImage
-      .toCanvas(document.getElementById("receipt"), { quality: 1 })
+      .toCanvas(document.getElementById("page-container"), { quality: 1 })
       .then((canvas) => {
+        debugger
+        this.enableButton = false;
         this.canvas = canvas;
         document.body.appendChild(canvas);
         var imgWidth = 100;
@@ -75,8 +78,9 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
         // a4': [595.28, 841.89]
         this.pdf = new jspdf("p", "mm", [300, 350], false); // A4 size page of PDF
         var position = 0;
-        this.pdf.addImage(contentDataURL, "PNG", 2, 2, imgWidth, imgHeight, '', 'SLOW');
+        this.pdf.addImage(contentDataURL, "PNG", 2, 0, imgWidth, imgHeight-15, '', 'SLOW');
         this.enableButton = true;
+        debugger
         this.dismissLoader();
       })
   }
@@ -263,6 +267,7 @@ export class ReciptDownloadComponent extends BasePage implements OnInit {
       'donatedBranch': this.data.donatedBranch,
       'foreign_number': this.data.foreignNumber ? "True" : "False",
       'payment_mode': this.data.payment_mode,
+      'dod': this.data.dob
     }
   }
 

@@ -11,6 +11,7 @@ import { User } from 'src/app/shared/model/user';
 import { BasePage } from 'src/app/utils/pages/base/base.component';
 import { WhatsAppTransaction } from 'src/app/shared/model';
 import { WhatsAppTransactionService } from 'src/app/shared/services/whatsapp-transaction.service';
+import { ReciptDownloadNewComponent } from '../recipt-download-new/recipt-download.component';
 // import { MatInputModule } from '@angular/material/input';
 
 @Component({
@@ -52,6 +53,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   pincode: FormControl;
   email: FormControl;
   payment_mode: FormControl;
+  dob: FormControl;
   mode: string;
 
   constructor(
@@ -110,6 +112,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     this.address2 = new FormControl("");
     this.pincode = new FormControl("");
     this.email = new FormControl("");
+    this.dob = new FormControl("")
   }
 
   createFormGroup() {
@@ -128,7 +131,8 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       address2: this.address2,
       pincode: this.pincode,
       email: this.email,
-      payment_mode: this.payment_mode
+      payment_mode: this.payment_mode,
+      dob: this.dob
     });
   }
 
@@ -226,6 +230,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       this.receiptForm.controls["email"].setValue(this.whatsappTransaction.email);
       this.receiptForm.controls["pincode"].setValue(this.whatsappTransaction.pincode);
       this.receiptForm.controls["payment_mode"].setValue(this.whatsappTransaction.payment_mode)
+      this.receiptForm.controls["dob"].setValue(this.whatsappTransaction.dob)
       if(this.whatsappTransaction.foreignNumber){
         this.foreignNumber = this.whatsappTransaction.foreignNumber
         this.receiptForm.get('phone').clearValidators();
@@ -268,6 +273,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     reciptData['branch'] = receiptValue.branch;
     reciptData['address'] = receiptValue.address1;
     reciptData['address1'] = receiptValue.address2;
+    reciptData['dob'] = receiptValue.dob;
     reciptData['pincode'] = receiptValue.pincode;
     reciptData['email'] = receiptValue.email;
     reciptData['donatedBranch'] = this.selectedBranch;
@@ -278,7 +284,11 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       reciptData['mode'] = "bulkUpdateMode" // edit mode also we call update api
       reciptData['id'] = this.whatsappTransaction.id;
     }
-    const dialogRef = this.dialog.open(ReciptDownloadComponent, {
+    let component:any = ReciptDownloadNewComponent;
+    if(this.whatsappTransaction.id < 10) {
+      component = ReciptDownloadComponent;
+    }
+    const dialogRef = this.dialog.open(component, {
       autoFocus: false,
       maxHeight: "90vh",
       data: reciptData

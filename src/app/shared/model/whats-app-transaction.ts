@@ -33,6 +33,7 @@ export class WhatsAppTransaction {
     public id: number;
     public approved_by: string;
     public upload_by: string;
+    public dob: string;
 
 
     deserializer(input) {
@@ -70,7 +71,7 @@ export class WhatsAppTransaction {
         this.id = input.id;
         this.upload_by = input.upload_by;
         this.approved_by = input.approved_by;
-
+        this.dob = input.dob;
 
         if(input.branch) {
             this.branch = new Branch().deserialize(input.branch);

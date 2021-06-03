@@ -152,9 +152,21 @@
               <mat-error *ngIf="transactionId.errors.required">Transaction number is required</mat-error>
             </mat-error>
           </mat-form-field>
-          <div class="col-5 d-flex align-items-center">
+          <mat-form-field class="col-3 m-2 form-fields">
+            <mat-label>Date of birth  (dd/mm/yyyy)</mat-label>
+            <input class="ml-2" formControlName="dob" matInput placeholder=" dd / mm / yyyy "
+              value="{{ receiptForm.value.dob }}"  />
+            <!-- (click)="fromPicker.open()" [matDatepicker]="fromPicker" />
+            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromPicker></mat-datepicker> -->
+            <mat-error *ngIf="donatedDate?.errors && (donatedDate?.dirty || donatedDate?.touched)">
+              <mat-error *ngIf="donatedDate.errors.required">Dob Date is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <div class="col-2 d-flex align-items-center">
             <mat-checkbox [checked]="is80G === true" (change)="is80GChecked($event)">80G</mat-checkbox>
           </div>
+
         </div>
 
         <div class="row">
