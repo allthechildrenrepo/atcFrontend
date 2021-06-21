@@ -183,7 +183,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close();
+    if (this.dialogRef) { this.dialogRef.close(); }
   }
 
   generateRecipt() {
@@ -212,14 +212,25 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   }
 
   setWhatsAppEditInputs() {
+
     if (this.whatsappTransaction) {
-      let number = this.whatsappTransaction.whatsAppNumber.length > 10 ? this.whatsappTransaction.whatsAppNumber.substring(2) :
+      let number = this.whatsappTransaction.foreignNumber ? this.whatsappTransaction.whatsAppNumber : this.whatsappTransaction.whatsAppNumber.length > 10 ? this.whatsappTransaction.whatsAppNumber.substring(2) :
         this.whatsappTransaction.whatsAppNumber
+      if (this.whatsappTransaction.foreignNumber) {
+        this.foreignNumber = this.whatsappTransaction.foreignNumber
+        this.receiptForm.get('phone').clearValidators();
+        this.receiptForm.get('phone2').clearValidators()
+      }
+      let alternatenumber = this.whatsappTransaction.foreignNumber ?
+        this.whatsappTransaction.phone2 :
+        this.whatsappTransaction.phone2.length > 10 ?
+          this.whatsappTransaction.phone2.substring(2) :
+          this.whatsappTransaction.phone2
       this.receiptForm.controls["reciptId"].setValue(this.whatsappTransaction.receiptId);
       this.receiptForm.controls["donatedDate"].setValue(this.whatsappTransaction.donatedDate);
       this.receiptForm.controls["name"].setValue(this.whatsappTransaction.name);
       this.receiptForm.controls["phone"].setValue(number);
-      this.receiptForm.controls["phone2"].setValue(this.whatsappTransaction.phone2);
+      this.receiptForm.controls["phone2"].setValue(alternatenumber);
       this.receiptForm.controls["bank"].setValue(this.whatsappTransaction.bank);
       this.receiptForm.controls["branch"].setValue(this.whatsappTransaction.bankBranch);
       this.receiptForm.controls["transactionId"].setValue(this.whatsappTransaction.transaction);
@@ -231,11 +242,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       this.receiptForm.controls["pincode"].setValue(this.whatsappTransaction.pincode);
       this.receiptForm.controls["payment_mode"].setValue(this.whatsappTransaction.payment_mode)
       this.receiptForm.controls["dob"].setValue(this.whatsappTransaction.dob)
-      if(this.whatsappTransaction.foreignNumber){
-        this.foreignNumber = this.whatsappTransaction.foreignNumber
-        this.receiptForm.get('phone').clearValidators();
-        this.receiptForm.get('phone2').clearValidators()
-      }
+
     }
 
   }
@@ -258,7 +265,23 @@ export class ReciptFormComponent extends BasePage implements OnInit {
 
   }
 
-  onSubmit(receiptValue) {
+  async validateDateFormat(date: string) {
+    // 2020-08-11 - yyyy-mm-dd format
+    // var regex = /^(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-](19|20)\d\d$/;
+    var regex = /^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/;
+    return date.match(regex)
+
+  }
+
+  async onSubmit(receiptValue) {
+    if (!this.whatsappTransaction && !await this.validateDateFormat(receiptValue.donatedDate)) {
+      this.textAlert("Invalid Date Format", "Donated Date " + receiptValue.donatedDate + " is not in  yyyy-mm-dd format")
+      return
+    }
+    if (receiptValue.dob && !this.whatsappTransaction && !await this.validateDateFormat(receiptValue.dob)) {
+      this.textAlert("Invalid Date Format", "Date of birth " + receiptValue.dob + " is not in  yyyy-mm-dd format")
+      return
+    }
     let reciptData = {};
     reciptData['reciptId'] = receiptValue.reciptId;
     reciptData['donatedDate'] = receiptValue.donatedDate;
@@ -284,8 +307,8 @@ export class ReciptFormComponent extends BasePage implements OnInit {
       reciptData['mode'] = "bulkUpdateMode" // edit mode also we call update api
       reciptData['id'] = this.whatsappTransaction.id;
     }
-    let component:any = ReciptDownloadNewComponent;
-    if(this.whatsappTransaction.id < 10) {
+    let component: any = ReciptDownloadNewComponent;
+    if (this.whatsappTransaction && this.whatsappTransaction.id < 343631) {
       component = ReciptDownloadComponent;
     }
     const dialogRef = this.dialog.open(component, {
@@ -295,7 +318,7 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      if(!res) return
+      if (!res) return
       this.closeDialog();
     });
 

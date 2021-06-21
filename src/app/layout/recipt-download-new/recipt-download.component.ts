@@ -49,7 +49,6 @@ export class ReciptDownloadNewComponent extends BasePage implements OnInit {
   }
 
   ngAfterViewInit() {
-    debugger
     this.convertHtmlToPDF();
   }
 
@@ -78,7 +77,7 @@ export class ReciptDownloadNewComponent extends BasePage implements OnInit {
         // a4': [595.28, 841.89]
         this.pdf = new jspdf("p", "mm", [300, 350], false); // A4 size page of PDF
         var position = 0;
-        this.pdf.addImage(contentDataURL, "PNG", 2, 0, imgWidth, imgHeight-15, '', 'SLOW');
+        this.pdf.addImage(contentDataURL, "PNG", 2, 0, imgWidth, imgHeight - 15, '', 'SLOW');
         this.enableButton = true;
         debugger
         this.dismissLoader();
@@ -108,7 +107,8 @@ export class ReciptDownloadNewComponent extends BasePage implements OnInit {
 
   closeReceipt() {
     if (this.isTrackDone == false) {
-      document.body.removeChild(this.canvas);
+      if (document.body.contains(this.canvas))
+        document.body.removeChild(this.canvas);
       this.pdf = undefined;
       this.dialogRef.close(this.isTrackDone);
 
@@ -222,7 +222,7 @@ export class ReciptDownloadNewComponent extends BasePage implements OnInit {
     if (this.data.mode == 'bulkUpdateMode') {
 
       let enpoint = this.receiptv2service.endpointsss + this.data.id + "/";
-      this.receiptv2service.putWithEndpoint(params,enpoint).subscribe((data) => {
+      this.receiptv2service.putWithEndpoint(params, enpoint).subscribe((data) => {
         this.dismissLoader();
         document.body.removeChild(this.canvas);
         this.isTrackDone = true;
@@ -295,7 +295,7 @@ export class ReciptDownloadNewComponent extends BasePage implements OnInit {
     params = { ...params, ...otherPrams };
     if (this.data.mode == 'bulkUpdateMode') {
       let enpoint = this.receiptv2service.endpointsss + this.data.id + "/";
-      this.receiptv2service.putWithEndpoint(params,enpoint).subscribe((data) => {
+      this.receiptv2service.putWithEndpoint(params, enpoint).subscribe((data) => {
         this.dismissLoader();
         document.body.removeChild(this.canvas);
         this.isTrackDone = true;
