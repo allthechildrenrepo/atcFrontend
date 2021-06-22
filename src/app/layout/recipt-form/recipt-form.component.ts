@@ -266,20 +266,20 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   }
 
   async validateDateFormat(date: string) {
-    // 2020-08-11 - yyyy-mm-dd format
-    // var regex = /^(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-](19|20)\d\d$/;
-    var regex = /^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/;
+    // 2020-08-11 - dd-mm-yyyy format
+    var regex = /^(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-](18|19|20|21|22|23)\d\d$/;
+    // var regex = /^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/;
     return date.match(regex)
 
   }
 
   async onSubmit(receiptValue) {
     if (!this.whatsappTransaction && !await this.validateDateFormat(receiptValue.donatedDate)) {
-      this.textAlert("Invalid Date Format", "Donated Date " + receiptValue.donatedDate + " is not in  yyyy-mm-dd format")
+      this.textAlert("Invalid Date Format", "Donated Date " + receiptValue.donatedDate + " is not in  dd-mm-yyyy format")
       return
     }
     if (receiptValue.dob && !this.whatsappTransaction && !await this.validateDateFormat(receiptValue.dob)) {
-      this.textAlert("Invalid Date Format", "Date of birth " + receiptValue.dob + " is not in  yyyy-mm-dd format")
+      this.textAlert("Invalid Date Format", "Date of birth " + receiptValue.dob + " is not in  dd-mm-yyyy format")
       return
     }
     let reciptData = {};

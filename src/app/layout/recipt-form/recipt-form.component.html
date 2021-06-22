@@ -63,8 +63,8 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field class="col-5 m-2 form-fields">
-            <mat-label>Donated date (yyyy-mm-dd)</mat-label>
-            <input class="ml-2" formControlName="donatedDate" matInput placeholder="yyyy-mm-dd"
+            <mat-label>Donated date (dd-mm-yyyy)</mat-label>
+            <input class="ml-2" formControlName="donatedDate" matInput placeholder="dd-mm-yyyy"
               value="{{ receiptForm.value.donatedDate }}" required />
             <!-- (click)="fromPicker.open()" [matDatepicker]="fromPicker" />
         <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
@@ -153,8 +153,8 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field class="col-3 m-2 form-fields">
-            <mat-label>Date of birth  (yyyy-mm-dd)</mat-label>
-            <input class="ml-2" formControlName="dob" matInput placeholder="yyyy-mm-dd"
+            <mat-label>Date of birth  (dd-mm-yyyy)</mat-label>
+            <input class="ml-2" formControlName="dob" matInput placeholder="dd-mm-yyyy"
               value="{{ receiptForm.value.dob }}"  />
             <!-- (click)="fromPicker.open()" [matDatepicker]="fromPicker" />
             <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
