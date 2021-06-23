@@ -80,8 +80,9 @@ export class PromotionListComponent extends BasePage implements OnInit {
     this.activePromotion = false;
     this.promotionListDataSource = [];
     this.promotionList = [];
+    ;
     this.promotionService.get({device_id: this.selectedDevice.id}).subscribe((data) => {
-      data.forEach((promo) => {
+      data.results.forEach((promo) => {
         if(promo.device_id == this.selectedDevice.id)
            this.promotionList.push(new Promotion().deserializer(promo))
       });
