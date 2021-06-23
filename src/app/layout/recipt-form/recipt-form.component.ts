@@ -221,11 +221,14 @@ export class ReciptFormComponent extends BasePage implements OnInit {
         this.receiptForm.get('phone').clearValidators();
         this.receiptForm.get('phone2').clearValidators()
       }
-      let alternatenumber = this.whatsappTransaction.foreignNumber ?
+      let alternatenumber;
+      if(this.whatsappTransaction.phone2 ) {
+      alternatenumber = this.whatsappTransaction.foreignNumber ?
         this.whatsappTransaction.phone2 :
         this.whatsappTransaction.phone2.length > 10 ?
           this.whatsappTransaction.phone2.substring(2) :
           this.whatsappTransaction.phone2
+      }
       this.receiptForm.controls["reciptId"].setValue(this.whatsappTransaction.receiptId);
       this.receiptForm.controls["donatedDate"].setValue(this.whatsappTransaction.donatedDate);
       this.receiptForm.controls["name"].setValue(this.whatsappTransaction.name);
@@ -274,10 +277,10 @@ export class ReciptFormComponent extends BasePage implements OnInit {
   }
 
   async onSubmit(receiptValue) {
-    if (!this.whatsappTransaction && !await this.validateDateFormat(receiptValue.donatedDate)) {
-      this.textAlert("Invalid Date Format", "Donated Date " + receiptValue.donatedDate + " is not in  dd-mm-yyyy format")
-      return
-    }
+    // if (!this.whatsappTransaction && !await this.validateDateFormat(receiptValue.donatedDate)) {
+    //   this.textAlert("Invalid Date Format", "Donated Date " + receiptValue.donatedDate + " is not in  dd-mm-yyyy format")
+    //   return
+    // }
     if (receiptValue.dob && !this.whatsappTransaction && !await this.validateDateFormat(receiptValue.dob)) {
       this.textAlert("Invalid Date Format", "Date of birth " + receiptValue.dob + " is not in  dd-mm-yyyy format")
       return
