@@ -64,7 +64,6 @@ export class ReciptDownloadNewComponent extends BasePage implements OnInit {
     htmlToImage
       .toCanvas(document.getElementById("page-container"), { quality: 1 })
       .then((canvas) => {
-        debugger
         this.enableButton = false;
         this.canvas = canvas;
         document.body.appendChild(canvas);
@@ -79,7 +78,6 @@ export class ReciptDownloadNewComponent extends BasePage implements OnInit {
         var position = 0;
         this.pdf.addImage(contentDataURL, "PNG", 2, 0, imgWidth, imgHeight - 15, '', 'SLOW');
         this.enableButton = true;
-        debugger
         this.dismissLoader();
       })
   }
