@@ -398,8 +398,19 @@
         width: fit-content;
         font-size: 51.9896px;
         word-spacing: 0.010398px;
-        padding-left: 60px;
         padding-right: 60px;
+        font-weight: bold;
+      }
+
+      .empty-underline {
+        padding-bottom: 0.2rem;
+        border-bottom-style: dotted;
+        border-bottom-width: 0.5rem;
+        width: fit-content;
+        font-size: 51.9896px;
+        word-spacing: 0.010398px;
+        padding-right: 5rem;
+        padding-left: 10rem;
         font-weight: bold;
       }
 
@@ -2279,18 +2290,18 @@
               Address
             </div>
             <div class="t m0 x1address h2address y14 ff2 fs0 fc0 sc0 lsd wse">
-              :<span class="underline"> {{ data.address }} </span>,
+              :<span [ngClass]="data.address ? 'underline':'empty-underline'"> {{ data.address }} </span>,
             </div>
 
             <div
               class="t m0 x1address2 h2address2 y141111 ff2 fs0 fc0 sc0 lsd wse"
             >
-              <span class="underline"> {{ data.address1 }} </span>,
+              <span [ngClass]="data.address1 ? 'underline':'empty-underline'"> {{ data.address1 }} </span>,
             </div>
             <div
               class="t m0 x1address2 h2addresspin y1411112 ff2 fs0 fc0 sc0 lsd wse"
             >
-              <span class="underline"> {{ data.pincode }} </span>.
+              <span [ngClass]="data.pincode ? 'underline':'empty-underline'"> {{ data.pincode }} </span>.
             </div>
             <div class="t m0 x1 h2mobilenumber y15 ff2 fs0 fc0 sc0 ls1 ws1">
               Mobile No
@@ -2325,7 +2336,7 @@
               Date Of Birth
             </div>
             <div class="t m0 x4value2 h2 y19 ff2 fs0 fc0 sc0 lsf wsa">
-              :<span class="underline"> {{ data.dob }} </span>
+              :<span  [ngClass]="data.dob ? 'underline':'empty-underline'"> {{ data.dob }} </span>
             </div>
             <div class="t m0 x1 h8 y1a ff1 fs0 fc0 sc0 ls1 ws1">
               NOTE: ALL DONATION ARE EXEMPTED U/S 80G OF INCOME TAX ACT,1961

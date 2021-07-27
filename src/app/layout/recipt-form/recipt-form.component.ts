@@ -202,9 +202,15 @@ export class ReciptFormComponent extends BasePage implements OnInit {
     let param = { 'receipt_id': receiptId };
     this.presentLoader();
     this.whatsAppTransactionService.get(param).subscribe((data) => {
-      this.whatsappTransaction = new WhatsAppTransaction().deserializer(data.results[0])
-      this.setWhatsAppEditInputs()
-      this.dismissLoader();
+      if(data.results.length > 0) {
+        this.whatsappTransaction = new WhatsAppTransaction().deserializer(data.results[0])
+        this.setWhatsAppEditInputs()
+        this.dismissLoader();
+      } else {
+        this.showNotification("bottom", "center", "failure", "", "No Recipt for given id")
+        this.dismissLoader();
+
+      }
     }, err => {
       this.somethingWentWrong();
       this.dismissLoader();
