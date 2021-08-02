@@ -1,6 +1,9 @@
-<app-page-header [heading]="'WhatsApp Transaction'" [icon]="'fa-bar-chart-o'"></app-page-header>
+<app-page-header
+  [heading]="'WhatsApp Transaction'"
+  [icon]="'fa-bar-chart-o'"
+></app-page-header>
 <div *ngIf="!selectedBranch; else showList">
-    <!-- <div class="row">
+  <!-- <div class="row">
         <div class="col-6"></div>
         <div class="col-4 d-flex justify-content-end  m-1  align-items-center">
             <button mat-raised-button color="primary" (click)="PostForDownload()">
@@ -8,94 +11,158 @@
             </button>
         </div>
     </div> -->
-    <multi-branch-selector (branchSelected)="setBranch($event)"></multi-branch-selector>
+  <multi-branch-selector
+    (branchSelected)="setBranch($event)"
+  ></multi-branch-selector>
 </div>
 <ng-template #showList>
-    <div class="row mb-2">
-        <div class="col-5"> <button mat-raised-button color="primary" (click)="PostForDownload()">
-            Download In Bulk
-        </button></div>
-        <div class="col-4 branch-name d-flex justify-content-end align-items-center">
-            <strong>{{ branchName }} &nbsp; BRANCH </strong>
-        </div>
-        <div *ngIf="user.branch.length !== 1" class="col-3 select-branch d-flex justify-content-start align-items-center" (click)="removeBranch()">
-            <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another branch
-        </div>
+  <div class="row mb-2">
+    <div class="col-5">
+      <button mat-raised-button color="primary" (click)="PostForDownload()">
+        Download In Bulk
+      </button>
     </div>
-    <mat-card>
-        <div class="row d-flex justify-content-center align-items-center">
-            <div class="col-3">
-                <mat-form-field>
-                    <mat-label>(mm / dd / yyyy )</mat-label>
-                    <input class="ml-2" [(ngModel)]="fromDate" matInput readonly placeholder=" mm/ dd / yyyy " (click)="fromPicker.open()" [matDatepicker]="fromPicker"
-                        (dateChange)="setFromDate($event)" />
-                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #fromPicker></mat-datepicker>
-                </mat-form-field>
-                <button mat-raised-button color="primary" [disabled]="!fromDate || !toDate" (click)="filterByDate()">
-                    Search
-                </button>
-                <!-- <i *ngIf="fromDate" class="fa fa-times" aria-hidden="true" (click)="resetDateFilter()"></i> -->
-            </div>
-            <div class="col-3">
-                <mat-form-field>
-                    <mat-label>Phone number</mat-label>
-                    <input class="ml-2" [(ngModel)]="phone" matInput placeholder="Phone number">
-                </mat-form-field>
-                <button mat-raised-button color="primary" [disabled]="!phone" (click)="filterByPhone()">
-                    Search
-                </button>
-            </div>
-            <div class="col-3">
-                <mat-form-field>
-                    <mat-label>Email</mat-label>
-                    <input class="ml-2" [(ngModel)]="email" matInput placeholder="Email">
-                </mat-form-field>
-                <button mat-raised-button color="primary" [disabled]="!email" (click)="filterByEmail()">
-                    Search
-                </button>
-            </div>
-            <div class="col-3">
-                <mat-form-field>
-                    <mat-label>Receipt Id</mat-label>
-                    <input class="ml-2" [(ngModel)]="receiptId" matInput placeholder="Phone number">
-                </mat-form-field>
-                <button mat-raised-button color="primary" [disabled]="!receiptId" (click)="filterByReceiptId()">
-                    Search
-                </button>
-            </div>
-            </div>
-    </mat-card>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end">
-          <li class="page-item" [class.disabled]="previouspageUrl == null">
-            <a class="page-link" (click)="showPreviousPage()">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
-          <li class="page-item" [class.disabled]="nextPageUrl == null">
-            <a class="page-link" (click)="showNextPage()">Next</a>
-          </li>
-        </ul>
-      </nav>
-    <app-receipt-details [columnsToDisplay]="columnsToDisplay" [dataSource]="dataSource">
-    </app-receipt-details>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end">
-          <li class="page-item" [class.disabled]="previouspageUrl == null">
-            <a class="page-link" (click)="showPreviousPage()">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
-          <li class="page-item" [class.disabled]="nextPageUrl == null">
-            <a class="page-link" (click)="showNextPage()">Next</a>
-          </li>
-        </ul>
-      </nav>
+    <div
+      class="col-4 branch-name d-flex justify-content-end align-items-center"
+    >
+      <strong>{{ branchName }} &nbsp; BRANCH </strong>
+    </div>
+    <div
+      *ngIf="user.branch.length !== 1"
+      class="
+        col-3
+        select-branch
+        d-flex
+        justify-content-start
+        align-items-center
+      "
+      (click)="removeBranch()"
+    >
+      <i class="fa fa-angle-left p-2" aria-hidden="true"></i>choose another
+      branch
+    </div>
+  </div>
+  <mat-card>
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-3">
+        <mat-form-field>
+          <mat-label>(mm / dd / yyyy )</mat-label>
+          <input
+            class="ml-2"
+            [(ngModel)]="fromDate"
+            matInput
+            readonly
+            placeholder=" mm/ dd / yyyy "
+            (click)="fromPicker.open()"
+            [matDatepicker]="fromPicker"
+            (dateChange)="setFromDate($event)"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="fromPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!fromDate || !toDate"
+          (click)="filterByDate()"
+        >
+          Search
+        </button>
+        <!-- <i *ngIf="fromDate" class="fa fa-times" aria-hidden="true" (click)="resetDateFilter()"></i> -->
+      </div>
+      <div class="col-3">
+        <mat-form-field>
+          <mat-label>Phone number</mat-label>
+          <input
+            class="ml-2"
+            [(ngModel)]="phone"
+            matInput
+            placeholder="Phone number"
+          />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!phone"
+          (click)="filterByPhone()"
+        >
+          Search
+        </button>
+      </div>
+      <div class="col-3">
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input
+            class="ml-2"
+            [(ngModel)]="email"
+            matInput
+            placeholder="Email"
+          />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!email"
+          (click)="filterByEmail()"
+        >
+          Search
+        </button>
+      </div>
+      <div class="col-3">
+        <mat-form-field>
+          <mat-label>Receipt Id</mat-label>
+          <input
+            class="ml-2"
+            [(ngModel)]="receiptId"
+            matInput
+            placeholder="Phone number"
+          />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!receiptId"
+          (click)="filterByReceiptId()"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+  </mat-card>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+      <li class="page-item" [class.disabled]="previouspageUrl == null">
+        <a class="page-link" (click)="showPreviousPage()">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+      <li class="page-item" [class.disabled]="nextPageUrl == null">
+        <a class="page-link" (click)="showNextPage()">Next</a>
+      </li>
+    </ul>
+  </nav>
+  <app-receipt-details
+    [columnsToDisplay]="columnsToDisplay"
+    [dataSource]="dataSource"
+  >
+  </app-receipt-details>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+      <li class="page-item" [class.disabled]="previouspageUrl == null">
+        <a class="page-link" (click)="showPreviousPage()">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+      <li class="page-item" [class.disabled]="nextPageUrl == null">
+        <a class="page-link" (click)="showNextPage()">Next</a>
+      </li>
+    </ul>
+  </nav>
 </ng-template>
 <!-- <div>
     <img #imgRef> // Note that the #imgRef reference is required to be identified by Angular
   </div> -->
-
-
 
 <!-- Copyright 2018 Google Inc. All Rights Reserved.
       Use of this source code is governed by an MIT-style license that

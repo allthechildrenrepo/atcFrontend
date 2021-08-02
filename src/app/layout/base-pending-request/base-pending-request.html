@@ -9,6 +9,17 @@
             <p>There was no pending request as of now</p>
         </div>
         <ng-template #showPendingRequest>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                  <li class="page-item" [class.disabled]="previouspageUrl == null">
+                    <a class="page-link" (click)="showPreviousPage()">Previous</a>
+                  </li>
+                  <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+                  <li class="page-item" [class.disabled]="nextPageUrl == null">
+                    <a class="page-link" (click)="showNextPage()">Next</a>
+                  </li>
+                </ul>
+              </nav> 
             <div class="example-container mat-elevation-z8">
                 <table class="w-100" mat-table [dataSource]="dataSource" matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
 
@@ -69,6 +80,17 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
             </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                  <li class="page-item" [class.disabled]="previouspageUrl == null">
+                    <a class="page-link" (click)="showPreviousPage()">Previous</a>
+                  </li>
+                  <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+                  <li class="page-item" [class.disabled]="nextPageUrl == null">
+                    <a class="page-link" (click)="showNextPage()">Next</a>
+                  </li>
+                </ul>
+              </nav> 
 
         </ng-template>
     </mat-card-content>

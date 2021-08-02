@@ -1,14 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { User, AtcUser, Leads } from 'src/app/shared/model';
-import { TelecallerFetchService } from 'src/app/shared/services/telecaller.service';
-import { BasePage } from 'src/app/utils';
-import { MatDialog, MatSnackBar, MatSort, MatTableDataSource, Sort } from '@angular/material';
-import { LeadFetchService, LeadRequestService } from 'src/app/shared/services/leads';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { User, AtcUser, Leads } from "src/app/shared/model";
+import { TelecallerFetchService } from "src/app/shared/services/telecaller.service";
+import { BasePage } from "src/app/utils";
+import {
+  MatDialog,
+  MatSnackBar,
+  MatSort,
+  MatTableDataSource,
+  Sort,
+} from "@angular/material";
+import {
+  LeadFetchService,
+  LeadRequestService,
+} from "src/app/shared/services/leads";
 
 @Component({
-  selector: 'app-base-remarks',
-  templateUrl: './base-remarks.component.html',
-  styleUrls: ['./base-remarks.component.scss']
+  selector: "app-base-remarks",
+  templateUrl: "./base-remarks.component.html",
+  styleUrls: ["./base-remarks.component.scss"],
 })
 export class BaseRemarksComponent extends BasePage implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -19,8 +28,11 @@ export class BaseRemarksComponent extends BasePage implements OnInit {
   telecallers = [];
   leads: Leads[];
   selectedTelecaller;
-  displayedColumns = ['lead_phone', 'remarks', 'convert_to_contact'];
+  displayedColumns = ["lead_phone", "remarks", "convert_to_contact"];
   dataSource: MatTableDataSource<Leads>;
+  currentPage: number = 0;
+  previouspageUrl: string;
+  nextPageUrl: string;
 
   constructor(
     public telecallerService: TelecallerFetchService,
@@ -33,7 +45,9 @@ export class BaseRemarksComponent extends BasePage implements OnInit {
   }
 
   ngOnInit() {
-    this.user = new User().deSerialize(JSON.parse(localStorage.getItem('user')));
+    this.user = new User().deSerialize(
+      JSON.parse(localStorage.getItem("user"))
+    );
     if (this.user.branch.length === 1) {
       this.setBranch(this.user.branch[0]);
     }
@@ -50,39 +64,51 @@ export class BaseRemarksComponent extends BasePage implements OnInit {
     this.selectedBranchName = null;
   }
 
-  fetchTeleCallers() {
+  fetchTeleCallers(url = null) {
     this.presentLoader();
-    let params = { 'atc_profile__branch__id': this.selectedBranch };
+    let params = { atc_profile__branch__id: this.selectedBranch };
     this.telecallerService.get(params).subscribe(
-      res => {
+      (res) => {
         this.dismissLoader();
         this.telecallers = [];
-        res.forEach(data => {
+        res.results.forEach((data) => {
           this.telecallers.push(new AtcUser().deserialize(data));
         });
       },
-      err => {
+      (err) => {
         this.dismissLoader();
         this.somethingWentWrong();
       }
     );
   }
 
-  fetchLeads() {
+  showPreviousPage() {
+    this.fetchLeads(this.previouspageUrl);
+    this.currentPage = this.currentPage - 1;
+  }
+  showNextPage() {
+    this.fetchLeads(this.nextPageUrl);
+    this.currentPage = this.currentPage + 1;
+  }
+
+  fetchLeads(url = null) {
     this.presentLoader();
     this.leads = [];
     let params = {
       // telecaller_id: 1,
       telecaller_id: this.selectedTelecaller,
-      status: 2
-    }
+      status: 2,
+    };
     this.leadfetchService.get(params).subscribe((data) => {
-      data.forEach(element => {
+      this.previouspageUrl = data.previous;
+      this.nextPageUrl = data.next;
+      debugger
+      data.results.forEach((element) => {
         this.leads.push(new Leads().deserializer(element));
       });
       this.dataSource = new MatTableDataSource(this.leads);
-      this.dataSource.filterPredicate =
-        (data: Leads, filter: string) => data.phone.indexOf(filter) != -1;
+      this.dataSource.filterPredicate = (data: Leads, filter: string) =>
+        data.phone.indexOf(filter) != -1;
       this.dismissLoader();
     });
   }
@@ -95,14 +121,14 @@ export class BaseRemarksComponent extends BasePage implements OnInit {
     console.log("telecaller", event, id);
     let params = {
       remarks: event.value,
-      status: 3
-    }
+      status: 3,
+    };
     this.leadfetchService.leadId = id;
     this.leadfetchService.put(params).subscribe(
-      data => {
+      (data) => {
         console.log("leadRequestService is working");
       },
-      err => {
+      (err) => {
         console.log("Error");
       }
     );
@@ -112,14 +138,14 @@ export class BaseRemarksComponent extends BasePage implements OnInit {
     console.log("telecaller", event, id);
     let params = {
       remarks: event.value,
-      status: 4
-    }
+      status: 4,
+    };
     this.leadfetchService.leadId = id;
     this.leadfetchService.put(params).subscribe(
-      data => {
+      (data) => {
         console.log("leadRequestService is working");
       },
-      err => {
+      (err) => {
         console.log("Error");
       }
     );
@@ -135,7 +161,7 @@ export class BaseRemarksComponent extends BasePage implements OnInit {
     //     <head>
     //       <title>Print tab</title>
     //       <style>
-    //       table th, table td {border:1px solid #000;padding:0.5em;}     
+    //       table th, table td {border:1px solid #000;padding:0.5em;}
     //       table { page-break-inside:auto }
     //       tr{ page-break-inside:avoid; page-break-after:auto }
     //       </style>
@@ -145,12 +171,11 @@ export class BaseRemarksComponent extends BasePage implements OnInit {
     // );
 
     let printContents;
-    printContents = document.getElementById('print-section').innerHTML;
+    printContents = document.getElementById("print-section").innerHTML;
 
     document.body.innerHTML = printContents;
-    document.title = '.';
+    document.title = ".";
 
     window.print();
   }
-
 }

@@ -5,6 +5,17 @@
 </div>
 
 <ng-template #showList>
+  <!-- <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+      <li class="page-item" [class.disabled]="previouspageUrl == null">
+        <a class="page-link" (click)="showPreviousPage()">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+      <li class="page-item" [class.disabled]="nextPageUrl == null">
+        <a class="page-link" (click)="showNextPage()">Next</a>
+      </li>
+    </ul>
+  </nav> -->
   <div class="container">
     <div class="row" (click)="removeBranch()">
       <div class="col-5"></div>
@@ -33,7 +44,7 @@
                 Total base :
               </div>
               <div class='col-4'>
-                {{ leads?.length }}
+                {{ totalBase }}
               </div>
             </div>
             <div class="row py-2 mx-2 border">
@@ -133,4 +144,15 @@
     </div>
 
   </div>
+  <!-- <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+      <li class="page-item" [class.disabled]="previouspageUrl == null">
+        <a class="page-link" (click)="showPreviousPage()">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link">{{currentPage}}</a></li>
+      <li class="page-item" [class.disabled]="nextPageUrl == null">
+        <a class="page-link" (click)="showNextPage()">Next</a>
+      </li>
+    </ul>
+  </nav> -->
 </ng-template>
